@@ -31,7 +31,7 @@ class SubMateria(models.Model):
         return f"{self.nome} - {self.materia}"
 
     class Meta:
-        verbose_plural_name = "Sub Materias"
+        verbose_name_plural = "Sub Materias"
 
 
 class Conteudo(models.Model):
