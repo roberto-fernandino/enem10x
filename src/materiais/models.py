@@ -70,7 +70,7 @@ class Questao(models.Model):
     conteudo = models.ForeignKey(
         Conteudo, on_delete=models.DO_NOTHING, null=True, default=None, blank=True
     )
-    opcoes = models.JSONField()
+    opcoes = models.JSONField(null=True)
     opcao_correta = models.IntegerField(null=True, blank=True, default=None)
     nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True)
     tipo = models.CharField(default=None, blank=True, null=True, choices=TIPOS_PROVA, max_length=50)
@@ -84,23 +84,11 @@ class Questao(models.Model):
     def get_materia(self):
         return self.conteudo.sub_materia.materia
 
-class QuestoesProva(models.Model):
-    questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
-    def get_tipo(self):
-        return self.questao.tipo
-
-    def get_materia(self):
-        return self.questao.conteudo.sub_materia.materia
-
-    class Meta:
-        verbose_name_plural = "Questoes pra prova"
-
 
 class ProvaRespondida(models.Model):
     questao = models.ForeignKey(Questao, on_delete=models.DO_NOTHING)
     resposta = models.CharField(max_length=1)
     acerto = models.BooleanField(default=None, blank=True, null=True)
-    
 
     def set_acerto(self):
         if self.questao.opcao_correta == self.resposta:
@@ -126,9 +114,9 @@ class ProvaCompleta(models.Model):
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
-    tipo = models.ForeignKey(ProvaRespondida, on_delete=models.DO_NOTHING)
     data_feita = models.DateTimeField(auto_now_add=True)
-    acerto_dificuldade = models.JSONField()
+    acerto_dificuldade = models.JSONField(null=True)
+    tipos = models.JSONField(null=True)
 
     def gera_relatorio(self):
         conteudos_errados = []
@@ -153,6 +141,7 @@ class ProvaCompleta(models.Model):
                 erros += 1
                 conteudos_errados.append(resposta.questao.conteudo)
             tipos.append(resposta.questao.tipo)
+            
         
         dificuldades_acerto_dict = {}
         dificuldades_acerto_dict[1] = acerto_questoes_faceis
@@ -164,7 +153,7 @@ class ProvaCompleta(models.Model):
         self.ranking_piores_conteudos, self.ranking_melhores_conteudos = define_ranking_conteudo_prova(conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados)
         tipos = list(set(tipos))
         
-        self.tipos = retorna_tipos_prova(tipos)
+        self.tipos = tipos
         self.erros = erros
         self.acertos = acertos
         self.save()

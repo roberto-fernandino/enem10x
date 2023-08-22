@@ -39,6 +39,8 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
         ranking_certos,
     )
 
+
+# Inutil agora
 def retorna_tipos_prova(tipos_prova_tratado: list) -> str:
     tipos = '  -  '.join(tipos_prova_tratado)
     return tipos
