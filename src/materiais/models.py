@@ -87,7 +87,7 @@ class Questao(models.Model):
 
 class ProvaRespondida(models.Model):
     questao = models.ForeignKey(Questao, on_delete=models.DO_NOTHING)
-    resposta = models.CharField(max_length=1)
+    resposta = models.IntegerField(default=None, null=True)
     acerto = models.BooleanField(default=None, blank=True, null=True)
 
     def set_acerto(self):
