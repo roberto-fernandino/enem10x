@@ -1,4 +1,4 @@
-from materiais.funcs import define_image_path, define_ranking_conteudo_prova
+from materiais.funcs import define_image_path, define_ranking_conteudo_prova, retorna_tipos_prova
 from django.db import models
 
 
@@ -55,24 +55,32 @@ class Tipo(models.Model):
 
 
 class Questao(models.Model):
+    TIPOS_PROVA = [
+        ('linguagens', 'Linguagens e suas Tecnologias'),
+        ('matematica', 'Matemática e suas Tecnologias'),
+        ('natureza', 'Ciências da Natureza'),
+        ('humanas', 'Ciências Humanas'),
+    ]
+
     enunciado = models.TextField(default=None, blank=False, null=True)
     imagem = models.ImageField(
         upload_to=define_image_path, null=True, blank=True, default=None
     )
     conteudo = models.ForeignKey(
-        Conteudo, on_delete=models.DO_NOTHING, null=True, default=None
+        Conteudo, on_delete=models.DO_NOTHING, null=True, default=None, blank=True
     )
-    opcao_correta = models.CharField(max_length=1, null=True, blank=False, default=None)
+    opcao_correta = models.CharField(max_length=1, null=True, blank=True, default=None)
     nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True)
-    tipo = models.ForeignKey(Tipo, on_delete=models.DO_NOTHING)
-
+    tipo = models.CharField(default=None, blank=True, null=True, choices=TIPOS_PROVA, max_length=50)
     class Meta:
         verbose_name_plural = "Questoes"
+
+    def __str__(self):
+        return f"{self.conteudo}"
 
 
 class QuestoesProva(models.Model):
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
-
     def get_tipo(self):
         return self.questao.tipo
 
@@ -86,13 +94,17 @@ class QuestoesProva(models.Model):
 class ProvaRespondida(models.Model):
     questao = models.ForeignKey(Questao, on_delete=models.DO_NOTHING)
     resposta = models.CharField(max_length=1)
-    acerto = models.BooleanField()
+    acerto = models.BooleanField(default=None, blank=True, null=True)
+    
 
     def set_acerto(self):
         if self.questao.opcao_correta == self.resposta:
-            self.acerto == True
+            self.acerto = True
+            self.save()
         else:
-            self.acerto == False
+            self.acerto = False
+            self.save()
+
 
     def get_conteudo(self):
         return self.questao.conteudo
@@ -104,18 +116,21 @@ class ProvaRespondida(models.Model):
 class ProvaCompleta(models.Model):
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
     respostas = models.ManyToManyField(ProvaRespondida)
-    nota = models.IntegerField()
+    nota = models.IntegerField(default=0)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
-    tipo = models.CharField(max_length=12)
+    tipos = models.CharField(default=None, null=True, blank=True, max_length=150)
+    data_feita = models.DateTimeField(auto_now_add=True)
 
-    def relatorio(self):
+
+    def gera_relatorio(self):
         conteudos_errados = []
         conteudos_acertados = []
         acertos = 0
         erros = 0
+        tipos = []
         for resposta in self.respostas.all():
             if resposta.acerto:
                 acertos += 1
@@ -123,14 +138,18 @@ class ProvaCompleta(models.Model):
             else:
                 erros += 1
                 conteudos_errados.append(resposta.questao.conteudo)
-        (
-            self.ranking_piores_conteudos,
-            self.ranking_melhores_conteudos,
-            self.conteudo_mais_errado,
-            self.conteudo_mais_acertado,
-        ) = define_ranking_conteudo_prova(
-            conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados
-        )
+            tipos.append(resposta.questao.tipo)
+        
+
+        self.ranking_piores_conteudos, self.ranking_melhores_conteudos = define_ranking_conteudo_prova(conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados)
+        tipos = list(set(tipos))
+        
+        self.tipos = retorna_tipos_prova(tipos)
         self.erros = erros
         self.acertos = acertos
         self.save()
+    
+    def calcula_nota(self):
+        pass
+
+

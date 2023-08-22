@@ -117,6 +117,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 
     
-    
+class MediaGeral(models.Model):
+    usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     

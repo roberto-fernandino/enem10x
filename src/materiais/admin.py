@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import *
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida
 # Register your models here.
 
 class NivelAdmin(admin.ModelAdmin):
@@ -43,15 +43,54 @@ class ConteudoAdmin(admin.ModelAdmin):
 class QuestoesAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'nivel',
         'conteudo',
+        'nivel',
         'opcao_correta',
     ]
     fieldsets = (
         (None, {"fields": ['enunciado', 'imagem', 'conteudo', 'opcao_correta', 'nivel']}),
     )
+    list_display_links = ['conteudo']
 
+class ProvaRespondidaAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'questao',
+        'resposta',
+        'acerto',
+        'get_tipo',
+        ]
+    
+    fieldsets = (
+        (None, {"fields": ['questao', 'resposta', 'acerto']}),
+    )
 
+    def get_tipo(self, obj):
+        return obj.get_tipo()
+    
+    get_tipo.admin_order_field = 'tipo'
+    get_tipo.admin_short_description = 'Tipo'
+    list_display_links = ['questao']
+    
+
+class ProvaCompletaAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'usuario',
+        'nota',
+        'acertos',
+        'tipos',
+        ]
+    fieldsets = (
+        ('Informacao do Estudante', {"fields": ['usuario']}),
+        ('Informacao da Prova', {"fields": ['nota', 'data_feita','ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos']}),
+        ('Acertos e Erros', {"fields": ['acertos', 'erros']})
+
+    )
+    date_hierarchy = 'data_feita'
+
+admin.site.register(ProvaCompleta, ProvaCompletaAdmin)
+admin.site.register(ProvaRespondida, ProvaRespondidaAdmin)
 admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
 admin.site.register(Materia, MateriaAdmin)
