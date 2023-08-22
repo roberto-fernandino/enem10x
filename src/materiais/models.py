@@ -48,9 +48,9 @@ class Conteudo(models.Model):
 
 
 class Tipo(models.Model):
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(max_length=80)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.nome}"
 
 
@@ -62,12 +62,13 @@ class Questao(models.Model):
     conteudo = models.ForeignKey(
         Conteudo, on_delete=models.DO_NOTHING, null=True, default=None
     )
-    opcao_correta = models.CharField(max_length=1, null=True, blank=False, default=None)
-    nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True)
-    tipo = models.ForeignKey(Tipo, on_delete=models.DO_NOTHING)
+    opcao_correta = models.CharField(max_length=1, null=True, blank=True, default=None)
+    nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True, blank=True)
+    tipo = models.ForeignKey(Tipo, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Questoes"
+
 
 
 class QuestoesProva(models.Model):
@@ -109,7 +110,7 @@ class ProvaCompleta(models.Model):
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
-    tipo = models.CharField(max_length=12)
+    tipo = models.CharField(max_length=50, default=None, null=True, blank=False)
 
     def relatorio(self):
         conteudos_errados = []

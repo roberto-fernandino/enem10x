@@ -4,54 +4,86 @@ from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
 from materiais.models import *
+
 # Register your models here.
+
 
 class NivelAdmin(admin.ModelAdmin):
     list_display = [
-        'nivel',
-        'peso',
+        "nivel",
+        "peso",
     ]
-    fieldsets = (
-        ("Nivel", {"fields": ['nivel', 'peso']}),
-    )
+    fieldsets = (("Nivel", {"fields": ["nivel", "peso"]}),)
+
 
 class SubMateriaAdmin(admin.ModelAdmin):
     list_display = [
-        'nome',
-        'materia',
+        "nome",
+        "materia",
     ]
-    fieldsets = (
-        (None, {"fields": ['nome', 'materia']}),
-    )
+    fieldsets = ((None, {"fields": ["nome", "materia"]}),)
+
+
 class MateriaAdmin(admin.ModelAdmin):
     list_display = [
-        'nome',
+        "nome",
     ]
-    fieldsets = (
-        (None, {"fields": ['nome']}),
-    )
+    fieldsets = ((None, {"fields": ["nome"]}),)
+
 
 class ConteudoAdmin(admin.ModelAdmin):
     list_display = [
-        'nome',
-        'sub_materia',
+        "nome",
+        "sub_materia",
     ]
     fieldsets = (
-        (None, {"fields": ['nome', 'sub_materia',]}),
+        (
+            None,
+            {
+                "fields": [
+                    "nome",
+                    "sub_materia",
+                ]
+            },
+        ),
     )
+
 
 class QuestoesAdmin(admin.ModelAdmin):
     list_display = [
-        'id',
-        'nivel',
-        'conteudo',
-        'opcao_correta',
+        "id",
+        "nivel",
+        "conteudo",
+        "opcao_correta",
     ]
     fieldsets = (
-        (None, {"fields": ['enunciado', 'imagem', 'conteudo', 'opcao_correta', 'nivel']}),
+        (
+            None,
+            {
+                "fields": [
+                    "enunciado",
+                    "imagem",
+                    "conteudo",
+                    "opcao_correta",
+                    "nivel",
+                    "tipo",
+                ]
+            },
+        ),
     )
 
 
+class TipoAdmin(admin.ModelAdmin):
+    list_display = ["nome"]
+    fieldsets = (
+        (
+            None,
+            {"fields": ["nome"]},
+        ),
+    )
+
+
+admin.site.register(Tipo, TipoAdmin)
 admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
 admin.site.register(Materia, MateriaAdmin)
