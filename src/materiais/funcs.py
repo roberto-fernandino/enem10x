@@ -38,19 +38,3 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
         ranking_erradas,
         ranking_certos,
     )
-
-
-lista_teste = [
-    "historia",
-    "historia",
-    "historia",
-    "mat",
-    "mat",
-    "mat",
-    "mat",
-    "geo",
-    "geo",
-    "port",
-]
-
-print(define_ranking_conteudo_prova(lista_teste))
