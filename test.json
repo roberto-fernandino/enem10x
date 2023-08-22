@@ -1,0 +1,13 @@
+{
+    "a": "aaaaaaaa",
+    "b": "bbbbbbbb",
+    "c": "cccccccc",
+    "d": "dddddddd",
+    "e": "eeeeeeee",
+    "lista": [
+        "aaaaaa",
+        "bbbbbbb"
+    ],
+    "bool": true,
+    "boolfalse": false
+}
