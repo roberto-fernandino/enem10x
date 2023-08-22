@@ -23,8 +23,8 @@ class AccountAdmin(BaseUserAdmin):
 
 
     fieldsets = (
-        ("Informacao Geral", {"fields": ["email", "password"]}),
-        ("Informacao Pessoal", {"fields": ["cpf", "telefone", "data_nascimento", "last_login"]}),
+        ("Informacao Geral", {"fields": ["email", "password", 'data_criacao', "last_login"]}),
+        ("Informacao Pessoal", {"fields": ["cpf", "telefone", "data_nascimento", ]}),
         ("Informacao Permissoes", {"fields": ["is_aluno", "is_admin", "is_staff", "is_superuser"]}),
     )
     add_fieldsets = [
@@ -47,7 +47,9 @@ class AccountAdmin(BaseUserAdmin):
     list_filter = ['is_aluno', 'data_criacao']
     search_fields = ['email', 'nome']
     ordering = ['-last_login']
+    list_per_page = 50
     filter_horizontal = ['user_permissions']
+    date_hierarchy = 'data_criacao'
 
 admin.site.register(Account, AccountAdmin)
 admin.site.unregister(Group)

@@ -117,6 +117,11 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 
     
-    
+class MediaGeral(models.Model):
+    usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
+    media_matematica = models.FloatField(default=0)
+    media_ciencias_natureza = models.FloatField(default=0)
+    media_linguagens = models.FloatField(default=0)
+    media_ciencias_humanas = models.FloatField(default=0)
 
     
