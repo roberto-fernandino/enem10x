@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from datetime import datetime
-
+from materiais.models import ProvaCompleta
 
 # Create your models here.
 class AccountManager(BaseUserManager):
@@ -115,3 +115,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return "*" * 7 +  self.cpf[-5:-2] + '-' + self.cpf[-2] + self.cpf[-1]
     
 
+
+    
+    
+
+    
