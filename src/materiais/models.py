@@ -71,8 +71,8 @@ class Questao(models.Model):
         Conteudo, on_delete=models.DO_NOTHING, null=True, default=None, blank=True
     )
     opcoes = models.JSONField(null=True)
-    opcao_correta = models.IntegerField(null=True, blank=True, default=None)
-    nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True)
+    opcao_correta = models.CharField(null=False, blank=False, default=None, max_length=1)
+    nivel = models.ForeignKey(Nivel, on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
     tipo = models.CharField(default=None, blank=True, null=True, choices=TIPOS_PROVA, max_length=50)
 
     class Meta:
@@ -88,7 +88,7 @@ class Questao(models.Model):
 class ProvaRespondida(models.Model):
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE, null=True)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
-    resposta = models.IntegerField(default=None, null=True)
+    resposta = models.CharField(default=None, null=True, max_length=1, blank=True)
     acerto = models.BooleanField(default=None, blank=True, null=True)
     prova_completa = models.ForeignKey("ProvaCompleta", on_delete=models.CASCADE, related_name='respostas', null=True)
 
@@ -108,7 +108,7 @@ class ProvaRespondida(models.Model):
         return self.questao.tipo
 
 class QuestaoRespondida(models.Model):
-    '''Cria uma tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas'''
+    '''tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco'''
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True)
     
@@ -129,7 +129,7 @@ class ProvaCompleta(models.Model):
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
     data_feita = models.DateTimeField(auto_now_add=True)
     acerto_dificuldade = models.JSONField(null=True)
-    tipos = models.JSONField(null=True, default=lambda: [])
+    tipos = models.JSONField(null=True, default=None)
     
     def gera_relatorio(self):
         conteudos_errados = []

@@ -9,12 +9,14 @@ from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, Prov
 
 class NivelAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         "nivel",
         "peso",
     ]
     fieldsets = (("Nivel", {"fields": ["nivel", "peso"]}),)
     search_fields = ['nivel']
-
+    list_display_links = ['nivel']
+    ordering = ['id']
 class SubMateriaAdmin(admin.ModelAdmin):
     list_display = [
         "nome",
@@ -32,7 +34,7 @@ class MateriaAdmin(admin.ModelAdmin):
     fieldsets = ((None, {"fields": ["nome"]}),)
     list_display_links = ['nome']
     search_fields = ['nome']
-
+    ordering = ['id']
 
 class ConteudoAdmin(admin.ModelAdmin):
     list_display = [
@@ -57,12 +59,13 @@ class QuestoesAdmin(admin.ModelAdmin):
         'id',
         'conteudo',
         'nivel',
-        'opcao_correta',
+        'tipo',
     ]
     fieldsets = (
-       (None, {"fields": ['enunciado', 'imagem', 'conteudo', 'opcao_correta', 'nivel']}),
+       (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel', 'tipo' ]}),
     )
     list_display_links = ['conteudo']
+    ordering = ['id']
 
 class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
@@ -127,7 +130,7 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
         ]
     fieldsets = (
         ('Informacao do Estudante', {"fields": ['usuario']}),
-        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos']}),
+        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos', 'acerto_dificuldade']}),
         ('Acertos e Erros', {"fields": ['acertos', 'erros']})
 
     )
