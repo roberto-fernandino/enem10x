@@ -13,7 +13,7 @@ class NivelAdmin(admin.ModelAdmin):
         "peso",
     ]
     fieldsets = (("Nivel", {"fields": ["nivel", "peso"]}),)
-
+    search_fields = ['nivel']
 
 class SubMateriaAdmin(admin.ModelAdmin):
     list_display = [
@@ -21,13 +21,17 @@ class SubMateriaAdmin(admin.ModelAdmin):
         "materia",
     ]
     fieldsets = ((None, {"fields": ["nome", "materia"]}),)
-
+    search_fields = ['nome', 'materia']
+    
 
 class MateriaAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         "nome",
     ]
     fieldsets = ((None, {"fields": ["nome"]}),)
+    list_display_links = ['nome']
+    search_fields = ['nome']
 
 
 class ConteudoAdmin(admin.ModelAdmin):
@@ -119,10 +123,11 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
         'nota',
         'acertos',
         'tipos',
+        'data_feita',
         ]
     fieldsets = (
         ('Informacao do Estudante', {"fields": ['usuario']}),
-        ('Informacao da Prova', {"fields": ['nota', 'data_feita','ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos']}),
+        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos']}),
         ('Acertos e Erros', {"fields": ['acertos', 'erros']})
 
     )

@@ -38,7 +38,7 @@ class Conteudo(models.Model):
     nome = models.CharField(max_length=30)
     sub_materia = models.ForeignKey(
         SubMateria,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
@@ -86,9 +86,11 @@ class Questao(models.Model):
 
 
 class ProvaRespondida(models.Model):
-    questao = models.ForeignKey(Questao, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE, null=True)
+    questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
     resposta = models.IntegerField(default=None, null=True)
     acerto = models.BooleanField(default=None, blank=True, null=True)
+    prova_completa = models.ForeignKey("ProvaCompleta", on_delete=models.CASCADE, related_name='respostas', null=True)
 
     def set_acerto(self):
         if self.questao.opcao_correta == self.resposta:
@@ -105,19 +107,30 @@ class ProvaRespondida(models.Model):
     def get_tipo(self):
         return self.questao.tipo
 
+class QuestaoRespondida(models.Model):
+    '''Cria uma tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas'''
+    usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
+    questao = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True)
+    
+    @classmethod
+    def set_questoes(cls, usuario):
+        questoes_respondidas = ProvaRespondida.objetcs.filter(usuario=usuario)
+        for questoes in questoes_respondidas:
+            cls.objects.create(usuario=usuario, questao=questoes)
+
 
 class ProvaCompleta(models.Model):
+    '''Modelo de prova completa onde o usuario podera ver suas provas completas'''
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
-    respostas = models.ManyToManyField(ProvaRespondida)
-    nota = models.IntegerField(default=0)
+    nota = models.FloatField(default=0)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
     data_feita = models.DateTimeField(auto_now_add=True)
     acerto_dificuldade = models.JSONField(null=True)
-    tipos = models.JSONField(null=True)
-
+    tipos = models.JSONField(null=True, default=lambda: [])
+    
     def gera_relatorio(self):
         conteudos_errados = []
         conteudos_acertados = []
@@ -127,7 +140,8 @@ class ProvaCompleta(models.Model):
         acerto_questoes_faceis = 0
         acerto_questoes_medianas = 0
         acerto_questoes_dificeis = 0
-        for resposta in self.respostas.all():
+        for resposta in self.respostas.filter(usuario=self.usuario):
+
             if resposta.acerto:
                 acertos += 1
                 conteudos_acertados.append(resposta.questao.conteudo)
@@ -142,7 +156,11 @@ class ProvaCompleta(models.Model):
                 conteudos_errados.append(resposta.questao.conteudo)
             tipos.append(resposta.questao.tipo)
             
-        
+        '''{
+            1: qtd_facil,
+            2: qtd_medias,
+            3: qtd dificil
+        }'''
         dificuldades_acerto_dict = {}
         dificuldades_acerto_dict[1] = acerto_questoes_faceis
         dificuldades_acerto_dict[2] = acerto_questoes_medianas
@@ -156,6 +174,8 @@ class ProvaCompleta(models.Model):
         self.tipos = tipos
         self.erros = erros
         self.acertos = acertos
+        self.respostas.filter(usuario=self.usuario).delete()
+        self.save()
     
     def calcula_nota(self):
         pass
