@@ -1,0 +1,17 @@
+{% extends 'templates/prova-base.html'%}
+
+
+{% block title %}
+    Prova
+{% endblock %}
+
+
+{% block content %}
+{% if materias %}
+    {% for materia in materia %}
+    <div>
+        <p>{{ materia }}</p>
+    </div>
+    {% endfor %}
+{% endfi %}
+{% endblock %}

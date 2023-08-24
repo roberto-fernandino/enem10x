@@ -1,0 +1,17 @@
+{% extends 'static/prova-base.html'%}
+
+
+{% block title %}
+    Escolha sua prova
+{% endblock %}
+
+
+{% block content %}
+<form action="post">
+    {% csrf_token %}
+    <div>
+        {{choose_prova.as_p}}
+    </div>
+    <button type="submit">Escolher</button>
+</form>
+{% endblock %}

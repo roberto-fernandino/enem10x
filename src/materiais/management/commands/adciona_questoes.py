@@ -5,6 +5,6 @@ class Command(BaseCommand):
     help = 'Adiciona questões no banco de dados'
 
     def handle(self, *args, **kwargs):
-        arquivo = '/home/roberto/projects/enem10x/src/leitores/P002287.docx'
+        arquivo = '/home/roberto/projects/enem10x/src/leitores/questions3.docx'
         adciona_questoes(arquivo)
         self.stdout.write(self.style.SUCCESS('Todas questões adicionadas com sucesso!'))

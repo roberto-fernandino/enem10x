@@ -26,15 +26,15 @@ def alternativas(arquivo):
         alternativas_questao = {}  # Dicionario com as alternativas para cada questão
         # Buscando as alternativas
         for index, letra in enumerate(
-            ["a)", "b)", "c)", "d)", "e)", 'r)']
+            ["a)", "b)", "c)", "d)", "e)", 'w$', 'm$', 's$', 'n$','t$', 'p$']
         ):  # Citando todas as alternativas possiveis , no caso 5
             inicio = questao.find(letra)
             # Se está na ultima letra (e) definimos que é a ultima alternativa
-            if index == 5:
+            if index == 10:
                 fim = len(questao)  # Definição do Fim
             else:
                 # Procurando o início da próxima alternativa para definir o fim da alternativa atual
-                proxima_letra = ["a)", "b)", "c)", "d)", "e)", "r)"][index + 1]
+                proxima_letra = ["a)", "b)", "c)", "d)", "e)", 'w$', 'm$', 's$', 'n$','t$', 'p$'][index + 1]
                 fim = questao.find(proxima_letra)
 
             if (
@@ -49,8 +49,7 @@ def alternativas(arquivo):
             
 
     return alternativas_global  # Retorna alternativa_global
-
-
+#print(alternativas('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
 def extrair_enunciados(arquivo):
     lista_enunciados = []
 
@@ -75,7 +74,7 @@ def extrair_enunciados(arquivo):
 
     return lista_enunciados
 
-
+#print(extrair_enunciados('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
 
 def define_image_path(instance, filename: str) -> str:
     ext = os.path.splitext(filename)[1]

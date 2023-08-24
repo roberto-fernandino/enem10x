@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'materiais',
     'provas',
     'usuarios',
+    'home',
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,4 @@
-from materiais.funcs import define_image_path, define_ranking_conteudo_prova, retorna_tipos_prova
+from materiais.funcs import define_image_path, define_ranking_conteudo_prova
 from django.db import models
 
 
@@ -35,7 +35,7 @@ class SubMateria(models.Model):
 
 
 class Conteudo(models.Model):
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(max_length=255)
     sub_materia = models.ForeignKey(
         SubMateria,
         on_delete=models.CASCADE,
@@ -108,7 +108,7 @@ class ProvaRespondida(models.Model):
         return self.questao.tipo
 
 class QuestaoRespondida(models.Model):
-    '''tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco'''
+    '''Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco'''
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True)
     
