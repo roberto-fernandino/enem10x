@@ -119,10 +119,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
     
 class MediaGeral(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
-    data_calculada = models.DateTimeField(auto_now_add=True)
+    data_calculada = models.DateField(auto_now_add=True)
     media_matematica = models.FloatField(default=0)
     media_ciencias_natureza = models.FloatField(default=0)
     media_linguagens = models.FloatField(default=0)
     media_ciencias_humanas = models.FloatField(default=0)
+    class Meta:
+        verbose_name_plural = 'Medias Gerais'
 
     

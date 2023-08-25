@@ -1,5 +1,5 @@
-{% extends 'templates/prova-base.html'%}
-
+{% extends 'static/prova-base.html'%}
+{% load provatag %}
 
 {% block title %}
     Prova
@@ -8,10 +8,23 @@
 
 {% block content %}
 {% if materias %}
-    {% for materia in materia %}
+    {% for materia in materias %}
     <div>
-        <p>{{ materia }}</p>
+        <p>{{ materia.nome }}</p> <br>
     </div>
     {% endfor %}
-{% endfi %}
+{% endif %}
+{% if questoes %}
+    {% for questao in questoes %}
+        <div>
+            <p>{{ questao.enunciado }}</p><br>
+            <form>
+                {% for opcao in questao.opcoes %}
+                <input type="radio" name="resposta_{{ questao.id }}" value="{{ forloop.counter0 }}">
+                {{ forloop.counter0|opcao_em_letra }}) {{ opcao }}<br>
+                {% endfor %}
+            </form>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}

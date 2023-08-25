@@ -1,0 +1,101 @@
+{% extends 'static/user-base.html' %} {% block title %} Usuario {% endblock %} 
+{% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="chart-container">
+    <div class="chart-display">
+        <h1>Media matematica</h1>
+        <canvas
+        id="media-matematica-tempo"
+        style="height: 500px; width: 650px; margin-left: 20px"
+        ></canvas>
+      <script>
+        const ctx1 = document.getElementById('media-matematica-tempo');
+        const count = 3;
+        const meses = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+        const labelMat = meses.slice(0, count);
+        const dataMat = JSON.parse('{{data_mat|safe}}')
+
+        new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: labelMat,
+            datasets: [{
+              label: 'Media Geral Matematica',
+              data: dataMat,
+              fill: false,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+            }]
+          },
+
+          options: {
+            responsive: false
+          }
+        });
+      </script>
+    </div>
+    <div class="chart-display">
+        <h1>Media Ciencias da natureza</h1>
+        <canvas
+        id="media-nat-tempo"
+        style="height: 500px; width: 650px; margin-left: 20px"
+        ></canvas>
+      <script>
+        const ctx2 = document.getElementById('media-nat-tempo');
+        const labelNat = meses.slice(0, count);
+        const dataNat = JSON.parse('{{data_nat|safe}}')
+        
+
+        new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: labelNat,
+            datasets: [{
+              label: 'Media Geral Matematica',
+              data: dataNat,
+              fill: false,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+            }]
+          },
+
+          options: {
+            responsive: false
+          }
+        });
+      </script>
+    </div>
+    <div class="chart-display">
+        <h1>Media Linguagens</h1>
+        <canvas
+        id="media-lin-tempo"
+        style="height: 500px; width: 650px; margin-left: 20px"
+        ></canvas>
+      <script>
+        const ctx3 = document.getElementById('media-lin-tempo');
+        const labelLin = meses.slice(0, count);
+        const dataLin = JSON.parse('{{data_lin|safe}}')
+        
+
+        new Chart(ctx3, {
+          type: 'line',
+          data: {
+            labels: labelLin,
+            datasets: [{
+              label: 'Media Geral Matematica',
+              data: dataLin,
+              fill: false,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+            }]
+          },
+
+          options: {
+            responsive: false
+          }
+        });
+      </script>
+    </div>
+</div>
+{% endblock %}

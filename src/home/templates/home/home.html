@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enem10x</title>
     <script src="https://kit.fontawesome.com/270b063d0e.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/style.css'%}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
@@ -23,9 +24,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Simulados</a>
-            <a href="" class="profilearea"><i class="fa-regular fa-user"></i></a>
+            <a class="nav-link active" aria-current="page" href="">Home</a>
+            <a class="nav-link" href="{% url 'provas:prova' %}">Simulados</a>
+            <a href="{% url 'usuarios:user' %}" class="profilearea"><i class="fa-regular fa-user"></i></a>
           </div>
         </div>
       </div>
@@ -36,9 +37,11 @@
   <hr>
   <main>
       <div class="subtitulos">
-          <h2>O Banco de Dados mais desejados pelas Escolas do Brasil</h2>
-          <h3>Foco no vestibular ENEM</h3>
-      </div>
+          <h1>Uma plataforma completa para estudar para o enem</h1>
+          <h5>Aqui voce acompanha em tempo real qual seu pior conteudo</h5>
+          <h5>Ve um ranking de melhores Materias e conteudos a nivel de atomicidade para voce focar no que realmente precisa. </h5>
+        <h5>Com o nosso sistema voce pode gerar uma prova no formato de simulado com um simples clique com quantas questoes voce quiser, assim garantimos uma melhor experiencia e gerenciamento de tempo pra voce usuario!  </h5>    
+    </div>
   </main>
 </body>
 </hr>

@@ -1,0 +1,116 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  /* inicio da parte superior */
+}
+header .top-bar {
+  padding-bottom: 50px;
+  padding: 20px;
+  position: fixed;
+  width: 100%;
+  background-color: #0e151a;
+  text-align: center;
+  height: 90px;
+}
+header .top-bar .navbar-nav {
+  margin-left: 150px;
+  font-size: 22px;
+  display: flex;
+}
+header .top-bar .navbar-nav .nav-link {
+  color: #fff;
+  margin-left: 60px;
+}
+header .top-bar .navbar-nav .profilearea {
+  display: flex;
+  align-items: center;
+  margin-left: 1300px;
+  font-size: 30px;
+}
+header .top-bar a {
+  align-items: center;
+  text-decoration: none;
+  font-size: 25px;
+  color: #fff;
+  transition: 0.3s;
+}
+header .top-bar a:hover {
+  opacity: 0.5;
+  transform: translateY(-3px);
+}
+
+body .subtitulos {
+  color: #0e151a;
+  text-align: center;
+  padding-top: 50px;
+  margin-top: 150px;
+  font-size: 22px;
+}
+
+/* Começo Pé do site */
+.pedosite {
+  bottom: 0;
+  position: fixed;
+  display: grid;
+  justify-content: center;
+  width: 100%;
+  background-color: #0e151a;
+  color: #fff;
+}
+.pedosite .author .emailcontainer {
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+}
+.pedosite .author .emailcontainer span {
+  font-size: 19px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.pedosite .author .emailcontainer i {
+  color: #fff;
+}
+.pedosite .author .emailcontainer button {
+  background-color: transparent;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+.pedosite .author .emailcontainer button i {
+  padding: 5px;
+  color: #fff;
+  transition: 0.5s;
+}
+.pedosite .author .emailcontainer button i:hover {
+  color: grey;
+  transform: translateY(-4px);
+}
+.pedosite div {
+  margin: 20px;
+}
+.pedosite div button {
+  background-color: transparent;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+.pedosite div button i {
+  color: #fff;
+  transition: 0.3s;
+}
+.pedosite div button i:hover {
+  color: grey;
+  transform: translateY(-4px);
+}
+
+/*Fim Pé do Site*/

@@ -60,6 +60,7 @@ class QuestoesAdmin(admin.ModelAdmin):
         'conteudo',
         'nivel',
         'tipo',
+        'Materia',
     ]
     fieldsets = (
        (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel', 'tipo' ]}),
@@ -67,6 +68,10 @@ class QuestoesAdmin(admin.ModelAdmin):
     list_display_links = ['conteudo']
     ordering = ['id']
 
+    def Materia(self, obj):
+        return obj.conteudo.sub_materia.materia
+    
+    
 class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',

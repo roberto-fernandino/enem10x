@@ -7,9 +7,9 @@ def prova(request):
         choose_prova = ProvaChoose(request.POST)
         if choose_prova.is_valid():
             materia_id_list = choose_prova.cleaned_data['materias']
-            num_questoes = choose_prova.cleaned_data['num_questoes']
+            num_questoes = int(choose_prova.cleaned_data['num_questoes'])
             materias = Materia.objects.filter(pk__in=materia_id_list)
-            sub_materias = SubMateria.objects.filter(materia=materias)
+            sub_materias = SubMateria.objects.filter(materia__in=materias)
             conteudos = Conteudo.objects.filter(sub_materia__in=sub_materias)
             questoes = Questao.objects.filter(conteudo__in=conteudos)[:num_questoes]
             context = {

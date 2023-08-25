@@ -1,11 +1,10 @@
 from django.urls import path
-from provas.views import prova
+from home.views import home_view
 
 # App name for refering in other code parts
-app_name = 'provas'
+app_name = 'home'
 
 # Urls 
 urlpatterns = [
-    path('', prova, name='prova'),
-    
+    path('', home_view, name='home')
 ]

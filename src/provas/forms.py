@@ -12,6 +12,6 @@ class ProvaChoose(forms.Form):
         widget=forms.Select(),)
     materias = forms.MultipleChoiceField(
         choices=MATERIAS_CHOICE,
-        widget=forms.SelectMultiple,
+        widget=forms.CheckboxSelectMultiple,
         label='Quais materias?',
     )

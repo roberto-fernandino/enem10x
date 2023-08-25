@@ -1,8 +1,9 @@
+from django.db.models.functions import TruncDate
 from materiais.models import ProvaCompleta
 from usuarios.models import MediaGeral
-
+from datetime import datetime
 def calcular_media(user):
-    # Recover all tests for that user
+    '''Calcula medias e adciona em medias medias do usuario ao longo do tempo'''
     provas_completas = ProvaCompleta.objects.filter(usuario=user)
 
     # start counter
@@ -33,16 +34,32 @@ def calcular_media(user):
         'ciencias_humanas': total_notas['ciencias_humanas'] / total_notas['ciencias_humanas'] if total_provas else 0,
     }    
 
-    # Atualiza ou cria model com media geral do usuario
+    # Cria model com media geral do usuario
 
-    MediaGeral.objects.update_or_create(
+    MediaGeral.objects.create(
         usuario=user,
-        defaults={
-            'media_matematica': medias['matematica'],
-            'media_ciencias_natureza': medias['ciencias_natureza'],
-            'media_linguagens': medias['linguagens'],
-            'media_ciencias_humanas': medias['ciencias_humanas']
-        }
+        data_calculada = datetime.now(),
+        media_matematica = medias['matematica'],
+        media_ciencias_natureza = medias['ciencias_natureza'],
+        media_linguagens =  medias['linguagens'],
+        media_ciencias_humanas = medias['ciencias_humanas']
     )
 
 
+def MediaChart(usuario):
+    
+
+    data_mat = [0]
+    data_nat = [0]
+    data_hum = [0]
+    data_lin = [0]
+    months = []
+
+    queryset = MediaGeral.objects.filter(usuario=usuario)
+    for media in queryset:
+        data_mat.append(media.media_matematica)
+        data_lin.append(media.media_linguagens)
+        data_hum.append(media.media_ciencias_humanas)
+        data_nat.append(media.media_ciencias_natureza)
+        months.append(media.data_calculada)
+    return data_mat, data_nat, data_lin, data_hum, months

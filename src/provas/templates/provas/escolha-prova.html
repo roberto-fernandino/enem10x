@@ -7,7 +7,7 @@
 
 
 {% block content %}
-<form action="post">
+<form action="{% url 'provas:prova' %}" method="post">
     {% csrf_token %}
     <div>
         {{choose_prova.as_p}}

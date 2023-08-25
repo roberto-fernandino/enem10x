@@ -1,5 +1,5 @@
 from django.contrib import admin
-from usuarios.models import Account
+from usuarios.models import Account, MediaGeral
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -23,7 +23,7 @@ class AccountAdmin(BaseUserAdmin):
 
 
     fieldsets = (
-        ("Informacao Geral", {"fields": ["email", "password", 'data_criacao', "last_login"]}),
+        ("Informacao Geral", {"fields": ["email", "password", "last_login"]}),
         ("Informacao Pessoal", {"fields": ["cpf", "telefone", "data_nascimento", ]}),
         ("Informacao Permissoes", {"fields": ["is_aluno", "is_admin", "is_staff", "is_superuser"]}),
     )
@@ -51,5 +51,28 @@ class AccountAdmin(BaseUserAdmin):
     filter_horizontal = ['user_permissions']
     date_hierarchy = 'data_criacao'
 
+class MediaGeralAdmin(admin.ModelAdmin):
+    list_display = [
+        'usuario',
+        'data_calculada',
+        'media_matematica',
+        'media_ciencias_natureza',
+        'media_linguagens',
+        'media_ciencias_humanas',
+
+        ]
+    
+
+
+    fieldsets = (
+        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas","media_linguagens"]}),
+    )
+   
+
+    search_fields = ['usuario']
+    list_per_page = 50
+    date_hierarchy = 'data_calculada'
+
+admin.site.register(MediaGeral, MediaGeralAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.unregister(Group)
