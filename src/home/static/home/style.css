@@ -8,7 +8,6 @@ header {
   /* inicio da parte superior */
 }
 header .top-bar {
-  padding-bottom: 50px;
   padding: 20px;
   position: fixed;
   width: 100%;
@@ -43,12 +42,19 @@ header .top-bar a:hover {
   transform: translateY(-3px);
 }
 
+body {
+  background-color: rgb(99, 99, 99);
+}
 body .subtitulos {
   color: #0e151a;
+  background-color: #fcfcfc;
   text-align: center;
   padding-top: 50px;
-  margin-top: 150px;
+  margin-top: 60px;
   font-size: 22px;
+}
+body main {
+  margin-bottom: 200px;
 }
 
 /* Começo Pé do site */
@@ -60,6 +66,7 @@ body .subtitulos {
   width: 100%;
   background-color: #0e151a;
   color: #fff;
+  margin-top: 300px;
 }
 .pedosite .author .emailcontainer {
   color: #fff;
@@ -114,3 +121,5 @@ body .subtitulos {
 }
 
 /*Fim Pé do Site*/
+
+/*# sourceMappingURL=style.css.map */

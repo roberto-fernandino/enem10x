@@ -18,6 +18,9 @@
     {% for questao in questoes %}
         <div>
             <p>{{ questao.enunciado }}</p><br>
+            {% if questao.imagem %}
+                <img src="{{ questao.imagem.url }}" alt="Questao">
+            {% endif %}
             <form>
                 {% for opcao in questao.opcoes %}
                 <input type="radio" name="resposta_{{ questao.id }}" value="{{ forloop.counter0 }}">

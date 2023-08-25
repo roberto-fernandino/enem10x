@@ -14,7 +14,6 @@ $shadowcolor: #918989;
 header{
         /* inicio da parte superior */
     .top-bar {
-        padding-bottom: 50px;
         padding: 20px;
         position: fixed;
         width: 100%;
@@ -54,13 +53,18 @@ header{
         
 
 body {
+    background-color: rgb(99, 99, 99);
     .subtitulos{
             color: $primarycolor;
+            background-color: #fcfcfc;
             text-align: center;
             padding-top: 50px;
-            margin-top: 150px;;
+            margin-top: 60px;;
             font-size: 22px;
         }
+    main{
+        margin-bottom: 200px;
+    }
 }
 
 
@@ -73,6 +77,7 @@ body {
     width: 100%;
     background-color: $primarycolor;
     color: $secondarycolor;
+    margin-top: 300px;
     .author {
         .emailcontainer {
             color: $secondarycolor;
@@ -128,3 +133,6 @@ body {
     }
 }
 /*Fim Pé do Site*/
+
+
+
