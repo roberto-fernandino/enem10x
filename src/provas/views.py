@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from materiais.models import Questao, Materia, SubMateria, Conteudo
 from provas.forms import ProvaChoose
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+@login_required
 def prova(request):
     if request.method == "POST":
         choose_prova = ProvaChoose(request.POST)
@@ -16,7 +19,7 @@ def prova(request):
             "questoes": questoes,
             "materias": materias,
                    }
-        return render(request, "provas/prova.html", context)
+        return   render(request, "provas/prova.html", context)
     choose_prova = ProvaChoose()
     context = {
         "choose_prova": choose_prova,

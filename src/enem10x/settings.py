@@ -153,6 +153,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "usuarios.Account"
 
+# Login url to login_required decorator
+
+LOGIN_URL = "/usuarios/login"
 
 # DEFINE O ARMAZENAMENTO DE SESSAO COMO PADRAO NO BANCO DE DADOS E TEMPO EM SEGUNDOS PARA TIMEOUT AUTOMATICO
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
@@ -167,9 +170,12 @@ MEDIA_ROOT = path.join(BASE_DIR, "media/")
 # admin panel plugin settings
 JAZZMIN_SETTINGS = {
     "site_title": "Enem 10x admin",
-    "site_header": "Enem 10x Admin",
+    "site_header": "Enem 10x admin",
     "site_brand": "Enem 10x",
-    "welcome_sign": "Enem 10x",
+    "site_icon":"home/enem10xlogo.png",
+    "login_logo":"home/enem10xlogo.png",
+    "site_logo":"home/enem10xlogo.png",
+    "welcome_sign": "Enem 10x admin",
     "copyright": "Enem 10x",
     "changeform_format": "collapsible",
 }

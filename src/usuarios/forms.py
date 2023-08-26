@@ -9,21 +9,32 @@ class AccountCreationForm(forms.ModelForm):
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={
         "class": "input-field",
         "size": "40",
+        "name": "email",
+        "required": True,
     }))
     nome = forms.CharField(label="Nome", widget=forms.TextInput(attrs={
-        "class": "input-field"
+        "class": "input-field",
+        "name": "nome",
+        "maxlength": 30,
+        "minlength": 3,
+        "required": True,
+
     }))
     telefone = forms.CharField(label="Telefone", widget=forms.TextInput(attrs={
-        "class": "input-field"
+        "class": "input-field",
+        "name": "telefone",
+        "maxlenght": 13,
+        "minlength": 11,
     }))
-    password1 = forms.CharField(label="Senha", widget=forms.TextInput(attrs={
-        "class": "input-field"
+    password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={
+        "class": "input-field",
+        
     }))
-    password2 = forms.CharField(label="Confirme Senha", widget=forms.TextInput(attrs={
+    password2 = forms.CharField(label="Confirme Senha", widget=forms.PasswordInput(attrs={
         "class": "input-field"
     }))
     data_nascimento = forms.DateField(label='Data de Nascimento', widget=forms.DateInput(attrs={
-        "class": "input-field"
+        "type": "date"
     }))
     cpf = forms.CharField(label="cpf", widget=forms.TextInput(attrs={
         "class": "input-field"

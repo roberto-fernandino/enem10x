@@ -1,0 +1,12 @@
+{% extends 'static/user-form-base.html' %} {% block title %} Cadastro {% endblock %} 
+{% block content %} 
+{% load static %}
+<div class="account-form">
+    <div class="form-message">
+        <div class="alert alert-check">
+            <p>{{ user.nome }} cadastrado com sucesso!</p> <br>
+            <p> Confirme seu email! </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

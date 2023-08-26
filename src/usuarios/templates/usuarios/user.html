@@ -3,11 +3,14 @@
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="chart-container">
+  <a href="{% url 'home:home' %}">
+    <button> Voltar </button>
+  </a>
     <div class="chart-display">
         <h1>Media matematica</h1>
         <canvas
         id="media-matematica-tempo"
-        style="height: 500px; width: 650px; margin-left: 20px"
+        style="height: 500px; width: 650px; margin-left: 20px"  
         ></canvas>
       <script>
         const ctx1 = document.getElementById('media-matematica-tempo');
@@ -98,4 +101,8 @@
       </script>
     </div>
 </div>
+<form action="{% url 'usuarios:logout' %}">
+
+  <button class='btn btn-danger' type="submit">Logout</button>
+</form>
 {% endblock %}

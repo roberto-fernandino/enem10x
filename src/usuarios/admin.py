@@ -67,7 +67,22 @@ class MediaGeralAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas","media_linguagens"]}),
     )
-   
+    add_fieldsets = [
+        (
+            None,
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "usuario",
+                    "media_matematica",
+                    "media_ciencias_natureza",
+                    "media_ciencias_humanas",
+                    "media_linguagens",
+                    "data_calculada"
+                ],
+            },
+        )
+    ]
 
     search_fields = ['usuario']
     list_per_page = 50
