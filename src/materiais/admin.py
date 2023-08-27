@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado
 # Register your models here.
 
 
@@ -59,11 +59,10 @@ class QuestoesAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'nivel',
-        'tipo',
         'Materia',
     ]
     fieldsets = (
-       (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel', 'tipo' ]}),
+       (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel' ]}),
     )
     ordering = ['id']
 
@@ -102,13 +101,12 @@ class TipoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['conteudo']
 
-class ProvaRespondidaAdmin(admin.ModelAdmin):
+'''class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'questao',
         'resposta',
         'acerto',
-        'get_tipo',
         ]
     
     fieldsets = (
@@ -122,19 +120,18 @@ class ProvaRespondidaAdmin(admin.ModelAdmin):
     get_tipo.admin_short_description = 'Tipo'
     list_display_links = ['questao']
     
-
+'''
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'usuario',
         'nota',
         'acertos',
-        'tipos',
         'data_feita',
         ]
     fieldsets = (
         ('Informacao do Estudante', {"fields": ['usuario']}),
-        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'tipos', 'acerto_dificuldade']}),
+        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'acerto_dificuldade']}),
         ('Acertos e Erros', {"fields": ['acertos', 'erros']})
 
     )
@@ -144,6 +141,12 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
 class QuestoesRespondidasAdmin(admin.ModelAdmin):
     list_display = ['usuario', 'questao']
 
+@admin.register(Simulado)
+class SimuladoAdmin(admin.ModelAdmin):
+    list_display = ['tipo']
+    fieldsets = [
+        (None, {"fields": ['tipo', 'materia']}),
+    ]
 
 admin.site.register(ProvaCompleta, ProvaCompletaAdmin)
 admin.site.register(Conteudo, ConteudoAdmin)

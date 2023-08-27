@@ -1,5 +1,5 @@
 from django.db.models.functions import TruncDate
-from materiais.models import ProvaCompleta
+from materiais.models import ProvaCompleta, QuestaoRespondida
 from usuarios.models import MediaGeral
 from datetime import datetime
 from django.db.models.functions import ExtractMonth
@@ -90,3 +90,7 @@ def MediaChart(usuario):
             months_nat.append(month_set[media.mes])
 
     return data_mat, data_nat, data_lin, data_hum, months_mat, months_nat, months_lin, months_hum
+
+
+def filtra_questoes_feitas(usuario, questao):
+    return QuestaoRespondida.objects.filter(usuario=usuario, questao=questao)

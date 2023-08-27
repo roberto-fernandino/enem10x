@@ -93,8 +93,8 @@ DATABASES = {
     }
 }
 
-#sqlite3
 
+#sqlite3
 '''
 DATABASES = {
     'default': {
@@ -179,3 +179,4 @@ JAZZMIN_SETTINGS = {
     "copyright": "Enem 10x",
     "changeform_format": "collapsible",
 }
+
