@@ -1,10 +1,12 @@
+from typing import Any, List, Optional, Tuple, Union
 from django.contrib import admin
+from django.http.request import HttpRequest
 from usuarios.models import Account, MediaGeral
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from usuarios.forms import AccountCreationForm, AccountChangeForm
-
+from django.utils import timezone
 
 # Register your models here.
 
@@ -65,7 +67,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
 
 
     fieldsets = (
-        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas","media_linguagens"]}),
+        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas", "media_linguagens", "data_calculada"]}),
     )
     add_fieldsets = [
         (
@@ -74,19 +76,20 @@ class MediaGeralAdmin(admin.ModelAdmin):
                 "classes": ["wide"],
                 "fields": [
                     "usuario",
+                    "data_calculada",
                     "media_matematica",
                     "media_ciencias_natureza",
                     "media_ciencias_humanas",
                     "media_linguagens",
-                    "data_calculada"
                 ],
             },
         )
     ]
-
     search_fields = ['usuario']
     list_per_page = 50
+    list_filter = ['data_calculada']
     date_hierarchy = 'data_calculada'
+    
 
 admin.site.register(MediaGeral, MediaGeralAdmin)
 admin.site.register(Account, AccountAdmin)

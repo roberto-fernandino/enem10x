@@ -1,0 +1,15 @@
+{% extends 'static/prova-base.html' %}
+{% block title %} Prova enviada {% endblock %}
+
+{% block content %}
+
+<div>
+    <h2>
+        Prova enviada {{ user.nome }}, gerando relatorio 
+        {% if prova_completa_url %} 
+            <a href="{{ prova_completa_url }}">confira aqui!</a>
+        {% endif %}
+    </h2>
+</div>
+
+{% endblock %}

@@ -86,30 +86,31 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
     """Gera um ranking de conteudos mais errados, acertados respectivamente de uma prova especifica e os retorna no formato:
     tuple(ranking errados, ranking acertados)"""
 
-    ranking = {}
-    maior_contagem = 0
+    ranking_piores = {}
+
     for conteudo in conteudos_errados:
-        ranking[conteudo] = ranking.get(conteudo, 0) + 1
-        if ranking[conteudo] > maior_contagem:
-            maior_contagem = ranking[conteudo]
-    ranking_erradas = dict(
-        sorted(ranking.items(), key=lambda item: item[1], reverse=True)
+        ranking_piores[conteudo.id] = ranking_piores.get(conteudo.id, 0) + 1
+        
+    ranking_piores = dict(
+        sorted(ranking_piores.items(), key=lambda item: item[1], reverse=True)
     )
 
-    ranking = {}
-    maior_contagem = 0
+    ranking_melhores = {}
+
     for conteudo in conteudos_acertados:
-        ranking[conteudo] = ranking.get(conteudo, 0) + 1
-        if ranking[conteudo] > maior_contagem:
-            maior_contagem = ranking[conteudo]
-
-    ranking_certos = dict(
-        sorted(ranking.items(), key=lambda item: item[1], reverse=True)
+        ranking_melhores[conteudo.id] = ranking_melhores.get(conteudo.id, 0) + 1
+        
+    ranking_melhores = dict(
+        sorted(ranking_melhores.items(), key=lambda item: item[1], reverse=True)
     )
+    
+    # Ponto de depuração: Imprimir os rankings intermediários
+    print(f"Ranking de piores: {ranking_piores}")
+    print(f"Ranking de melhores: {ranking_melhores}")
 
     return (
-        ranking_erradas,
-        ranking_certos,
+        ranking_piores,
+        ranking_melhores,
     )
 
 

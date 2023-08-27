@@ -4,19 +4,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from usuarios.forms import AccountCreationForm as signup_form
 from django.contrib import messages
+from materiais.models import ProvaCompleta
 # Create your views here.
 
 
 # CACHE AQUI
 @login_required()
 def user_view(request):
-    data_mat, data_nat, data_lin, data_hum, months = MediaChart(request.user)
+    data_mat, data_nat, data_lin, data_hum, months_mat, months_nat, months_lin, months_hum = MediaChart(request.user)
+    provas_completas = ProvaCompleta.objects.filter(usuario=request.user)
     context = {
         "data_mat": data_mat,
-        "months": months,
+        "months_mat": months_mat,
         "data_nat": data_nat,
+        "months_nat": months_nat,
         "data_lin": data_lin,
+        "months_lin": months_lin,
         "data_hum": data_hum,
+        "months_hum": months_hum,
+        "provas_completas": provas_completas,
     }
     return render(request, "usuarios/user.html", context)
 

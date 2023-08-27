@@ -2,6 +2,7 @@ from django.db.models.functions import TruncDate
 from materiais.models import ProvaCompleta
 from usuarios.models import MediaGeral
 from datetime import datetime
+from django.db.models.functions import ExtractMonth
 def calcular_media(user):
     '''Calcula medias e adciona em medias medias do usuario ao longo do tempo'''
     provas_completas = ProvaCompleta.objects.filter(usuario=user)
@@ -47,19 +48,45 @@ def calcular_media(user):
 
 
 def MediaChart(usuario):
-    
+    month_set = {
+        1: 'Jan',
+        2: 'Fev',
+        3: 'Mar',
+        4: 'Abr',
+        5: "Mai",
+        6: "Jun",
+        7: 'Jul',
+        8: 'Ago',
+        9: 'Set',
+        10: 'Out',
+        11: 'Nov',
+        12: 'Dez'
+    }
 
-    data_mat = [0]
-    data_nat = [0]
-    data_hum = [0]
-    data_lin = [0]
-    months = []
+    data_mat = []
+    data_nat = []
+    data_hum = []
+    data_lin = []
+    months_mat = []
+    months_nat = []
+    months_hum = []
+    months_lin = []
 
-    queryset = MediaGeral.objects.filter(usuario=usuario)
-    for media in queryset:
-        data_mat.append(media.media_matematica)
-        data_lin.append(media.media_linguagens)
-        data_hum.append(media.media_ciencias_humanas)
-        data_nat.append(media.media_ciencias_natureza)
-        months.append(media.data_calculada)
-    return data_mat, data_nat, data_lin, data_hum, months
+
+    queryset = MediaGeral.objects.filter(usuario=usuario).order_by('data_calculada')
+    media_mes = queryset.annotate(mes=ExtractMonth('data_calculada'))
+    for media in media_mes:
+        if media.media_matematica:
+            data_mat.append(media.media_matematica)
+            months_mat.append(month_set[media.mes])
+        if media.media_linguagens:
+            data_lin.append(media.media_linguagens)
+            months_lin.append(month_set[media.mes])
+        if media.media_ciencias_humanas:
+            data_hum.append(media.media_ciencias_humanas)
+            months_hum.append(month_set[media.mes])
+        if media.media_ciencias_natureza:
+            data_nat.append(media.media_ciencias_natureza)
+            months_nat.append(month_set[media.mes])
+
+    return data_mat, data_nat, data_lin, data_hum, months_mat, months_nat, months_lin, months_hum

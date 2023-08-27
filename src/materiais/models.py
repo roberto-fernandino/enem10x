@@ -67,8 +67,8 @@ class Questao(models.Model):
     imagem = models.ImageField(
         upload_to=define_image_path, null=True, blank=True, default=None
     )
-    conteudo = models.ForeignKey(
-        Conteudo, on_delete=models.DO_NOTHING, null=True, default=None, blank=True
+    conteudo = models.ManyToManyField(
+        Conteudo,default=None, blank=True, related_name='questoes'
     )
     opcoes = models.JSONField(null=True)
     opcao_correta = models.CharField(null=False, blank=False, default=None, max_length=1)
@@ -79,7 +79,7 @@ class Questao(models.Model):
         verbose_name_plural = "Questoes"
 
     def __str__(self):
-        return f"{self.conteudo}"
+        return f"{self.id} - {self.nivel}"
 
     def get_materia(self):
         return self.conteudo.sub_materia.materia
@@ -93,19 +93,19 @@ class ProvaRespondida(models.Model):
     prova_completa = models.ForeignKey("ProvaCompleta", on_delete=models.CASCADE, related_name='respostas', null=True)
 
     def set_acerto(self):
+        print(f"questao: {self.questao.id} Opção correta: {self.questao.opcao_correta}, Resposta dada: {self.resposta}")
         if self.questao.opcao_correta == self.resposta:
+            print("Acertou!")
             self.acerto = True
-            self.save()
         else:
+            print("Errou!")
             self.acerto = False
-            self.save()
+        self.save()
 
-
-    def get_conteudo(self):
-        return self.questao.conteudo
 
     def get_tipo(self):
         return self.questao.tipo
+    
 
 class QuestaoRespondida(models.Model):
     '''Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco'''
@@ -122,7 +122,7 @@ class QuestaoRespondida(models.Model):
 class ProvaCompleta(models.Model):
     '''Modelo de prova completa onde o usuario podera ver suas provas completas'''
     usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
-    nota = models.FloatField(default=0)
+    nota = models.FloatField(default=0, null=True)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
@@ -140,11 +140,12 @@ class ProvaCompleta(models.Model):
         acerto_questoes_faceis = 0
         acerto_questoes_medianas = 0
         acerto_questoes_dificeis = 0
+        qtd_questoes = 0
         for resposta in self.respostas.filter(usuario=self.usuario):
-
             if resposta.acerto:
                 acertos += 1
-                conteudos_acertados.append(resposta.questao.conteudo)
+                for conteudo in resposta.questao.conteudo.all():
+                    conteudos_acertados.append(conteudo)
                 if resposta.questao.nivel.nivel == 'Fácil':
                     acerto_questoes_faceis += 1
                 elif resposta.questao.nivel.nivel == 'Média':
@@ -153,7 +154,8 @@ class ProvaCompleta(models.Model):
                     acerto_questoes_dificeis += 1
             else:
                 erros += 1
-                conteudos_errados.append(resposta.questao.conteudo)
+                for conteudo in resposta.questao.conteudo.all():
+                    conteudos_errados.append(conteudo)
             tipos.append(resposta.questao.tipo)
             
         '''{
@@ -170,12 +172,18 @@ class ProvaCompleta(models.Model):
         self.acerto_dificuldade = dificuldades_acerto_dict
         self.ranking_piores_conteudos, self.ranking_melhores_conteudos = define_ranking_conteudo_prova(conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados)
         tipos = list(set(tipos))
-        
+        # Salva tipos de prova, erros, acertos, materias
+       
         self.tipos = tipos
         self.erros = erros
         self.acertos = acertos
-        self.respostas.filter(usuario=self.usuario).delete()
         self.save()
-    
-    def calcula_nota(self):
-        pass
+
+    def deleta_respostas(self):
+        # Deleta todas as respostas do usuario em ProvaRespondida pra maior otimizacao
+        self.respostas.filter(usuario=self.usuario).delete()
+
+    def __str__(self):
+        return f"{self.usuario} - {self.data_feita}"
+            
+

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from datetime import datetime
 from materiais.models import ProvaCompleta
+from django.utils import timezone
 
 # Create your models here.
 class AccountManager(BaseUserManager):
@@ -119,7 +120,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     
 class MediaGeral(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
-    data_calculada = models.DateField(auto_now_add=True)
+    data_calculada = models.DateField(default=timezone.now, null=True, blank=False)
     media_matematica = models.FloatField(default=0)
     media_ciencias_natureza = models.FloatField(default=0)
     media_linguagens = models.FloatField(default=0)

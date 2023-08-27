@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida
 # Register your models here.
 
 
@@ -38,6 +38,7 @@ class MateriaAdmin(admin.ModelAdmin):
 
 class ConteudoAdmin(admin.ModelAdmin):
     list_display = [
+        "id",
         "nome",
         "sub_materia",
     ]
@@ -52,12 +53,11 @@ class ConteudoAdmin(admin.ModelAdmin):
             },
         ),
     )
-
+    list_display_links = ['nome']
 
 class QuestoesAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'conteudo',
         'nivel',
         'tipo',
         'Materia',
@@ -65,14 +65,13 @@ class QuestoesAdmin(admin.ModelAdmin):
     fieldsets = (
        (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel', 'tipo' ]}),
     )
-    list_display_links = ['conteudo']
     ordering = ['id']
 
     def Materia(self, obj):
-        return obj.conteudo.sub_materia.materia
+        return ' - '.join([str(conteudo.sub_materia) for conteudo in obj.conteudo.all()])
     
     
-class ProvaRespondidaAdmin(admin.ModelAdmin):
+'''class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'questao',
@@ -90,7 +89,7 @@ class ProvaRespondidaAdmin(admin.ModelAdmin):
     
     get_tipo.admin_order_field = 'tipo'
     get_tipo.admin_short_description = 'Tipo'
-    list_display_links = ['questao']
+    list_display_links = ['questao']'''
     
 
 class TipoAdmin(admin.ModelAdmin):
@@ -141,8 +140,12 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
     )
     date_hierarchy = 'data_feita'
 
+@admin.register(QuestaoRespondida)
+class QuestoesRespondidasAdmin(admin.ModelAdmin):
+    list_display = ['usuario', 'questao']
+
+
 admin.site.register(ProvaCompleta, ProvaCompletaAdmin)
-admin.site.register(ProvaRespondida, ProvaRespondidaAdmin)
 admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
 admin.site.register(Materia, MateriaAdmin)

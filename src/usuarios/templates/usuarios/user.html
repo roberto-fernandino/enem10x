@@ -2,27 +2,26 @@
 {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<a href="{% url 'home:home' %}">
+  <button> Voltar </button>
+</a>
 <div class="chart-container">
-  <a href="{% url 'home:home' %}">
-    <button> Voltar </button>
-  </a>
     <div class="chart-display">
         <h1>Media matematica</h1>
         <canvas
         id="media-matematica-tempo"
-        style="height: 500px; width: 650px; margin-left: 20px"  
+        style="height: 500px; width: 500px; margin-left: 20px"  
         ></canvas>
       <script>
         const ctx1 = document.getElementById('media-matematica-tempo');
-        const count = 3;
-        const meses = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
-        const labelMat = meses.slice(0, count);
+        const meses_mat_str = "{{months_mat|safe}}".replace(/'/g, '"')
+        const meses_mat = JSON.parse(meses_mat_str)
         const dataMat = JSON.parse('{{data_mat|safe}}')
 
         new Chart(ctx1, {
           type: 'line',
           data: {
-            labels: labelMat,
+            labels: meses_mat,
             datasets: [{
               label: 'Media Geral Matematica',
               data: dataMat,
@@ -42,20 +41,21 @@
         <h1>Media Ciencias da natureza</h1>
         <canvas
         id="media-nat-tempo"
-        style="height: 500px; width: 650px; margin-left: 20px"
+        style="height: 500px; width: 500px; margin-left: 20px"
         ></canvas>
       <script>
         const ctx2 = document.getElementById('media-nat-tempo');
-        const labelNat = meses.slice(0, count);
+        const meses_nat_str = "{{months_nat|safe}}".replace(/'/g, '"')
+        const meses_nat = JSON.parse(meses_nat_str)
         const dataNat = JSON.parse('{{data_nat|safe}}')
         
 
         new Chart(ctx2, {
           type: 'line',
           data: {
-            labels: labelNat,
+            labels: meses_nat,
             datasets: [{
-              label: 'Media Geral Matematica',
+              label: 'Media Geral Ciencias da Natureza ',
               data: dataNat,
               fill: false,
               borderColor: 'rgb(75, 192, 192)',
@@ -73,20 +73,21 @@
         <h1>Media Linguagens</h1>
         <canvas
         id="media-lin-tempo"
-        style="height: 500px; width: 650px; margin-left: 20px"
+        style="height: 500px; width: 500px; margin-left: 20px"
         ></canvas>
       <script>
         const ctx3 = document.getElementById('media-lin-tempo');
-        const labelLin = meses.slice(0, count);
+        const meses_lin_str = "{{months_lin|safe}}".replace(/'/g, '"')
+        const meses_lin = JSON.parse(meses_lin_str)
         const dataLin = JSON.parse('{{data_lin|safe}}')
         
 
         new Chart(ctx3, {
           type: 'line',
           data: {
-            labels: labelLin,
+            labels: meses_lin,
             datasets: [{
-              label: 'Media Geral Matematica',
+              label: 'Media Geral Linguagens',
               data: dataLin,
               fill: false,
               borderColor: 'rgb(75, 192, 192)',
@@ -101,6 +102,14 @@
       </script>
     </div>
 </div>
+
+{% if provas_completas %}
+<div>
+    {% for prova in provas_completas %}
+      <p><a href="{% url 'provas:prova-completa' prova.id %}">Prova: {{ forloop.counter }} {{prova.data_feita}}</a></p><br>
+    {% endfor %}
+  </div>
+{% endif %}
 <form action="{% url 'usuarios:logout' %}">
 
   <button class='btn btn-danger' type="submit">Logout</button>

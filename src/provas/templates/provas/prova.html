@@ -14,20 +14,23 @@
     </div>
     {% endfor %}
 {% endif %}
-{% if questoes %}
-    {% for questao in questoes %}
-        <div>
-            <p>{{ questao.enunciado }}</p><br>
+
+<form action="{% url 'provas:prova-respondida' %}" method="post">
+    {% csrf_token %}
+    {% if questoes %}
+    <div>
+        {% for questao in questoes %}
+            <p>{{questao.enunciado}}</p>
             {% if questao.imagem %}
-                <img src="{{ questao.imagem.url }}" alt="Questao">
+                <img src="{{ questao.imagem.url }}" alt="{{ questao.conteudo }} Imagem"> <br>
             {% endif %}
-            <form>
-                {% for opcao in questao.opcoes %}
-                <input type="radio" name="resposta_{{ questao.id }}" value="{{ forloop.counter0 }}">
-                {{ forloop.counter0|opcao_em_letra }}) {{ opcao }}<br>
-                {% endfor %}
-            </form>
-        </div>
-    {% endfor %}
-{% endif %}
+            {% for opcao in questao.opcoes %}
+                <input type="radio" name="questao_id-{{questao.id}}" value="{{ forloop.counter0|opcao_em_letra }}">
+                {{forloop.counter0|opcao_em_letra}}) {{ opcao }} <br>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit">Enviar respostas</button>
+</form>
 {% endblock %}
