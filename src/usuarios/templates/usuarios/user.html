@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <a href="{% url 'home:home' %}">
-  <button> Voltar </button>
+  <button type="button" class="btn btn-warning">Voltar</button>
 </a>
 <div class="chart-container">
     <div class="chart-display">
@@ -111,7 +111,6 @@
   </div>
 {% endif %}
 <form action="{% url 'usuarios:logout' %}">
-
   <button class='btn btn-danger' type="submit">Logout</button>
 </form>
 {% endblock %}

@@ -20,7 +20,7 @@
     {% if questoes %}
     <div>
         {% for questao in questoes %}
-            <p>{{questao.enunciado}}</p>
+            <p>{{forloop.counter}}) {{questao.enunciado}}</p>
             {% if questao.imagem %}
                 <img src="{{ questao.imagem.url }}" alt="{{ questao.conteudo }} Imagem"> <br>
             {% endif %}

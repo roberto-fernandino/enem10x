@@ -9,7 +9,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 def alternativas(arquivo):
     doc = docx.Document(arquivo)
     texto_completo = "\n".join(
@@ -26,7 +25,7 @@ def alternativas(arquivo):
         alternativas_questao = {}  # Dicionario com as alternativas para cada questão
         # Buscando as alternativas
         for index, letra in enumerate(
-            ["a)", "b)", "c)", "d)", "e)", 'w$', 'm$', 's$', 'n$','t$', 'p$']
+            ["a)", "b)", "c)", "d)", "e)", "w$", "m$", "s$", "n$", "t$", "p$"]
         ):  # Citando todas as alternativas possiveis , no caso 5
             inicio = questao.find(letra)
             # Se está na ultima letra (e) definimos que é a ultima alternativa
@@ -34,7 +33,19 @@ def alternativas(arquivo):
                 fim = len(questao)  # Definição do Fim
             else:
                 # Procurando o início da próxima alternativa para definir o fim da alternativa atual
-                proxima_letra = ["a)", "b)", "c)", "d)", "e)", 'w$', 'm$', 's$', 'n$','t$', 'p$'][index + 1]
+                proxima_letra = [
+                    "a)",
+                    "b)",
+                    "c)",
+                    "d)",
+                    "e)",
+                    "w$",
+                    "m$",
+                    "s$",
+                    "n$",
+                    "t$",
+                    "p$",
+                ][index + 1]
                 fim = questao.find(proxima_letra)
 
             if (
@@ -46,10 +57,11 @@ def alternativas(arquivo):
         alternativas_global.append(
             alternativas_questao
         )  # Adionando a lista o dicionario contido com as alternativas de cada questão
-            
 
     return alternativas_global  # Retorna alternativa_global
-#print(alternativas('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
+
+
+# print(alternativas('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
 def extrair_enunciados(arquivo):
     lista_enunciados = []
 
@@ -74,7 +86,9 @@ def extrair_enunciados(arquivo):
 
     return lista_enunciados
 
-#print(extrair_enunciados('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
+
+# print(extrair_enunciados('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
+
 
 def define_image_path(instance, filename: str) -> str:
     ext = os.path.splitext(filename)[1]
@@ -90,7 +104,7 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
 
     for conteudo in conteudos_errados:
         ranking_piores[conteudo.id] = ranking_piores.get(conteudo.id, 0) + 1
-        
+
     ranking_piores = dict(
         sorted(ranking_piores.items(), key=lambda item: item[1], reverse=True)
     )
@@ -99,27 +113,16 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
 
     for conteudo in conteudos_acertados:
         ranking_melhores[conteudo.id] = ranking_melhores.get(conteudo.id, 0) + 1
-        
+
     ranking_melhores = dict(
         sorted(ranking_melhores.items(), key=lambda item: item[1], reverse=True)
     )
-    
-    # Ponto de depuração: Imprimir os rankings intermediários
-    print(f"Ranking de piores: {ranking_piores}")
-    print(f"Ranking de melhores: {ranking_melhores}")
-
     return (
         ranking_piores,
         ranking_melhores,
     )
 
 
-# Inutil agora
-def retorna_tipos_prova(tipos_prova_tratado: list) -> str:
-    tipos = "  -  ".join(tipos_prova_tratado)
-    return tipos
-
 def procura_imagens() -> list:
-        imagens = os.listdir(f"{BASE_DIR}/media/imagens")
-        return imagens
-
+    imagens = os.listdir(f"{BASE_DIR}/media/imagens")
+    return imagens

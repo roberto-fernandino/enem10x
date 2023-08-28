@@ -37,7 +37,9 @@ class AccountCreationForm(forms.ModelForm):
         "type": "date"
     }))
     cpf = forms.CharField(label="cpf", widget=forms.TextInput(attrs={
-        "class": "input-field"
+        "class": "input-field",
+        "placeholder": "xxx.xxx.xxx-xx",
+        "id": "cpf"
     }))
     class Meta:
         model = Account

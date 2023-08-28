@@ -27,7 +27,6 @@ header .top-bar .navbar-nav .nav-link {
 header .top-bar .navbar-nav .profilearea {
   display: flex;
   align-items: center;
-  margin-left: 1300px;
   font-size: 30px;
 }
 header .top-bar a {

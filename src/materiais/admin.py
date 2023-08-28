@@ -65,6 +65,8 @@ class QuestoesAdmin(admin.ModelAdmin):
        (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel' ]}),
     )
     ordering = ['id']
+    list_filter = ['conteudo']
+    
 
     def Materia(self, obj):
         return ' - '.join([str(conteudo.sub_materia) for conteudo in obj.conteudo.all()])

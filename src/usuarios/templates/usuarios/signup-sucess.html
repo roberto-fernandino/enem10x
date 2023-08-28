@@ -5,8 +5,15 @@
     <div class="form-message">
         <div class="alert alert-check">
             <p>{{ user.nome }} cadastrado com sucesso!</p> <br>
-            <p> Confirme seu email! </p>
+            <p> Confirme seu email para usar a plataforma! </p>
         </div>
+    </div>
+</div>
+<div>
+    <div>
+        <a href="{% url 'home:home' %}">
+            <button type="button" class="btn btn-warning">Home</button>
+          </a>
     </div>
 </div>
 {% endblock %}

@@ -76,8 +76,6 @@ class Questao(models.Model):
     def __str__(self):
         return f"{self.id} - {self.nivel}"
 
-    def get_materia(self):
-        return self.conteudo.sub_materia.materia
 
 
 class ProvaRespondida(models.Model):
@@ -98,14 +96,9 @@ class ProvaRespondida(models.Model):
     simulado = models.ForeignKey("materiais.Simulado", on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 
     def set_acerto(self):
-        print(
-            f"questao: {self.questao.id} Opção correta: {self.questao.opcao_correta}, Resposta dada: {self.resposta}"
-        )
         if self.questao.opcao_correta == self.resposta:
-            print("Acertou!")
             self.acerto = True
-        else:
-            print("Errou!")
+        else:       
             self.acerto = False
         self.save()
 
@@ -125,9 +118,10 @@ class QuestaoRespondida(models.Model):
 
     @classmethod
     def set_questoes_ja_respondidas(cls, usuario):
-        questoes_respondidas = ProvaRespondida.objetcs.filter(usuario=usuario)
-        for questoes in questoes_respondidas:
-            cls.objects.create(usuario=usuario, questao=questoes)
+        prova_respondidas = ProvaRespondida.objects.filter(usuario=usuario)
+        for prova_respondida in prova_respondidas:
+            questao = prova_respondida.questao
+            cls.objects.create(usuario=usuario, questao=questao)
 
 
 class ProvaCompleta(models.Model):
@@ -183,7 +177,7 @@ class ProvaCompleta(models.Model):
         ) = define_ranking_conteudo_prova(
             conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados
         )
-        tipos = list(set(tipos))
+        
         # Salva tipos de prova, erros, acertos, materias
 
         self.erros = erros

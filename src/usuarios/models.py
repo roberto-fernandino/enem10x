@@ -84,7 +84,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     # Fields para usuario
     email = models.EmailField(max_length=255, unique=True)
     nome = models.CharField(max_length=30)
-    cpf = models.CharField(max_length=14, unique=True, blank=False)
+    cpf = models.CharField(max_length=15, unique=True, blank=False)
     telefone = models.CharField(max_length=13, default=None, blank=False, null=True)
     data_nascimento = models.DateField(blank=False, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
