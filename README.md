@@ -54,6 +54,6 @@ Ver Resultados: Visualize o resultado e relatório.
 
 # 🎉 Conclusão <a name="conclusão"></a>
 
-O Enem 10x oferece uma experiência única e precisa para quem deseja se preparar para o exame real.
+O Enem 10x oferece uma experiência única jamais vista antes, e prepara você para sua faculdade dos sonhos se tornar realidade.
 
 [⬆ Voltar ao topo](#enem-10x)
