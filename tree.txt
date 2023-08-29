@@ -1,0 +1,162 @@
+.
+├── Dockerfile
+├── enviroment.yml
+├── ideias.txt
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── src
+│   ├── db.sqlite3
+│   ├── enem10x
+│   │   ├── asgi.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── home
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── __init__.py
+│   │   ├── migrations
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── static
+│   │   │   └── home
+│   │   │       ├── enem10xlogo.png
+│   │   │       ├── favicon
+│   │   │       │   ├── android-chrome-192x192.png
+│   │   │       │   ├── android-chrome-512x512.png
+│   │   │       │   ├── apple-touch-icon.png
+│   │   │       │   ├── favicon-16x16.png
+│   │   │       │   ├── favicon-32x32.png
+│   │   │       │   ├── favicon.ico
+│   │   │       │   └── site.webmanifest
+│   │   │       ├── style.css
+│   │   │       ├── style.css.map
+│   │   │       └── style.scss
+│   │   ├── templates
+│   │   │   ├── home
+│   │   │   │   └── home-menu.html
+│   │   │   └── static
+│   │   │       └── home-base.html
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── leitores
+│   │   ├── leitordocx.py
+│   │   ├── questionsfinal.docx
+│   │   ├── questoes1.docx
+│   │   ├── questoes2.docx
+│   │   └── questoes.docx
+│   ├── manage.py
+│   ├── materiais
+│   │   ├── adcionaquestoes.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── funcs.py
+│   │   ├── __init__.py
+│   │   ├── management
+│   │   │   ├── commands
+│   │   │   │   ├── adciona_questoes.py
+│   │   │   │   └── __init_.py
+│   │   │   └── __init__.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_remove_provacompleta_respostas_and_more.py
+│   │   │   ├── 0003_alter_provacompleta_tipos_alter_questao_nivel_and_more.py
+│   │   │   ├── 0004_alter_provarespondida_resposta_alter_questao_nivel_and_more.py
+│   │   │   ├── 0005_alter_conteudo_nome.py
+│   │   │   ├── 0006_alter_conteudo_nome.py
+│   │   │   ├── 0007_remove_questao_conteudo_questao_conteudo.py
+│   │   │   ├── 0008_provacompleta_materias_alter_provacompleta_nota_and_more.py
+│   │   │   ├── 0009_remove_provacompleta_materias.py
+│   │   │   ├── 0010_simulado_remove_provacompleta_tipos_and_more.py
+│   │   │   ├── 0011_provarespondida_simulado_simulado_materia.py
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── templates
+│   │   │   └── materiais
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── media
+│   │   ├── imagens
+│   │   │   ├── image10.png
+│   │   │   ├── image1.png
+│   │   │   ├── image2.png
+│   │   │   ├── image3.png
+│   │   │   ├── image4.png
+│   │   │   ├── image5.png
+│   │   │   ├── image6.png
+│   │   │   ├── image7.png
+│   │   │   ├── image8.png
+│   │   │   └── image9.png
+│   │   └── questoes
+│   │       ├── enem_0i809Um.png
+│   │       ├── enem_1CYh4gs.png
+│   │       ├── enem_HFwE6CF.png
+│   │       ├── enem_J4lVGDV.png
+│   │       ├── enem_M0qkolC.png
+│   │       ├── enem_M3eIHMY.png
+│   │       ├── enem.png
+│   │       ├── enem_qcet24Y.png
+│   │       ├── enem_SjhEjkQ.png
+│   │       └── enem_zLkmsLw.png
+│   ├── provas
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── funcs.py
+│   │   ├── __init__.py
+│   │   ├── migrations
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── templates
+│   │   │   ├── provas
+│   │   │   │   ├── escolha-prova.html
+│   │   │   │   ├── prova-completa.html
+│   │   │   │   ├── prova.html
+│   │   │   │   └── prova-respondida.html
+│   │   │   └── static
+│   │   │       └── prova-base.html
+│   │   ├── templatetags
+│   │   │   └── provatag.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   └── usuarios
+│       ├── admin.py
+│       ├── apps.py
+│       ├── forms.py
+│       ├── funcs.py
+│       ├── __init__.py
+│       ├── migrations
+│       │   ├── 0001_initial.py
+│       │   ├── 0002_account_is_aluno_alter_account_is_admin.py
+│       │   ├── 0003_alter_account_is_admin.py
+│       │   ├── 0004_mediageral.py
+│       │   ├── 0005_mediageral_data_calculada.py
+│       │   ├── 0006_alter_mediageral_options_and_more.py
+│       │   ├── 0007_alter_mediageral_data_calculada.py
+│       │   ├── 0008_alter_account_cpf.py
+│       │   └── __init__.py
+│       ├── models.py
+│       ├── static
+│       │   └── usuarios
+│       │       ├── style.css
+│       │       └── style.scss
+│       ├── templates
+│       │   ├── static
+│       │   │   ├── user-base.html
+│       │   │   └── user-form-base.html
+│       │   └── usuarios
+│       │       ├── login.html
+│       │       ├── signup.html
+│       │       ├── signup-sucess.html
+│       │       └── user.html
+│       ├── tests.py
+│       ├── urls.py
+│       └── views.py
+└── tree.txt
+
+33 directories, 126 files

@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - 5000:5000
+    image: app:django
+    container_name: django_container
+    command: python manage.py runserver
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+  db:
+    image: postgres
+    volumes:
+      - 

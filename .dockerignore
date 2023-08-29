@@ -1,0 +1,8 @@
+LICENSE
+README.md
+tree.txt
+.vscode
+.gitignore
+db.sqlite3
+enviroment.yml
+ideias.txt
