@@ -1,19 +1,26 @@
-version: '3.8'
+version: '3.9'
 services:
-  app:
-    build: .
-    volumes:
-      - .:/django
-    ports:
-      - 5000:5000
-    image: app:django
-    container_name: django_container
-    command: python manage.py runserver
-    depends_on:
-      - db
-    environment:
-      - DEBUG=True
   db:
     image: postgres
     volumes:
-      - 
+      - postgres_data:/var/lib/postgresql/data
+    container_name: postgres_db  
+    env_file:
+      - .env
+  app:
+    build: .
+    volumes:
+      - ./app:/app
+      - ./scripts/:/scripts
+    ports:
+      - 8000:8000
+    image: app:django
+    container_name: django_app
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
+

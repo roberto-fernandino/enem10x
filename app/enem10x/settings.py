@@ -11,21 +11,23 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from os import path
+from os import path, getenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+DATA_DIR = BASE_DIR.parent / 'data' / 'web'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am'
+SECRET_KEY = str(getenv("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(getenv("DEBUG", 0)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    h.strip() for h in getenv("ALLOWED_HOSTS",  "").split(',') if h.strip()
+]
 
 
 # Application definition
@@ -85,11 +87,12 @@ WSGI_APPLICATION = 'enem10x.wsgi.application'
 #postgress
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
+        'ENGINE': getenv('DB_ENGINE', 'change-me'),
+        'NAME': getenv('POSTGRES_DB', 'change-me'),
+        'USER': getenv('POSTGRES_USER', 'change-me'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD', 'change-me'),
+        'HOST': getenv('POSTGRES_HOST', 'change-me'),
+        'PORT': getenv('POSTGRES_PORT', 'change-me'),
     }
 }
 
@@ -128,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
@@ -140,8 +143,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = '/static/'
+STATIC_ROOT = DATA_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -165,7 +168,7 @@ SESSION_COOKIE_AGE = 604800  # 1 semana
 # Define local para armezanemto de medias
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = path.join(BASE_DIR, "media/")
+MEDIA_ROOT = DATA_DIR / 'media'
 
 # admin panel plugin settings
 JAZZMIN_SETTINGS = {
