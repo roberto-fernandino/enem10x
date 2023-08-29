@@ -105,7 +105,7 @@ class ProvaRespondida(models.Model):
 
 class Simulado(models.Model):
     tipo = models.CharField(max_length=70)
-    materia = models.ManyToManyField(Materia, default=None, null=True, blank=True)
+    materia = models.ManyToManyField(Materia, default=None, blank=True)
 
     def __str__(self):
         return f"{self.tipo}"
