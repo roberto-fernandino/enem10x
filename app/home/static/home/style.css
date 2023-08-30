@@ -60,7 +60,6 @@ body main {
 
 /* Começo Pé do site */
 .pedosite {
-  position: fixed;
   bottom: 0;
   display: grid;
   justify-content: center;
