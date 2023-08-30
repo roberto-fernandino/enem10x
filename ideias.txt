@@ -1,0 +1,1 @@
+Recomendar questoes com conteudo semelhante ao que o usuario esta indo mal.

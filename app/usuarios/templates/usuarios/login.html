@@ -1,0 +1,35 @@
+{% extends 'static/user-form-base.html' %} {% block title %} Login {% endblock %} 
+{% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
+<div class="account-form">
+    {% if messages %}
+    <div class="message">
+        {% for message in messages %}
+        <div>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form action="{% url 'usuarios:login' %}" method="post">
+        {% csrf_token %}
+        <div class="input">
+            <input type="email" name="email" maxlength="150" required class="input-field"/>
+            <label for="email" class="input-label"><span>Email</span></label>
+        </div>
+        <div class="input">
+            <input 
+            type="password"
+            name="password"
+            maxlength="50"
+            minlength="8"
+            required
+            class="input-field"
+            />
+            <label for="password" class="input-label"><span>Password</span></label>
+        </div>
+        <button type="submit" value='Login'>Login</button>
+        <p>Dont have account?<a href="{% url 'usuarios:signup' %}"><i class="fa-solid fa-user-plus"></i></a></p>
+    </form>
+</div>
+{% endblock %}

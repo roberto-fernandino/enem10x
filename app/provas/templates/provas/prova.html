@@ -1,0 +1,36 @@
+{% extends 'static/prova-base.html'%}
+{% load provatag %}
+
+{% block title %}
+    Prova
+{% endblock %}
+
+
+{% block content %}
+{% if materias %}
+    {% for materia in materias %}
+    <div>
+        <p>{{ materia.nome }}</p> <br>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<form action="{% url 'provas:prova-respondida' %}" method="post">
+    {% csrf_token %}
+    {% if questoes %}
+    <div>
+        {% for questao in questoes %}
+            <p>{{forloop.counter}}) {{questao.enunciado}}</p>
+            {% if questao.imagem %}
+                <img src="{{ questao.imagem.url }}" alt="{{ questao.conteudo }} Imagem"> <br>
+            {% endif %}
+            {% for opcao in questao.opcoes %}
+                <input type="radio" name="questao_id-{{questao.id}}" value="{{ forloop.counter0|opcao_em_letra }}">
+                {{forloop.counter0|opcao_em_letra}}) {{ opcao }} <br>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit">Enviar respostas</button>
+</form>
+{% endblock %}

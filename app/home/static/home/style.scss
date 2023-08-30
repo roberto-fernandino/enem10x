@@ -1,0 +1,135 @@
+$primarycolor : #0e151a;
+$secondarycolor :#fff;
+$shadowcolor: #918989;
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 200vh;
+}
+
+
+header{
+        /* inicio da parte superior */
+    .top-bar {
+        padding: 20px;
+        position: fixed;
+        width: 100%;
+        background-color: $primarycolor;
+        text-align: center;
+        height: 90px;
+        .navbar-nav{ 
+            margin-left: 150px;
+            font-size: 22px;
+            display: flex;
+            .nav-link{
+                color: $secondarycolor;
+                margin-left: 60px;
+            }
+            .profilearea{
+                display: flex;
+                align-items: center;
+                font-size: 30px;
+            }
+        }
+        a{
+            align-items: center;
+            text-decoration: none;
+            font-size: 25px;
+            color: $secondarycolor;
+            transition: 0.3s;
+        }
+        a:hover {
+            opacity: 0.5;
+            transform: translateY(-3px);
+            
+        }
+    }
+}
+
+        
+
+body {
+    background-color: rgb(99, 99, 99);
+    .subtitulos{
+            color: $primarycolor;
+            text-align: center;
+            padding-top: 50px;
+            font-size: 22px;
+        }
+    main{
+        margin-bottom: 200px;
+    }
+}
+
+
+/* Começo Pé do site */
+.pedosite {
+    bottom: 0;
+    display: grid;
+    justify-content: center;
+    width: 100%;
+    background-color: $primarycolor;
+    color: $secondarycolor;
+    .author {
+        .emailcontainer {
+            color: $secondarycolor;
+            margin: 0;
+            padding: 0;
+            margin-top: 10px;
+            span {
+                font-size: 19px;
+                background-color: transparent;
+                color: $secondarycolor;
+                border: none;
+                border-radius: 4px;
+                padding: 4px 8px;
+            }
+            i {
+                color: $secondarycolor;
+            }
+            button {
+                background-color: transparent;
+                font-size: 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                position: relative;
+                i {
+                    padding: 5px;
+                    color: $secondarycolor;
+                    transition: 0.5s;
+                }
+                i:hover {
+                    color: grey;
+                    transform: translateY(-4px);
+                }
+            }
+        }
+    }
+    div {
+        margin: 20px;
+        button {
+            background-color: transparent;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            i {
+                color: $secondarycolor;
+                transition: 0.3s;
+            }
+            i:hover {
+                color: grey;
+                transform: translateY(-4px);
+            }
+        }
+    }
+}
+/*Fim Pé do Site*/
+
+
+
