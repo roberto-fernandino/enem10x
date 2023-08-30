@@ -8,7 +8,9 @@ $shadowcolor: #918989;
     padding: 0;
 }
 
-
+body{
+    height: 200vh;
+}
 
 
 header{
@@ -58,7 +60,6 @@ body {
             background-color: #fcfcfc;
             text-align: center;
             padding-top: 50px;
-            margin-top: 60px;;
             font-size: 22px;
         }
     main{
@@ -69,14 +70,13 @@ body {
 
 /* Começo Pé do site */
 .pedosite {
-    bottom: 0;
     position: fixed;
+    bottom: 0;
     display: grid;
     justify-content: center;
     width: 100%;
     background-color: $primarycolor;
     color: $secondarycolor;
-    margin-top: 300px;
     .author {
         .emailcontainer {
             color: $secondarycolor;

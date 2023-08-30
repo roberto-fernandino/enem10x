@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'enem10x.wsgi.application'
 #postgress
 DATABASES = {
     'default': {
-        'ENGINE': getenv('DB_ENGINE', 'change-me'),
-        'NAME': getenv('POSTGRES_DB', 'change-me'),
-        'USER': getenv('POSTGRES_USER', 'change-me'),
-        'PASSWORD': getenv('POSTGRES_PASSWORD', 'change-me'),
-        'HOST': getenv('POSTGRES_HOST', 'change-me'),
-        'PORT': getenv('POSTGRES_PORT', 'change-me'),
+        'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': getenv('POSTGRES_DB', 'enem'),
+        'USER': getenv('POSTGRES_USER', 'roberto'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD', 'Dulce2014'),
+        'HOST': getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
 

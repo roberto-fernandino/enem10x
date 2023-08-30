@@ -38,6 +38,7 @@ RUN ls -la /app &&  \
     chown -R admin:admin /app  &&\
     chmod -R 755 /data/web/static && \
     chmod -R 755 /data/web/media && \
+    chmod -R 755 /app/ && \
     chmod +x /scripts/commands.sh
 
 

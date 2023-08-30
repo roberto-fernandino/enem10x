@@ -22,13 +22,13 @@ O Enem 10x oferece uma experiência única e precisa para quem deseja se prepara
 
 90 Questões: Prova com 90 questões aleatórias sem repetir dado nosso vasto bando de dados.\
 Diversidade de Conteúdo: Abrange diversas matérias e tópicos.\
-Níveis de Dificuldade: Replicando a abordagem do ENEM.\
+Níveis de Dificuldade: Replicando a abordagem do ENEM.
 
 #### No seu tempo  
-- Contamos com provas customizáveis caso esteja com pouco tempo na hora.\
+- Contamos com provas customizáveis caso esteja com pouco tempo na hora.
 
 
-## Estude somente o que precisa 📚 <a name="somente-necessario">
+## Estude somente o que precisa 📚 <a name="somente-necessario"></a>
 
 Nosso sistema prioriza questões em que você esta indo mal. Quanto pior um conteúdo mais questões daquele tema aparecerão pra você. 
 
