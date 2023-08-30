@@ -6,24 +6,24 @@
 
 {% block content %}
 {% if not user.is_authenticated %}
-    <div class="subtitulos">
-        <img src="{% static 'home/enem10xlogo.png' %}" alt="">
-        <h1>Uma plataforma completa para estudar para o enem</h1>
-        <h5>Aqui voce acompanha em tempo real o nivel de seu estudo</h5>
-        <h5>Com enem10x voce recebe um ranking de melhores e piores materias, conteudos, a nivel de atomicidade, para voce focar seus estudos no que realmente voce precisa com o maior nivel de especificidade possivel. </h5>
-        <h5>O nosso sistema gera uma prova no formato de simulado com um simples clique com quantas questoes voce quiser, assim garantimos uma melhor experiencia e gerenciamento de tempo pra voce usuario!  </h5> <br>
-        <h5>Apos a realização da prova, nossa sistema vai atrás de suas respostas e em questão de milisegundos você tera uma serie de gráficos e relatorios:</h5>
-        <h6>Nota da prova realizada 100% realista simulando o enem com o nosso complexo algoritimo que simula o TRI com dados reais das questões acumuladas em nosso banco de dados.</h6>
-        <h6>Grŕafico, todas notas/tempo pra voce poder acompanhar diante dos seus olhos, no intervalo que voce preferir, o seu desempenho.</h6>
-        <h6>Nossa inteligencia artificial que apelidamos carinhosamente de "Diego" vai explicar as questões que voce errou pra acabar por vez com suas duvidas. </h6>
-        <h5>Nossa meta é colocar você na sua faculdade dos sonhos.</h5> <br>
-        <h5>Venha fazer parte da plataforma Enem 10x e realize seus sonhos!</h5> <br>
-        <h5>Inscreva-se e adquira seu plano mensal hoje mesmo.</h5>   
-    </div>
+<div class="subtitulos">
+    <img src="{% static 'home/enem10xlogo.png' %}" alt="">
+    <h1>Uma plataforma completa para estudar para o enem</h1>
+    <h5>Aqui voce acompanha em tempo real o nivel de seu estudo</h5>
+    <h5>Com enem10x voce recebe um ranking de melhores e piores materias, conteudos, a nivel de atomicidade, para voce focar seus estudos no que realmente voce precisa com o maior nivel de especificidade possivel. </h5>
+    <h5>O nosso sistema gera uma prova no formato de simulado com um simples clique com quantas questoes voce quiser, assim garantimos uma melhor experiencia e gerenciamento de tempo pra voce usuario!  </h5> <br>
+    <h5>Apos a realização da prova, nossa sistema vai atrás de suas respostas e em questão de milisegundos você tera uma serie de gráficos e relatorios:</h5>
+    <h6>Nota da prova realizada 100% realista simulando o enem com o nosso complexo algoritimo que simula o TRI com dados reais das questões acumuladas em nosso banco de dados.</h6>
+    <h6>Grŕafico, todas notas/tempo pra voce poder acompanhar diante dos seus olhos, no intervalo que voce preferir, o seu desempenho.</h6>
+    <h6>Nossa inteligencia artificial que apelidamos carinhosamente de "Diego" vai explicar as questões que voce errou pra acabar por vez com suas duvidas. </h6>
+    <h5>Nossa meta é colocar você na sua faculdade dos sonhos.</h5> <br>
+    <h5>Venha fazer parte da plataforma Enem 10x e realize seus sonhos!</h5> <br>
+    <h5>Inscreva-se e adquira seu plano mensal hoje mesmo.</h5>   
+</div>
 {% else %}
 <div class="subtitulos">
   <img src="{% static 'home/enem10xlogo.png' %}" alt="">
-  <h1>Logado {{ request.user.nome }}</h1>
+  <h1>Logado {{ user }}  {{ user.esconde_cpf }}</h1>
 </div>
 {% endif %}
 {% endblock %}

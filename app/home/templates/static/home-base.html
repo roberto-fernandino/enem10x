@@ -12,47 +12,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <header>
-    <!-- 
-    <nav class="navbar navbar-expand">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="">Home</a>
-            <a class="nav-link" href="{% url 'provas:prova' %}">Simulados</a>
-            <a href="{% url 'usuarios:user' %}" class="profilearea"><i class="fa-regular fa-user"></i></a>
-          </div>
-        </div>
-      </div>
-    </nav>
-    -->
-  <nav class="navbar navbar-light navbar-expand-sm bg-light">
-    <div class="container-fluid">
-      <a href="#" class="navbar-brand mb-0 h1">
-        <img src="{% static 'home/enem10xlogo.png' %}" alt="Logo"  width="30" height="24" class="d-inline-block align-text-top align-top">
-        Enem 10x
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>      
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a href="#" class="nav-link active">Home</a>
+<nav class="navbar fixed-top navbar-light navbar-expand-sm bg-light">
+  <div class="container">
+    <a href="{% url 'home:home' %}" class="navbar-brand mb-0 h1">
+      <img src="{% static 'home/enem10xlogo.png' %}" alt="Logo"  width="30" height="24" class="d-inline-block align-text-top align-top">
+      Enem 10x
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon border-0"></span>
+    </button>      
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="{% url 'home:home' %}" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Sobre-nós</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" 
+          class="nav-link dropdown-toggle" 
+          id="navbarDropdown" 
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          >
+          Assinaturas
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <a href="" class="dropdown-item">Alunos</a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Sobre-nós</a>
+          <li>
+            <a href="" class="dropdown-item">Professores</a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Assinaturas</a>
+          <li>
+            <a href="" class="dropdown-item">Escolas</a>
           </li>
         </ul>
-      </div>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'usuarios:user' %}" class="nav-link">Plataforma</a>
+        </li>
+      </ul>
     </div>
-  </nav>  
+  </div>
+</nav>
 </header>
 <body>
   <main>
