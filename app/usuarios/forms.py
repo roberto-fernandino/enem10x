@@ -7,39 +7,44 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 class AccountCreationForm(forms.ModelForm):
     '''Objeto para criar contas no front-end e back-end'''
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={
-        "class": "input-field",
+        "class": "form-control",
         "size": "40",
         "name": "email",
         "required": True,
+        "placeholder" : "nome@email.com",
     }))
     nome = forms.CharField(label="Nome", widget=forms.TextInput(attrs={
-        "class": "input-field",
+        "class": "form-control",
         "name": "nome",
         "maxlength": 30,
         "minlength": 3,
         "required": True,
-
+        "placeholder": "Nome Completo"
     }))
     telefone = forms.CharField(label="Telefone", widget=forms.TextInput(attrs={
-        "class": "input-field",
+        "class": "form-control",
         "name": "telefone",
         "maxlenght": 13,
         "minlength": 11,
+        "placeholder": "telefone",
     }))
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={
-        "class": "input-field",
+        "class": "form-control",
+        "placeholder": "password",
         
     }))
     password2 = forms.CharField(label="Confirme Senha", widget=forms.PasswordInput(attrs={
-        "class": "input-field"
+        "class": "form-control",
+        "placeholder": "confirm password",
     }))
     data_nascimento = forms.DateField(label='Data de Nascimento', widget=forms.DateInput(attrs={
-        "type": "date"
+        "type": "date",
+        "class": "form-control",
     }))
     cpf = forms.CharField(label="cpf", widget=forms.TextInput(attrs={
-        "class": "input-field",
-        "placeholder": "xxx.xxx.xxx-xx",
-        "id": "cpf"
+        "class": "form-control",
+        "placeholder": "cpf",
+        "id": "cpf",
     }))
     class Meta:
         model = Account

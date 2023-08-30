@@ -13,23 +13,32 @@
     {% endif %}
     <form action="{% url 'usuarios:login' %}" method="post">
         {% csrf_token %}
-        <div class="input">
-            <input type="email" name="email" maxlength="150" required class="input-field"/>
-            <label for="email" class="input-label"><span>Email</span></label>
+        <div class="form-container" >
+            <div class="input">
+                <input type="email" name="email" maxlength="150"  class="form-control" placeholder="name@gmail.com" required/>
+            </div>
+            <div class="input">
+                <input 
+                type="password"
+                name="password"
+                maxlength="50"
+                minlength="8"
+                required
+                class="form-control"
+                aria-describedby="password-help"
+                placeholder="password"
+                />
+            </div>
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                  Must be 8-20 characters long.
+                </span>
+            </div>
         </div>
-        <div class="input">
-            <input 
-            type="password"
-            name="password"
-            maxlength="50"
-            minlength="8"
-            required
-            class="input-field"
-            />
-            <label for="password" class="input-label"><span>Password</span></label>
+        <div class="form-button">
+            <button type="submit" value='Login'  class="btn btn-dark">Login</button>
+            <p>Dont have account?<a href="{% url 'usuarios:signup' %}" class="add-account"><i class="fa-solid fa-user-plus"></i></a></p>
         </div>
-        <button type="submit" value='Login'>Login</button>
-        <p>Dont have account?<a href="{% url 'usuarios:signup' %}"><i class="fa-solid fa-user-plus"></i></a></p>
     </form>
 </div>
 {% endblock %}
