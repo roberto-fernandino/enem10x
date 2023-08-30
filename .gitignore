@@ -127,7 +127,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+Dockerfile
+style.css.map
 # Spyder project settings
 .spyderproject
 .spyproject

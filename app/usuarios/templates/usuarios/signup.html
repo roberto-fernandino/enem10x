@@ -1,8 +1,9 @@
 {% extends 'static/user-form-base.html' %} {% block title %} {% endblock %} 
 
+{% load static %}
 {% block content %}
-
-<div class="acount-form">
+<link rel="stylesheet" href="{% static 'usuarios/style.css' %}">
+<div class="account-form">
   {% if form.errors %}
   <div class="form-message">
     {% for field, errors in form.errors.items %}
@@ -12,49 +13,33 @@
   {% endif %}
   <form action="{% url 'usuarios:signup' %}" method="post">
     {% csrf_token %}
-    <div class="input">
-      {{ form.email }}
-      <label for="email" class="input-label">
-        <span>Email</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.nome }}
-      <label for="nome" class="input-label">
-        <span>Nome</span>
-      </label>
+    <div class="form-container">
+
+      <div class="input">
+        {{ form.email }}
+      </div>
+      <div class="input">
+        {{ form.nome }}
     </div>
     <div class="input">
       {{ form.telefone }}
-      <label for="telefone" class="input-label">
-        <span>Telefone</span>
-      </label>
     </div>
     <div class="input">
       {{ form.password1 }}
-      <label for="password1" class="input-label">
-        <span>Senha</span>
-      </label>
     </div>
     <div class="input">
       {{ form.password2 }}
-      <label for="password2" class="input-label">
-        <span>Confirme sua Senha</span>
-      </label>
     </div>
     <div class="input">
-      {{ form.data_nascimento }}
-      <label for="data_nascimento" class="input-label">
-        <span>Data de Nascimento</span>
-      </label>
+      {{ form.data_nascimento }} 
     </div>
     <div class="input">
       {{ form.cpf }}
-      <label for="cpf" class="input-label">
-        <span>cpf</span>
-      </label>
     </div>
-    <button value="Cadastrar" type="submit">Cadastrar</button>
+  </div>
+  <div class="form-button">
+    <button value="Cadastrar" type="submit" class="btn btn-primary">Cadastrar</button>
+  </div>
   </form>
 </div>
 {% endblock %}
@@ -64,5 +49,6 @@
     $("#cpf").mask("000.000.000-00", { reverse: true });
     $("#telefone").mask('(00) 00000-0000');
   });
+  
 </script>
 {% endblock %}
