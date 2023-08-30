@@ -3,6 +3,7 @@ from usuarios.funcs import filtra_questoes_feitas
 from materiais.models import Conteudo, Questao, SubMateria
 
 
+
 def retorna_questoes_unicas(
     questoes: list, num_questoes: int, questoes_da_materia, questoes_unicas: set
 ) -> list:
@@ -90,3 +91,4 @@ def filtra_questoes_simulado_matematica(
 
 
     return questoes
+

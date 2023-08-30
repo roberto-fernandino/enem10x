@@ -25,6 +25,7 @@ class AccountCreationForm(forms.ModelForm):
         "name": "telefone",
         "maxlenght": 13,
         "minlength": 11,
+        "id":"telefone",
     }))
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={
         "class": "input-field",
