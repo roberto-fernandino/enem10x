@@ -22,6 +22,8 @@
       href="{% static 'home/favicon/favicon.ico' %}"
       type="image/x-icon"
     />
+    <link rel="stylesheet" href="{% static 'usuarios/chart.css' %}" />
+    <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -53,7 +55,50 @@
     ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-
+    <nav class="sidebar">
+      <header>
+        <div class="image-text">
+          <span class="image">
+            <img src="{% static 'home/enem10xlogo.png' %}" alt="logo" />
+          </span>
+          <div class="text header-text">
+            <span class="name">Enem 10x</span>
+            <span class="sub-name">Painel</span>
+          </div>
+        </div>
+        <a href="" class="toggle-link"
+          ><i class="bx bx-chevron-right toggle"></i
+        ></a>
+      </header>
+      <div class="menu-bar">
+        <ul class="menu-links">
+          <li class="nav-link">
+            <a href="{% url 'home:home' %}">
+              <i class="bx bx-home-alt"></i>
+              <span class="text nav-text">Home</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="">
+              <i class="bx bx-test-tube"></i>
+              <span class="text nav-text">Provas</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="">
+              <i class="bx bxs-chart"></i>
+              <span class="text nav-text">Graficos</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="">
+              <i class="bx bxs-edit-alt"></i>
+              <span class="text nav-text">Simulados</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     {% block content %} {% endblock %}
   </body>
 </html>

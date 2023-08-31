@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect
-from usuarios.funcs import MediaChart
+from usuarios.funcs import NotaChart, NotaFilteredChart
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from usuarios.forms import AccountCreationForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
+from django.http import JsonResponse
 # Create your views here.
 
 
 # CACHE AQUI
 @login_required()
-def user_view(request):
-    data_mat, data_nat, data_lin, data_hum, months_mat, months_nat, months_lin, months_hum = MediaChart(request.user)
-    provas_completas = ProvaCompleta.objects.filter(usuario=request.user)
+def notas_graph(request):
+    data_mat, data_nat, data_lin, data_hum, months_mat, months_nat, months_lin, months_hum = NotaChart(request.user)
     context = {
         "data_mat": data_mat,
         "months_mat": months_mat,
@@ -22,10 +22,32 @@ def user_view(request):
         "months_lin": months_lin,
         "data_hum": data_hum,
         "months_hum": months_hum,
-        "provas_completas": provas_completas,
     }
-    return render(request, "usuarios/user.html", context)
+    return render(request, "usuarios/notas-graph.html", context)
 
+
+@login_required()
+def filter_graph_time(request):
+    months = (request.GET.get('filter', None))
+    months = int(months) if months else None
+    result = NotaFilteredChart(request.user, months)
+    print(result)
+    data_mat = result['data_mat']
+    data_nat = result['data_nat']
+    data_lin = result['data_lin']
+    data_hum = result['data_hum']
+    months_mat = result['months_mat']
+    months_nat = result['months_nat']
+    months_lin = result['months_lin']
+    months_hum = result['months_hum']
+    context = {
+        "graph_mat": {"newLabels": months_mat, "newData": data_mat},
+        "graph_nat": {"newLabels": months_nat, "newData": data_nat},
+        "graph_lin": {"newLabels": months_lin, "newData": data_lin},
+        "graph_hum": {"newLabels": months_hum, "newData": data_hum},
+
+    }
+    return JsonResponse(context)
 
 def login_view(request):
     if request.user.is_authenticated:
