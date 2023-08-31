@@ -44,8 +44,45 @@ body {
 .sidebar .menu-bar .menu-links .nav-link {
   margin-top: 20px;
   border-radius: 6px;
-  height: 35px;
+  height: 65px;
   transition: 0.3s;
+  display: flex;
+}
+.sidebar .menu-bar .menu-links .nav-link.no-hover:hover {
+  background-color: transparent;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion {
+  width: 100%;
+  height: 100%;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item {
+  border: none;
+  /*.accordion-header{
+      .accordion-button{
+
+      }
+  }*/
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body .accordion-links .accordion-link {
+  list-style: none;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body .accordion-links .accordion-link .accordion-text {
+  font-size: 20px;
+  font-weight: 300;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body:hover {
+  cursor: pointer;
+  background-color: #415A77;
+}
+.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body:hover .accordion-text {
+  color: white;
 }
 .sidebar .menu-bar .menu-links .nav-link a {
   color: #415A77;
@@ -66,7 +103,13 @@ body {
 }
 .sidebar .menu-bar .menu-links .nav-link:hover {
   cursor: pointer;
-  background-color: #0D1B2A;
+  background-color: #415A77;
+}
+.sidebar .menu-bar .menu-links .nav-link:hover i {
+  color: white;
+}
+.sidebar .menu-bar .menu-links .nav-link:hover .nav-text {
+  color: white;
 }
 .sidebar header {
   position: relative;

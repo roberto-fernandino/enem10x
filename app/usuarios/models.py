@@ -118,14 +118,22 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 
     
-class MediaGeral(models.Model):
+class Notas(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
     data_calculada = models.DateField(default=timezone.now, null=True, blank=False)
-    media_matematica = models.FloatField(default=0, null=True, blank=True)
-    media_ciencias_natureza = models.FloatField(default=0, null=True, blank=True)
-    media_linguagens = models.FloatField(default=0, null=True, blank=True)
-    media_ciencias_humanas = models.FloatField(default=0, null=True, blank=True)
+    nota_matematica = models.FloatField(default=None, null=True, blank=True)
+    nota_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
+    nota_linguagens = models.FloatField(default=None, null=True, blank=True)
+    nota_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
     class Meta:
-        verbose_name_plural = 'Medias Gerais'
+        verbose_name_plural = 'Notas provas'
 
-    
+class MediaGeral(models.Model):
+    usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+    data_atualizada = models.DateTimeField(auto_now=True)
+    media_matematica = models.FloatField(default=None, null=True, blank=True)
+    media_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
+    media_linguagens = models.FloatField(default=None, null=True, blank=True)
+    media_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
+    class Meta:
+        verbose_name_plural = 'Media Geral'

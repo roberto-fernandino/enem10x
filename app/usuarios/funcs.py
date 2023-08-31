@@ -1,7 +1,7 @@
 from django.db.models.functions import TruncDate
 from materiais.models import ProvaCompleta, QuestaoRespondida
-from usuarios.models import MediaGeral
-from datetime import datetime, timedelta
+from usuarios.models import Notas, MediaGeral
+from datetime import timedelta
 from django.utils import timezone
 from django.db.models.functions import ExtractMonth
 
@@ -52,7 +52,6 @@ def calcular_media(user):
 
     MediaGeral.objects.create(
         usuario=user,
-        data_calculada=datetime.now(),
         media_matematica=medias["matematica"],
         media_ciencias_natureza=medias["ciencias_natureza"],
         media_linguagens=medias["linguagens"],
@@ -85,21 +84,21 @@ def NotaChart(usuario):
     months_hum = []
     months_lin = []
 
-    queryset = MediaGeral.objects.filter(usuario=usuario).order_by("data_calculada")
-    media_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
-    for media in media_mes:
-        if media.media_matematica:
-            data_mat.append(media.media_matematica)
-            months_mat.append(month_set[media.mes])
-        if media.media_linguagens:
-            data_lin.append(media.media_linguagens)
-            months_lin.append(month_set[media.mes])
-        if media.media_ciencias_humanas:
-            data_hum.append(media.media_ciencias_humanas)
-            months_hum.append(month_set[media.mes])
-        if media.media_ciencias_natureza:
-            data_nat.append(media.media_ciencias_natureza)
-            months_nat.append(month_set[media.mes])
+    queryset = Notas.objects.filter(usuario=usuario).order_by("data_calculada")
+    nota_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
+    for nota in nota_mes:
+        if nota.nota_matematica:
+            data_mat.append(nota.nota_matematica)
+            months_mat.append(month_set[nota.mes])
+        if nota.nota_linguagens:
+            data_lin.append(nota.nota_linguagens)
+            months_lin.append(month_set[nota.mes])
+        if nota.nota_ciencias_humanas:
+            data_hum.append(nota.nota_ciencias_humanas)
+            months_hum.append(month_set[nota.mes])
+        if nota.nota_ciencias_natureza:
+            data_nat.append(nota.nota_ciencias_natureza)
+            months_nat.append(month_set[nota.mes])
 
     return (
         data_mat,
@@ -146,26 +145,26 @@ def NotaFilteredChart(usuario, months:int | None = None):
 
     if months:
         start_date = now - timedelta(days=30 * months)
-        queryset = MediaGeral.objects.filter(usuario=usuario, data_calculada__gte=start_date).order_by("data_calculada")
+        queryset = Notas.objects.filter(usuario=usuario, data_calculada__gte=start_date).order_by("data_calculada")
     else:
         start_date = None
-        queryset = MediaGeral.objects.filter(usuario=usuario).order_by("data_calculada")
+        queryset = Notas.objects.filter(usuario=usuario).order_by("data_calculada")
     
     
-    media_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
-    for media in media_mes:
-        if media.media_matematica:
-            data_mat.append(media.media_matematica)
-            months_mat.append(month_set[media.mes])
-        if media.media_linguagens:
-            data_lin.append(media.media_linguagens)
-            months_lin.append(month_set[media.mes])
-        if media.media_ciencias_humanas:
-            data_hum.append(media.media_ciencias_humanas)
-            months_hum.append(month_set[media.mes])
-        if media.media_ciencias_natureza:
-            data_nat.append(media.media_ciencias_natureza)
-            months_nat.append(month_set[media.mes])
+    nota_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
+    for nota in nota_mes:
+        if nota.nota_matematica:
+            data_mat.append(nota.nota_matematica)
+            months_mat.append(month_set[nota.mes])
+        if nota.nota_linguagens:
+            data_lin.append(nota.nota_linguagens)
+            months_lin.append(month_set[nota.mes])
+        if nota.nota_ciencias_humanas:
+            data_hum.append(nota.nota_ciencias_humanas)
+            months_hum.append(month_set[nota.mes])
+        if nota.nota_ciencias_natureza:
+            data_nat.append(nota.nota_ciencias_natureza)
+            months_nat.append(month_set[nota.mes])
 
     return ({
         'data_mat': data_mat,
@@ -185,3 +184,13 @@ def NotaFilteredChart(usuario, months:int | None = None):
 
 def filtra_questoes_feitas(usuario, questao):
     return QuestaoRespondida.objects.filter(usuario=usuario, questao=questao)
+
+def MediaQuery(usuario):
+    '''
+    Retorna media do usuario em matematica, natureza, linguagens, humanas nessa ordem'''
+    medias = MediaGeral.objects.get(usuario=usuario)
+    media_mat = medias.media_matematica
+    media_nat = medias.media_ciencias_natureza
+    media_lin = medias.media_linguagens
+    media_hum = medias.media_ciencias_humanas
+    return  media_mat, media_nat, media_lin, media_hum

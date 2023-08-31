@@ -1,12 +1,8 @@
-from typing import Any, List, Optional, Tuple, Union
 from django.contrib import admin
-from django.http.request import HttpRequest
-from usuarios.models import Account, MediaGeral
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from usuarios.models import Account, Notas, MediaGeral
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from usuarios.forms import AccountCreationForm, AccountChangeForm
-from django.utils import timezone
 
 # Register your models here.
 
@@ -53,10 +49,47 @@ class AccountAdmin(BaseUserAdmin):
     filter_horizontal = ['user_permissions']
     date_hierarchy = 'data_criacao'
 
-class MediaGeralAdmin(admin.ModelAdmin):
+class NotasAdmin(admin.ModelAdmin):
     list_display = [
         'usuario',
         'data_calculada',
+        'nota_matematica',
+        'nota_ciencias_natureza',
+        'nota_linguagens',
+        'nota_ciencias_humanas',
+
+        ]
+    
+
+
+    fieldsets = (
+        (None, {"fields": ['usuario',"nota_matematica", "nota_ciencias_natureza", "nota_ciencias_humanas", "nota_linguagens", "data_calculada"]}),
+    )
+    add_fieldsets = [
+        (
+            None,
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "usuario",
+                    "data_calculada",
+                    "nota_matematica",
+                    "nota_ciencias_natureza",
+                    "nota_ciencias_humanas",
+                    "nota_linguagens",
+                ],
+            },
+        )
+    ]
+    search_fields = ['usuario']
+    list_per_page = 50
+    list_filter = ['data_calculada']
+    date_hierarchy = 'data_calculada'
+
+class MediaGeralAdmin(admin.ModelAdmin):
+    list_display = [
+        'usuario',
+        'data_atualizada',
         'media_matematica',
         'media_ciencias_natureza',
         'media_linguagens',
@@ -67,7 +100,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
 
 
     fieldsets = (
-        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas", "media_linguagens", "data_calculada"]}),
+        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas", "media_linguagens"]}),
     )
     add_fieldsets = [
         (
@@ -76,7 +109,6 @@ class MediaGeralAdmin(admin.ModelAdmin):
                 "classes": ["wide"],
                 "fields": [
                     "usuario",
-                    "data_calculada",
                     "media_matematica",
                     "media_ciencias_natureza",
                     "media_ciencias_humanas",
@@ -87,10 +119,11 @@ class MediaGeralAdmin(admin.ModelAdmin):
     ]
     search_fields = ['usuario']
     list_per_page = 50
-    list_filter = ['data_calculada']
-    date_hierarchy = 'data_calculada'
+    list_filter = ['data_atualizada']
+    date_hierarchy = 'data_atualizada'
     
 
+admin.site.register(Notas, NotasAdmin)
 admin.site.register(MediaGeral, MediaGeralAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.unregister(Group)

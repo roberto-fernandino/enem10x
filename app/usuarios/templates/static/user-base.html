@@ -48,11 +48,6 @@
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
-      integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
-      crossorigin="anonymous"
-    ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <nav class="sidebar">
@@ -63,7 +58,11 @@
           </span>
           <div class="text header-text">
             <span class="name">Enem 10x</span>
-            <span class="sub-name">Painel</span>
+            {% if user.is_admin %}
+            <span class="sub-name">Admin</span>
+            {% else %}
+            <span class="sub-name">Aluno</span>
+            {% endif %}
           </div>
         </div>
         <a href="" class="toggle-link"
@@ -95,6 +94,56 @@
               <i class="bx bxs-edit-alt"></i>
               <span class="text nav-text">Simulados</span>
             </a>
+          </li>
+          <li class="nav-link no-hover">
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    Account
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <ul class="accordion-links">
+                      <li class="accordion-link">
+                        <a href="">
+                          <i class='bx bxs-cog' ></i>
+                          <span class="accordion-text">Config</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div
+                  id="collapseOne"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <ul class="accordion-links">
+                      <li class="accordion-link">
+                        <a href="{% url 'usuarios:logout' %}">
+                          <i class='bx bxs-log-out'></i>
+                          <span class="accordion-text logout">Sair</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

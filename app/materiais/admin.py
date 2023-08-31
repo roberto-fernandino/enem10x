@@ -103,26 +103,8 @@ class TipoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['conteudo']
 
-'''class ProvaRespondidaAdmin(admin.ModelAdmin):
-    list_display = [
-        'id',
-        'questao',
-        'resposta',
-        'acerto',
-        ]
-    
-    fieldsets = (
-        (None, {"fields": ['questao', 'resposta', 'acerto']}),
-    )
 
-    def get_tipo(self, obj):
-        return obj.get_tipo()
     
-    get_tipo.admin_order_field = 'tipo'
-    get_tipo.admin_short_description = 'Tipo'
-    list_display_links = ['questao']
-    
-'''
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',

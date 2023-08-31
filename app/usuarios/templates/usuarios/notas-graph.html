@@ -5,7 +5,7 @@
 <div class="filters">
   <select id="timeFilter">
     <option value="">Todas</option>
-    <option value="1">Últimos mes</option>
+  <option value="1">Últimos mes</option>
     <option value="6">Últimos 6 meses</option>
     <option value="12">Último ano</option>
   </select>
@@ -22,10 +22,11 @@
       const meses_mat_str = "{{months_mat|safe}}".replace(/'/g, '"');
       const meses_mat = JSON.parse(meses_mat_str);
       const dataMat = JSON.parse("{{data_mat|safe}}");
+      const MediaMat = Array(meses_mat.length).fill(parseFloat("{{media_mat}}"))
 
       const myChart1 = new Chart(ctx1, {
         type: "line",
-        data: {
+        data: {  
           labels: meses_mat,
           datasets: [
             {
@@ -34,12 +35,19 @@
               fill: false,
               borderColor: "rgb(75, 192, 192)",
               tension: 0.1,
-            },
-          ],
+            }, {
+              label: "Media Matematica",
+              data: MediaMat,
+              fill: false,
+              borderColor: "rgb(163, 236, 118)",
+              tension: 0.1,
+              pointRadius: 0,
+            }],
         },
-
         options: {
-          responsive: false,
+          responsive: true,
+          // for developing only, set true to production for better performance
+          animation: true,
         },
       });
     </script>
@@ -55,6 +63,8 @@
       const meses_nat_str = "{{months_nat|safe}}".replace(/'/g, '"');
       const meses_nat = JSON.parse(meses_nat_str);
       const dataNat = JSON.parse("{{data_nat|safe}}");
+      const MediaNat = Array(meses_nat.length).fill(parseFloat("{{media_nat}}"))
+
 
       const myChart2 = new Chart(ctx2, {
         type: "line",
@@ -68,11 +78,21 @@
               borderColor: "rgb(75, 192, 192)",
               tension: 0.1,
             },
+            {
+              label: "Media Natureza",
+              data: MediaNat,
+              fill: false,
+              borderColor: "rgb(163, 236, 118)",
+              tension: 0.1,
+              pointRadius: 0,
+            }
           ],
         },
 
         options: {
-          responsive: false,
+          responsive: true,
+         // for developing only, set true to production for better performance
+         animation: true,
         },
       });
     </script>
@@ -88,6 +108,8 @@
       const meses_lin_str = "{{months_lin|safe}}".replace(/'/g, '"');
       const meses_lin = JSON.parse(meses_lin_str);
       const dataLin = JSON.parse("{{data_lin|safe}}");
+      const mediaLin = Array(meses_lin.length).fill(parseFloat("{{media_lin}}"))
+
 
       const myChart3 = new Chart(ctx3, {
         type: "line",
@@ -101,11 +123,21 @@
               borderColor: "rgb(75, 192, 192)",
               tension: 0.1,
             },
+            {
+              label: "Media Linguagens",
+              data: mediaLin,
+              fill: false,
+              borderColor: "rgb(163, 236, 118)",
+              tension: 0.1,
+              pointRadius: 0,
+            }
           ],
         },
 
         options: {
-          responsive: false,
+          responsive: true,
+          // for developing only, set true to production for better performance
+          animation: true,
         },
       });
     </script>
@@ -121,6 +153,8 @@
       const meses_hum_str = "{{months_hum|safe}}".replace(/'/g, '"');
       const meses_hum = JSON.parse(meses_hum_str);
       const dataHum = JSON.parse("{{data_hum|safe}}");
+      const mediaHum = Array(meses_hum.length).fill(parseFloat("{{media_hum}}"))
+
 
       const myChart4 = new Chart(ctx4, {
         type: "line",
@@ -134,11 +168,21 @@
               borderColor: "rgb(75, 192, 192)",
               tension: 0.1,
             },
+            {
+              label: "Media Humanas",
+              data: mediaHum,
+              fill: false,
+              borderColor: "rgb(163, 236, 118)",
+              tension: 0.1,
+              pointRadius: 0,
+            }
           ],
         },
 
         options: {
-          responsive: false,
+          responsive: true,
+          // for developing only, set true to production for better performance
+          animation: true,
         },
       });
     </script>
