@@ -1,21 +1,19 @@
 {% extends 'static/user-form-base.html' %} {% block title %} Login {% endblock %} 
 {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
-<div class="account-form">
-    {% if messages %}
-    <div class="message">
-        {% for message in messages %}
-        <div>
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+<div class="account-form">   
     <form action="{% url 'usuarios:login' %}" method="post">
+        {% if message %}
+        <div class="form-message">
+            <div class="alert alert-danger rounded-3 py-2" role="alert">
+                {{message}}
+            </div>
+        </div>    
+        {% endif %}
         {% csrf_token %}
         <div class="form-container" >
             <div class="input">
-                <input type="email" name="email" maxlength="150"  class="form-control" placeholder="name@gmail.com" required/>
+                <input type="email" name="email" maxlength="150"  class="form-control mb-3" placeholder="name@gmail.com" required/>
             </div>
             <div class="input">
                 <input 
@@ -31,12 +29,12 @@
             </div>
             <div class="col-auto">
                 <span id="passwordHelpInline" class="form-text">
-                  Must be 8-20 characters long.
+                  Must be 8-50 characters long.
                 </span>
             </div>
         </div>
-        <div class="form-button">
-            <button type="submit" value='Login'  class="btn btn-dark">Login</button>
+        <div class="form-button mt-3">
+            <button type="submit" class="btn mt-3">Login</button>
             <p>Dont have account?<a href="{% url 'usuarios:signup' %}" class="add-account"><i class="fa-solid fa-user-plus"></i></a></p>
         </div>
     </form>

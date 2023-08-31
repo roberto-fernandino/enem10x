@@ -5,51 +5,31 @@
 }
 
 body {
-  height: 200vh;
+  background-color: #778da9;
 }
 
-header {
-  /* inicio da parte superior */
+/* inicio da parte superior */
+header .navbar {
+  background-color: #1B263B;
 }
-header .top-bar {
-  padding: 20px;
-  position: fixed;
-  width: 100%;
-  background-color: #0e151a;
-  text-align: center;
-  height: 90px;
+header .navbar .brand-img {
+  border-radius: 3px;
 }
-header .top-bar .navbar-nav {
-  margin-left: 150px;
-  font-size: 22px;
-  display: flex;
+header .navbar .navbar-brand {
+  color: white;
 }
-header .top-bar .navbar-nav .nav-link {
-  color: #fff;
-  margin-left: 60px;
+header .navbar .navbar-toggler {
+  border: none;
 }
-header .top-bar .navbar-nav .profilearea {
-  display: flex;
-  align-items: center;
-  font-size: 30px;
-}
-header .top-bar a {
-  align-items: center;
-  text-decoration: none;
-  font-size: 25px;
-  color: #fff;
-  transition: 0.3s;
-}
-header .top-bar a:hover {
-  opacity: 0.5;
-  transform: translateY(-3px);
+header .navbar .navbar-toggler .navbar-toggler-icon {
+  color: white;
 }
 
 body {
   background-color: rgb(99, 99, 99);
 }
 body .subtitulos {
-  color: #0e151a;
+  color: #1B263B;
   text-align: center;
   padding-top: 50px;
   font-size: 22px;
@@ -60,15 +40,16 @@ body main {
 
 /* Começo Pé do site */
 .pedosite {
+  position: fixed;
   bottom: 0;
   display: grid;
   justify-content: center;
   width: 100%;
-  background-color: #0e151a;
-  color: #fff;
+  background-color: #1B263B;
+  color: #415A77;
 }
 .pedosite .author .emailcontainer {
-  color: #fff;
+  color: #415A77;
   margin: 0;
   padding: 0;
   margin-top: 10px;
@@ -76,13 +57,13 @@ body main {
 .pedosite .author .emailcontainer span {
   font-size: 19px;
   background-color: transparent;
-  color: #fff;
+  color: #415A77;
   border: none;
   border-radius: 4px;
   padding: 4px 8px;
 }
 .pedosite .author .emailcontainer i {
-  color: #fff;
+  color: #415A77;
 }
 .pedosite .author .emailcontainer button {
   background-color: transparent;
@@ -93,7 +74,7 @@ body main {
 }
 .pedosite .author .emailcontainer button i {
   padding: 5px;
-  color: #fff;
+  color: #415A77;
   transition: 0.5s;
 }
 .pedosite .author .emailcontainer button i:hover {
@@ -111,7 +92,7 @@ body main {
   position: relative;
 }
 .pedosite div button i {
-  color: #fff;
+  color: #415A77;
   transition: 0.3s;
 }
 .pedosite div button i:hover {

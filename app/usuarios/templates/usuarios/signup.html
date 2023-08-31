@@ -1,4 +1,5 @@
-{% extends 'static/user-form-base.html' %} {% block title %} {% endblock %} 
+{% extends 'static/user-form-base.html' %} {% block title %} Signup {% endblock %} 
+
 
 {% load static %}
 {% block content %}
@@ -6,8 +7,8 @@
 <div class="account-form">
   {% if form.errors %}
   <div class="form-message">
-    {% for field, errors in form.errors.items %}
-        <div>{{field}}: {{errors|first}}</div>
+    {% for field, error in form.errors.items %}
+        <div> {{field}}: {{ error|first }}</div>
     {% endfor %}
   </div>
   {% endif %}

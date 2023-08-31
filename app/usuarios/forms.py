@@ -7,14 +7,14 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 class AccountCreationForm(forms.ModelForm):
     '''Objeto para criar contas no front-end e back-end'''
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "size": "40",
         "name": "email",
         "required": True,
         "placeholder" : "nome@email.com",
     }))
     nome = forms.CharField(label="Nome", widget=forms.TextInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "name": "nome",
         "maxlength": 30,
         "minlength": 3,
@@ -22,30 +22,39 @@ class AccountCreationForm(forms.ModelForm):
         "placeholder": "Nome Completo"
     }))
     telefone = forms.CharField(label="Telefone", widget=forms.TextInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "name": "telefone",
         "maxlenght": 13,
         "minlength": 11,
         "id":"telefone",
         "placeholder": "telefone",
+        "required": True,
     }))
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "placeholder": "password",
+        "required": True,
+
         
     }))
     password2 = forms.CharField(label="Confirme Senha", widget=forms.PasswordInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "placeholder": "confirm password",
+        "required": True,
+
     }))
     data_nascimento = forms.DateField(label='Data de Nascimento', widget=forms.DateInput(attrs={
         "type": "date",
-        "class": "form-control",
+        "class": "form-control mb-3",
+        "required": True,
+
     }))
     cpf = forms.CharField(label="cpf", widget=forms.TextInput(attrs={
-        "class": "form-control",
+        "class": "form-control mb-3",
         "placeholder": "cpf",
         "id": "cpf",
+        "required": True,
+
     }))
     class Meta:
         model = Account
@@ -91,3 +100,5 @@ class AccountChangeForm(forms.ModelForm):
             'is_aluno',
             'is_staff',
         ]
+
+

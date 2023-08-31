@@ -85,7 +85,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     nome = models.CharField(max_length=30)
     cpf = models.CharField(max_length=15, unique=True, blank=False)
-    telefone = models.CharField(max_length=13, default=None, blank=False, null=True)
+    telefone = models.CharField(max_length=15, default=None, blank=False, null=True)
     data_nascimento = models.DateField(blank=False, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
     is_aluno = models.BooleanField(default=True, verbose_name="Aluno")
@@ -121,10 +121,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
 class MediaGeral(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
     data_calculada = models.DateField(default=timezone.now, null=True, blank=False)
-    media_matematica = models.FloatField(default=0)
-    media_ciencias_natureza = models.FloatField(default=0)
-    media_linguagens = models.FloatField(default=0)
-    media_ciencias_humanas = models.FloatField(default=0)
+    media_matematica = models.FloatField(default=0, null=True, blank=True)
+    media_ciencias_natureza = models.FloatField(default=0, null=True, blank=True)
+    media_linguagens = models.FloatField(default=0, null=True, blank=True)
+    media_ciencias_humanas = models.FloatField(default=0, null=True, blank=True)
     class Meta:
         verbose_name_plural = 'Medias Gerais'
 

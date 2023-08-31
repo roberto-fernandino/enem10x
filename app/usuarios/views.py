@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from usuarios.funcs import MediaChart
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from usuarios.forms import AccountCreationForm as signup_form
+from usuarios.forms import AccountCreationForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
 # Create your views here.
@@ -31,22 +31,19 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect("usuarios:user")
     elif request.method == "POST":
-        email = request.POST["email"]
-        password = request.POST["password"]
+        email = request.POST['email']
+        password = request.POST['password']
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect("home:home")
-        else:
-            messages.error(request,'Email ou senha invalidos')
-            return render(request, "usuarios/login.html")
-        
+        return render(request, "usuarios/login.html", {"message": "Email ou senha inválidos"})
     return render(request, "usuarios/login.html")
 
 
 def signup(request, *args, **kwargs):
     if request.method == "POST":
-        form = signup_form(request.POST)
+        form = AccountCreationForm(request.POST)
         if form.is_valid():
             # Cria conta com Account Form
             form.save()
@@ -58,11 +55,10 @@ def signup(request, *args, **kwargs):
                 # Se o usuario foi criado com sucesso ja loga
                 login(request, auth_user)
                 return redirect("usuarios:signup-sucess")
-        else:
-            context = {"form": form}
-            return render(request, "usuarios/signup.html", context)
-    form = signup_form()
-
+        context = {"form": form}
+        return render(request, "usuarios/signup.html", context)
+    
+    form = AccountCreationForm()
     context = {
         "form": form,
     }

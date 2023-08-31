@@ -1,116 +1,198 @@
-{% extends 'static/user-base.html' %} {% block title %} Usuario {% endblock %} 
+{% extends 'static/user-base.html' %} {% block title %} Usuario {% endblock %}
 {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/chart.css' %}" />
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<a href="{% url 'home:home' %}">
-  <button type="button" class="btn btn-warning">Voltar</button>
-</a>
-<div class="chart-container">
-    <div class="chart-display">
-        <h1>Media matematica</h1>
-        <canvas
-        id="media-matematica-tempo"
-        style="height: 500px; width: 500px; margin-left: 20px"  
-        ></canvas>
-      <script>
-        const ctx1 = document.getElementById('media-matematica-tempo');
-        const meses_mat_str = "{{months_mat|safe}}".replace(/'/g, '"')
-        const meses_mat = JSON.parse(meses_mat_str)
-        const dataMat = JSON.parse('{{data_mat|safe}}')
+<script src="{% static 'usuarios/js/graph.js' %}"></script>
+<nav class="sidebar">
+  <header>
+    <div class="image-text">
+      <span class="image">
+        <img src="{% static 'home/enem10xlogo.png' %}" alt="logo" />
+      </span>
+      <div class="text header-text">
+        <span class="name">Enem 10x</span>
+        <span class="sub-name">Painel</span>
+      </div>
+    </div>
+    <a href="" class="toggle-link"><i class='bx bx-chevron-right toggle'></i></a>
+  </header>
+  <div class="menu-bar">
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="{% url 'home:home' %}">
+          <i class='bx bx-home-alt'></i>
+          <span class="text nav-text">Home</span>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="">
+          <i class='bx bx-test-tube'></i>
+          <span class="text nav-text">Provas</span>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="">
+          <i class='bx bxs-chart'></i>
+          <span class="text nav-text">Graficos</span>
+        </a>
+      </li>
+      <li class="nav-link">
+        <a href="">
+          <i class='bx bxs-edit-alt'></i>
+          <span class="text nav-text">Simulados</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="chart-container" >
+  <select name="time" id="">
+    {% for mes in months_mat %}
+      <option value="{{mes}}">{{mes}}</option>
+    {% endfor %}
+  </select>
+  <div class="chart-display">
+    <h1>Media matematica</h1>
+    <canvas
+      id="media-matematica-tempo"
+      style="height: 300px; width: 300px; margin-left: 20px"
+    ></canvas>
+    <script>
+      const ctx1 = document.getElementById("media-matematica-tempo");
+      const meses_mat_str = "{{months_mat|safe}}".replace(/'/g, '"');
+      const meses_mat = JSON.parse(meses_mat_str);
+      const dataMat = JSON.parse("{{data_mat|safe}}");
 
-        new Chart(ctx1, {
-          type: 'line',
-          data: {
-            labels: meses_mat,
-            datasets: [{
-              label: 'Media Geral Matematica',
+      new Chart(ctx1, {
+        type: "line",
+        data: {
+          labels: meses_mat,
+          datasets: [
+            {
+              label: "Media Geral Matematica",
               data: dataMat,
               fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              tension: 0.1
-            }]
-          },
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
 
-          options: {
-            responsive: false
-          }
-        });
-      </script>
-    </div>
-    <div class="chart-display">
-        <h1>Media Ciencias da natureza</h1>
-        <canvas
-        id="media-nat-tempo"
-        style="height: 500px; width: 500px; margin-left: 20px"
-        ></canvas>
-      <script>
-        const ctx2 = document.getElementById('media-nat-tempo');
-        const meses_nat_str = "{{months_nat|safe}}".replace(/'/g, '"')
-        const meses_nat = JSON.parse(meses_nat_str)
-        const dataNat = JSON.parse('{{data_nat|safe}}')
-        
+        options: {
+          responsive: false,
+        },
+      });
+    </script>
+  </div>
+  <div class="chart-display">
+    <h1>Media Natureza</h1>
+    <canvas
+      id="media-nat-tempo"
+      style="height: 300px; width: 300px; margin-left: 20px"
+    ></canvas>
+    <script>
+      const ctx2 = document.getElementById("media-nat-tempo");
+      const meses_nat_str = "{{months_nat|safe}}".replace(/'/g, '"');
+      const meses_nat = JSON.parse(meses_nat_str);
+      const dataNat = JSON.parse("{{data_nat|safe}}");
 
-        new Chart(ctx2, {
-          type: 'line',
-          data: {
-            labels: meses_nat,
-            datasets: [{
-              label: 'Media Geral Ciencias da Natureza ',
+      new Chart(ctx2, {
+        type: "line",
+        data: {
+          labels: meses_nat,
+          datasets: [
+            {
+              label: "Media Geral Ciencias da Natureza ",
               data: dataNat,
               fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              tension: 0.1
-            }]
-          },
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
 
-          options: {
-            responsive: false
-          }
-        });
-      </script>
-    </div>
-    <div class="chart-display">
-        <h1>Media Linguagens</h1>
-        <canvas
-        id="media-lin-tempo"
-        style="height: 500px; width: 500px; margin-left: 20px"
-        ></canvas>
-      <script>
-        const ctx3 = document.getElementById('media-lin-tempo');
-        const meses_lin_str = "{{months_lin|safe}}".replace(/'/g, '"')
-        const meses_lin = JSON.parse(meses_lin_str)
-        const dataLin = JSON.parse('{{data_lin|safe}}')
-        
+        options: {
+          responsive: false,
+        },
+      });
+    </script>
+  </div>
+  <div class="chart-display">
+    <h1>Media Linguagens</h1>
+    <canvas
+      id="media-lin-tempo"
+      style="height: 300px; width: 300px; margin-left: 20px"
+    ></canvas>
+    <script>
+      const ctx3 = document.getElementById("media-lin-tempo");
+      const meses_lin_str = "{{months_lin|safe}}".replace(/'/g, '"');
+      const meses_lin = JSON.parse(meses_lin_str);
+      const dataLin = JSON.parse("{{data_lin|safe}}");
 
-        new Chart(ctx3, {
-          type: 'line',
-          data: {
-            labels: meses_lin,
-            datasets: [{
-              label: 'Media Geral Linguagens',
+      new Chart(ctx3, {
+        type: "line",
+        data: {
+          labels: meses_lin,
+          datasets: [
+            {
+              label: "Media Geral Linguagens",
               data: dataLin,
               fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              tension: 0.1
-            }]
-          },
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
 
-          options: {
-            responsive: false
-          }
-        });
-      </script>
-    </div>
+        options: {
+          responsive: false,
+        },
+      });
+    </script>
+  </div>
+  <div class="chart-display">
+    <h1>Media Humanas</h1>
+    <canvas
+      id="media-humanas-tempo"
+      style="height: 300px; width: 300px; margin-left: 20px"
+    ></canvas>
+    <script>
+      const ctx4 = document.getElementById("media-humanas-tempo");
+      const meses_hum_str = "{{months_hum|safe}}".replace(/'/g, '"');
+      const meses_hum = JSON.parse(meses_hum_str);
+      const dataHum = JSON.parse("{{data_hum|safe}}");
+
+      new Chart(ctx4, {
+        type: "line",
+        data: {
+          labels: meses_hum,
+          datasets: [
+            {
+              label: "Media Geral Ciencias Humanas",
+              data: dataHum,
+              fill: false,
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1,
+            },
+          ],
+        },
+
+        options: {
+          responsive: false,
+        },
+      });
+    </script>
+  </div>
 </div>
-
 {% if provas_completas %}
 <div>
-    {% for prova in provas_completas %}
-      <p><a href="{% url 'provas:prova-completa' prova.id %}">Prova: {{ forloop.counter }} {{prova.data_feita}}</a></p><br>
-    {% endfor %}
-  </div>
-{% endif %}
-<form action="{% url 'usuarios:logout' %}">
-  <button class='btn btn-danger' type="submit">Logout</button>
-</form>
-{% endblock %}
+  {% for prova in provas_completas %}
+  <p>
+    <a href="{% url 'provas:prova-completa' prova.id %}"
+      >Prova: {{ forloop.counter }} {{prova.data_feita}}</a
+    >
+  </p>
+  <br />
+  {% endfor %}
+</div>
+{% endif %} {% endblock %}

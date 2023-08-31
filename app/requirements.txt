@@ -4,6 +4,7 @@ asgiref==3.7.2
 async-timeout==4.0.3
 attrs==23.1.0
 certifi==2023.7.22
+channels==4.0.0
 charset-normalizer==3.2.0
 Django==4.2.4
 django-jazzmin==2.6.0
@@ -14,6 +15,7 @@ lxml==4.9.3
 multidict==6.0.4
 Pillow==10.0.0
 psycopg2==2.9.7
+psycopg2-binary==2.9.7
 PyPDF2==3.0.1
 python-docx==0.8.11
 requests==2.31.0

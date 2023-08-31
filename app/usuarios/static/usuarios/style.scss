@@ -1,9 +1,16 @@
 @charset "UTF-8";
-$primarycolor : #0f70b9;
-$secondarycolor :#fff;
-$shadowcolor: #918989;
 
 
+$primarycolor: #1B263B;
+$secondarycolor: #415A77;
+$shadowcolor: #E0E1DD;
+$background-color: #778da9;
+$details: #0D1B2A;
+$font-color: white;
+$light-bg: #dfe7f1;
+$very-light-bg: #fbfdff;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -11,35 +18,111 @@ $shadowcolor: #918989;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100vw;
-    background-color: $secondarycolor;
-    font-family: inherit;
+    background-color: $light-bg;
 }
 
-body hr {
-    color: #45d045;
-    margin-top: 150px;
+
+
+* {
+    font-family: 'Poppins', 'sans-serif ';
+    margin: 0;
+    padding: 0;
 }
 
-.chart-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
 
-    .chart-display {
-        margin-top: 120px;
-        display: flex;
-        max-width: 500px;
-        flex-wrap: wrap;
-        justify-content: center;
+
+
+/*==== sidebar ====*/
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background: $very-light-bg;
+    padding: 10px 14px;
+    font-size: 22px;
+    .text {
+        font-weight: 500;
+        padding-left: 15px;
+    }
+    .menu-bar{
+        padding-top: 50px;
+        .menu-links{
+            padding-left: 0;
+            .nav-link{
+                margin-top: 20px;
+                border-radius: 6px;
+                height: 35px;
+                transition: 0.3s;
+                a{
+                    color: $secondarycolor;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-grow: 1;
+                    i{
+                        display: flex;
+                        align-items: center;
+                        min-width: 60px;
+                        font-size: 20px;
+                    }
+                    .nav-text{
+                        font-weight: 500;
+                    }
+                }
+            }
+            .nav-link:hover{
+                cursor: pointer;
+                background-color: $details;
+            }
+        }
+    }
+
+    header {
+        position: relative;
+        .toggle-link{
+            text-decoration: none;
+        }
+        .toggle{
+            position: absolute;
+            top: 50%;
+            right: -25px;
+            transform: translateY(-50%);
+            height: 25px;
+            width: 25px;
+            background-color: $secondarycolor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: $light-bg;
+        }
+        .image-text {
+            display: flex;
+            align-items: center;
+            img {
+                width: 40px;
+                border-radius: 6px;
+            }
+            
+            .header-text {
+                display: flex;
+                flex-direction: column;
+
+                .name {
+                    font-weight: 600;
+                }
+
+                .sub-name {
+                    margin-top: -2px;
+                }
+            }
+        }
     }
 }
+
 
 h1 {
     color: gray;
@@ -55,63 +138,62 @@ h1 {
     /* Espaçamento entre as letras */
 }
 
-@media (max-width: 768px) {
-    .chart-container
-        .chart-display{  
-            canvas {
-                height: 355px;
-                width: 355px;
-                margin-left: 20px;
-                display: block;
-                box-sizing: border-box;
-        }
-    }
-}
 
-/*Login ScSS*/
+/* ==== Form ====*/
 
 .account-form {
+    .form-message {
+        padding-top: 5vh;
+        display: grid;
+        align-items: center;
+    }
+
     form {
         display: grid;
         justify-content: center;
         margin-top: 250px;
         color: $primarycolor;
-        .form-container{
+
+        .form-container {
             display: grid;
             justify-content: center;
-            input{
-                border-color: $primarycolor;
-                margin-top: 8px;
-                border-radius: 8px;
-                height: 40px;
+
+            input {
                 width: 250px;
-                border: 2px solid  #d6d6d6; 
+
             }
-            label {
-                color: $primarycolor;
+
+            .col-auto {
+                span {
+                    color: $details;
+                }
             }
-    
+
         }
-        
-        .form-button{
-            margin-top: 10px;
-            color: $primarycolor;
+
+        .form-button {
             display: grid;
             align-items: center;
-            p{
-                display: flex;
-                justify-content: space-between;
-                .fa-solid{
+
+            .btn {
+                color: $font-color;
+                background-color: $primarycolor;
+            }
+
+            p {
+                .fa-solid {
+                    margin-left: 5px;
                     color: $primarycolor;
                     margin-top: 10px;
                     transition: 0.4s;
                 }
-                
+
             }
         }
+
         .fa-solid:hover {
             transform: translateY(-2px);
             opacity: 0.6;
         }
     }
-}   
+}
