@@ -30,10 +30,13 @@ body {
   background: #fbfdff;
   padding: 10px 14px;
   font-size: 22px;
+  transition: 0.3s;
 }
 .sidebar .text {
   font-weight: 500;
   padding-left: 15px;
+  white-space: nowrap;
+  opacity: 1;
 }
 .sidebar .menu-bar {
   padding-top: 50px;
@@ -47,59 +50,43 @@ body {
   height: 65px;
   transition: 0.3s;
   display: flex;
-}
-.sidebar .menu-bar .menu-links .nav-link.no-hover:hover {
-  background-color: transparent;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion {
-  width: 100%;
-  height: 100%;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item {
-  border: none;
-  /*.accordion-header{
-      .accordion-button{
-
-      }
-  }*/
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  border-radius: 6px;
-  margin-top: 20px;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body .accordion-links .accordion-link {
-  list-style: none;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body .accordion-links .accordion-link .accordion-text {
-  font-size: 20px;
-  font-weight: 300;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body:hover {
-  cursor: pointer;
-  background-color: #415A77;
-}
-.sidebar .menu-bar .menu-links .nav-link .accordion .accordion-item .accordion-collapse .accordion-body:hover .accordion-text {
-  color: white;
 }
 .sidebar .menu-bar .menu-links .nav-link a {
   color: #415A77;
   text-decoration: none;
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: center;
-  flex-grow: 1;
+  grid-template-columns: 24px 1fr;
 }
 .sidebar .menu-bar .menu-links .nav-link a i {
   display: flex;
   align-items: center;
   min-width: 60px;
   font-size: 20px;
+  margin-left: 20px;
 }
 .sidebar .menu-bar .menu-links .nav-link a .nav-text {
+  margin-left: 15px;
   font-weight: 500;
+}
+.sidebar .menu-bar .menu-links .nav-link.logout {
+  position: absolute;
+  width: 86%;
+  bottom: 0;
+  margin-left: 8px;
+  margin-bottom: 10px;
+  left: 0;
+}
+.sidebar .menu-bar .menu-links .nav-link.logout:hover {
+  cursor: pointer;
+  background-color: rgb(232, 110, 110);
+}
+.sidebar .menu-bar .menu-links .nav-link.logout:hover i {
+  color: white;
+}
+.sidebar .menu-bar .menu-links .nav-link.logout:hover .nav-text {
+  color: white;
 }
 .sidebar .menu-bar .menu-links .nav-link:hover {
   cursor: pointer;
@@ -130,6 +117,7 @@ body {
   justify-content: center;
   border-radius: 50%;
   color: #dfe7f1;
+  cursor: pointer;
 }
 .sidebar header .image-text {
   display: flex;
@@ -148,6 +136,16 @@ body {
 }
 .sidebar header .image-text .header-text .sub-name {
   margin-top: -2px;
+}
+
+.sidebar.close {
+  width: 88px;
+}
+.sidebar.close .text {
+  opacity: 0;
+}
+.sidebar.close .accordion-text {
+  opacity: 0;
 }
 
 h1 {

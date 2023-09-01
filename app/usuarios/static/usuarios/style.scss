@@ -10,7 +10,7 @@ $font-color: white;
 $light-bg: #dfe7f1;
 $very-light-bg: #fbfdff;
 $chart-color: rgb(163, 236, 118);
-$alert-color: rgb(255, 158, 158);
+$alert-color: rgb(232, 110, 110);
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -45,9 +45,12 @@ body {
     background: $very-light-bg;
     padding: 10px 14px;
     font-size: 22px;
+    transition: 0.3s;
     .text {
         font-weight: 500;
         padding-left: 15px;
+        white-space: nowrap;
+        opacity: 1;
     }
     .menu-bar{
         padding-top: 50px;
@@ -59,63 +62,43 @@ body {
                 height: 65px;
                 transition: 0.3s;
                 display: flex;
-                &.no-hover:hover{
-                    background-color: transparent;
-                }
-                .accordion{
-                    width: 100%;
-                    height: 100%;
-                    .accordion-item{
-                        border: none;
-                        /*.accordion-header{
-                            .accordion-button{
-                                
-                            }
-                        }*/
-                        .accordion-collapse{
-                            .accordion-body{
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                border-radius: 6px;
-                                margin-top: 20px;
-                                .accordion-links{
-                                    .accordion-link{
-                                        list-style: none;
-                                        .accordion-text{
-                                            font-size: 20px;
-                                            font-weight: 300;
-                                        }
-                                    }
-                                }
-                            }
-                            .accordion-body:hover{
-                                .accordion-text{
-                                    color:$font-color;
-                                }
-                                cursor: pointer;
-                                background-color: $secondarycolor;
-                            }
-                        }
-                    }
-                }
+                align-items: center;
                 a{
                     color: $secondarycolor;
                     text-decoration: none;
-                    display: flex;
+                    display: grid;
                     align-items: center;
-                    justify-content: center;
-                    flex-grow: 1;
+                    grid-template-columns: 24px 1fr;
                     i{
                         display: flex;
                         align-items: center;
                         min-width: 60px;
                         font-size: 20px;
+                        margin-left: 20px;
                     }
                     .nav-text{
+                        margin-left: 15px;
                         font-weight: 500;
                     }
                 }
+            }
+            .nav-link.logout{
+                position: absolute;
+                width: 86%;
+                bottom: 0;
+                margin-left: 8px;
+                margin-bottom: 10px;
+                left: 0;
+            }
+            .nav-link.logout:hover{
+                i{
+                    color: $font-color;
+                }
+                .nav-text{
+                    color: $font-color;
+                }
+                cursor: pointer;
+                background-color: $alert-color;
             }
             .nav-link:hover{
                 i{
@@ -148,6 +131,7 @@ body {
             justify-content: center;
             border-radius: 50%;
             color: $light-bg;
+            cursor: pointer;
         }
         .image-text {
             display: flex;
@@ -173,6 +157,16 @@ body {
     }
 }
 
+.sidebar.close{
+    .text{
+        opacity: 0;
+    }
+    .accordion-text{
+        opacity: 0;
+    }
+
+    width: 88px;
+}
 
 h1 {
     color: gray;
