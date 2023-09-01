@@ -184,12 +184,11 @@ h1 {
 
 
 /* ==== Form ====*/
-
 .account-form {
     .form-message {
         padding-top: 5vh;
         display: grid;
-        align-items: center;
+        align-items: center;    
     }
 
     form {
@@ -201,10 +200,24 @@ h1 {
         .form-container {
             display: grid;
             justify-content: center;
-
+            background-color: #fff;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+            padding-bottom: 80px;
+            top: 50%;
+            left: 50%;
+            border-radius: 8px;
+            .login-title{
+                font-family: 'Poppins';
+                display: grid;
+                justify-content: center;
+                align-items: center;
+                color: $primarycolor;
+            }
             input {
                 width: 250px;
-
+                
             }
 
             .col-auto {
@@ -213,27 +226,27 @@ h1 {
                 }
             }
 
-        }
-
-        .form-button {
-            display: grid;
-            align-items: center;
-
-            .btn {
-                color: $font-color;
-                background-color: $primarycolor;
-            }
-
-            p {
-                .fa-solid {
-                    margin-left: 5px;
-                    color: $primarycolor;
-                    margin-top: 10px;
-                    transition: 0.4s;
+            .form-button {
+                display: grid;
+                align-items: center;
+    
+                .btn {
+                    color: $font-color;
+                    background-color: $primarycolor;
                 }
-
+    
+                p {
+                    .fa-solid {
+                        margin-left: 5px;
+                        color: $primarycolor;
+                        margin-top: 10px;
+                        transition: 0.4s;
+                    }
+    
+                }
             }
         }
+
 
         .fa-solid:hover {
             transform: translateY(-2px);
