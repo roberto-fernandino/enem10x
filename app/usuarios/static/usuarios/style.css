@@ -179,6 +179,21 @@ h1 {
 .account-form form .form-container {
   display: grid;
   justify-content: center;
+  background-color: #fff;
+  padding-top: 80px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 80px;
+  top: 50%;
+  left: 50%;
+  border-radius: 8px;
+}
+.account-form form .form-container .login-title {
+  font-family: "Poppins";
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  color: #1B263B;
 }
 .account-form form .form-container input {
   width: 250px;
@@ -186,15 +201,15 @@ h1 {
 .account-form form .form-container .col-auto span {
   color: #0D1B2A;
 }
-.account-form form .form-button {
+.account-form form .form-container .form-button {
   display: grid;
   align-items: center;
 }
-.account-form form .form-button .btn {
+.account-form form .form-container .form-button .btn {
   color: white;
   background-color: #1B263B;
 }
-.account-form form .form-button p .fa-solid {
+.account-form form .form-container .form-button p .fa-solid {
   margin-left: 5px;
   color: #1B263B;
   margin-top: 10px;
