@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'enem10x.wsgi.application'
 
 
 #postgress
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
@@ -96,17 +96,17 @@ DATABASES = {
         'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
-'''
+
 
 #sqlite3
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
 
     }
-}
+}'''
 
 
 
@@ -184,3 +184,8 @@ JAZZMIN_SETTINGS = {
     "changeform_format": "collapsible",
 }
 
+# CELERY -> REDIS
+
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"

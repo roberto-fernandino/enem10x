@@ -48,4 +48,4 @@ ENV PATH="/scripts:/venv/bin:$PATH"
 
 USER admin
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["commands.sh"]
