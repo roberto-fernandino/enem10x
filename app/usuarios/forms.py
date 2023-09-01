@@ -11,7 +11,7 @@ class AccountCreationForm(forms.ModelForm):
         "size": "40",
         "name": "email",
         "required": True,
-        "placeholder" : "nome@email.com",
+        "placeholder" : "nome@email.com* ",
     }))
     nome = forms.CharField(label="Nome", widget=forms.TextInput(attrs={
         "class": "form-control mb-3",
@@ -19,27 +19,27 @@ class AccountCreationForm(forms.ModelForm):
         "maxlength": 30,
         "minlength": 3,
         "required": True,
-        "placeholder": "Nome Completo"
+        "placeholder": "Nome Completo*"
     }))
     telefone = forms.CharField(label="Telefone", widget=forms.TextInput(attrs={
         "class": "form-control mb-3",
         "name": "telefone",
-        "maxlenght": 13,
+        "maxlength": 13,
         "minlength": 11,
         "id":"telefone",
-        "placeholder": "telefone",
+        "placeholder": "telefone*",
         "required": True,
     }))
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput(attrs={
         "class": "form-control mb-3",
-        "placeholder": "password",
+        "placeholder": "password*",
         "required": True,
 
         
     }))
     password2 = forms.CharField(label="Confirme Senha", widget=forms.PasswordInput(attrs={
         "class": "form-control mb-3",
-        "placeholder": "confirm password",
+        "placeholder": "confirm password*",
         "required": True,
 
     }))
@@ -51,7 +51,7 @@ class AccountCreationForm(forms.ModelForm):
     }))
     cpf = forms.CharField(label="cpf", widget=forms.TextInput(attrs={
         "class": "form-control mb-3",
-        "placeholder": "cpf",
+        "placeholder": "cpf*",
         "id": "cpf",
         "required": True,
 
@@ -66,12 +66,12 @@ class AccountCreationForm(forms.ModelForm):
             'cpf',
         ]
 
-    def clean_passwords(self):
+    def clean_password2(self):
         "checa as duas senhas"
         password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
         if password2 and password2 and (password1 != password2):
-            raise ValidationError("As duas senhas nao conferem.")
+            self.add_error("password2","As duas senhas nao conferem.")
         return password2
     
     def save(self, commit=True):

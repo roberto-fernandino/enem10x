@@ -1,55 +1,42 @@
 {% extends 'static/user-form-base.html' %} {% block title %} Signup {% endblock %} 
-
-
-{% load static %}
-{% block content %}
-<link rel="stylesheet" href="{% static 'usuarios/style.css' %}">
+{% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <div class="account-form">
   {% if form.errors %}
   <div class="form-message">
     {% for field, error in form.errors.items %}
-        <div> {{field}}: {{ error|first }}</div>
+    <div>{{field}}: {{ error|first }}</div>
     {% endfor %}
   </div>
   {% endif %}
   <form action="{% url 'usuarios:signup' %}" method="post">
     {% csrf_token %}
     <div class="form-container">
-
+      <h1 class="form-title">Cadastro</h1>
+      <div class="input">{{ form.email }}</div>
+      <div class="input">{{ form.nome }}</div>
+      <div class="input">{{ form.telefone }}</div>
+      <div class="input">{{ form.password1 }}</div>
+      <div class="input">{{ form.password2 }}</div>
+      <div class="input">{{ form.data_nascimento }}</div>
+      <div class="input">{{ form.cpf }}</div>
       <div class="input">
-        {{ form.email }}
+        <label for="termos" >Voce concorda com os <a class="no-text-decoration" href="">Termos termos de uso</a>e política de privacidade?</label>
+        <input type="checkbox" name="termos" required>
       </div>
-      <div class="input">
-        {{ form.nome }}
+      <div class="form-button">
+        <button value="Cadastrar" type="submit" class="btn btn-primary">
+          Cadastrar
+        </button>
+      </div>
     </div>
-    <div class="input">
-      {{ form.telefone }}
-    </div>
-    <div class="input">
-      {{ form.password1 }}
-    </div>
-    <div class="input">
-      {{ form.password2 }}
-    </div>
-    <div class="input">
-      {{ form.data_nascimento }} 
-    </div>
-    <div class="input">
-      {{ form.cpf }}
-    </div>
-  </div>
-  <div class="form-button">
-    <button value="Cadastrar" type="submit" class="btn btn-primary">Cadastrar</button>
-  </div>
   </form>
 </div>
-{% endblock %}
-{% block javascripts %}
+{% endblock %} {% block javascripts %}
 <script>
   $(document).ready(function () {
     $("#cpf").mask("000.000.000-00", { reverse: true });
-    $("#telefone").mask('(00) 00000-0000');
+    $("#telefone").mask("(00) 00000-0000");
   });
-  
 </script>
 {% endblock %}

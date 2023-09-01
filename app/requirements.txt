@@ -20,6 +20,7 @@ psycopg2-binary==2.9.7
 PyPDF2==3.0.1
 python-docx==0.8.11
 requests==2.31.0
+redis==5.0.0
 sqlparse==0.4.4
 tqdm==4.66.1
 urllib3==2.0.4

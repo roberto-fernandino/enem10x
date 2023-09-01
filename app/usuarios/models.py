@@ -88,9 +88,13 @@ class Account(AbstractBaseUser, PermissionsMixin):
     telefone = models.CharField(max_length=15, default=None, blank=False, null=True)
     data_nascimento = models.DateField(blank=False, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
-    is_aluno = models.BooleanField(default=True, verbose_name="Aluno")
-    
 
+    # Tags , account type.
+    is_aluno = models.BooleanField(default=False, verbose_name="Aluno")
+    is_professor = models.BooleanField(default=False, verbose_name="Professor")
+    is_verified = models.BooleanField(default=False, verbose_name="Verificado")
+
+    
     # Permissions
     is_admin = models.BooleanField(default=False, verbose_name='admin')
     is_active = models.BooleanField(default=True)
@@ -137,3 +141,4 @@ class MediaGeral(models.Model):
     media_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
     class Meta:
         verbose_name_plural = 'Media Geral'
+

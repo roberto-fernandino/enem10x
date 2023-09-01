@@ -14,33 +14,35 @@ from usuarios.models import MediaGeral
 # CACHE AQUI
 @login_required()
 def notas_graph(request):
-    (
-        data_mat,
-        data_nat,
-        data_lin,
-        data_hum,
-        months_mat,
-        months_nat,
-        months_lin,
-        months_hum,
-    ) = NotaChart(request.user)
-    media_mat, media_nat, media_lin, media_hum = MediaQuery(request.user)
-    context = {
-        "data_mat": data_mat,
-        "months_mat": months_mat,
-        "data_nat": data_nat,
-        "months_nat": months_nat,
-        "data_lin": data_lin,
-        "months_lin": months_lin,
-        "data_hum": data_hum,
-        "months_hum": months_hum,
-        "media_mat": media_mat,
-        "media_nat": media_nat,
-        "media_lin": media_lin,
-        "media_hum": media_hum,
-    }
-    return render(request, "usuarios/notas-graph.html", context)
-
+    if request.user.is_aluno or request.user.is_admin:
+        (
+            data_mat,
+            data_nat,
+            data_lin,
+            data_hum,
+            months_mat,
+            months_nat,
+            months_lin,
+            months_hum,
+        ) = NotaChart(request.user)
+        media_mat, media_nat, media_lin, media_hum = MediaQuery(request.user)
+        context = {
+            "data_mat": data_mat,
+            "months_mat": months_mat,
+            "data_nat": data_nat,
+            "months_nat": months_nat,
+            "data_lin": data_lin,
+            "months_lin": months_lin,
+            "data_hum": data_hum,
+            "months_hum": months_hum,
+            "media_mat": media_mat,
+            "media_nat": media_nat,
+            "media_lin": media_lin,
+            "media_hum": media_hum,
+        }
+        return render(request, "usuarios/notas-graph.html", context)
+    else:
+        return redirect('usuarios/assinar-aluno.html')
 
 @login_required()
 def filter_graph_time(request):

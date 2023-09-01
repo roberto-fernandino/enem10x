@@ -12,7 +12,7 @@
         {% endif %}
         {% csrf_token %}
         <div class="form-container" >
-            <h1 class="login-title">Login</h1>
+            <h1 class="form-title">Login</h1>
             <div class="input">
                 <input type="email" name="email" maxlength="150"  class="form-control mb-3" placeholder="name@gmail.com" required/>
             </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-auto">
                 <span id="passwordHelpInline" class="form-text">
-                  Must be 8-50 characters long.
+                Deve ter de 8-128 caracteres
                 </span>
             </div>
             <div class="form-button mt-3">
