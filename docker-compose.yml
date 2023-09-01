@@ -26,10 +26,11 @@ services:
       - .env
   celery:
     restart: always
+    container_name: celery1
     build:
       context: .
       # DEBUG ONLY FOR DEVELOPMENT
-    command: celery -A django_app worker -l DEBUG
+    command: celery -A enem10x worker -l DEBUG
     volumes:
       - ./app:/app
     depends_on:
