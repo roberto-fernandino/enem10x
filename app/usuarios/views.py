@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from usuarios.funcs import NotaChart, NotaFilteredChart, MediaQuery
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from usuarios.forms import AccountCreationForm
+from usuarios.forms import AccountCreationForm, CriarTurmaForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
-from django.http import JsonResponse
-from usuarios.models import MediaGeral
-
+from django.http import JsonResponse, HttpResponseForbidden
+from usuarios.models import MediaGeral, Turma, Professor, Aluno
+from usuarios.decorators import user_has_tag
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -42,9 +43,13 @@ def notas_graph(request):
         }
         return render(request, "usuarios/notas-graph.html", context)
     else:
-        return redirect('usuarios/assinar-aluno.html')
+        return HttpResponseForbidden('Voce nao tem autorizacao de acessar essa pagina')
 
-@login_required()
+@login_required
+def user_view(request):
+    return render(request, 'static/user-base.html')
+
+@login_required
 def filter_graph_time(request):
     months = request.GET.get("filter", None)
     months = int(months) if months else None
@@ -113,6 +118,53 @@ def signup(request, *args, **kwargs):
     }
     return render(request, "usuarios/signup.html", context)
 
+
+@login_required
+def turmas_view(request):
+    if request.user.is_professor:
+        professor = Professor.objects.get(usuario=request.user)
+        turmas = Turma.objects.filter(professores=professor)
+        context = {
+            'turmas':turmas,
+            'professor': professor
+            }
+        return render(request, "usuarios/turmas.html", context)
+    else:
+        return HttpResponseForbidden("saia")
+    
+
+@login_required
+@user_has_tag('is_professor')   
+def criar_turma_view(request):
+    professor = Professor.objects.get(usuario=request.user)
+    if request.method == "POST":
+        form = CriarTurmaForm(professor, request.POST)
+        if form.is_valid():
+            form.save()
+            context = {
+                "form": form,
+                "message": "Turma criada com sucesso!" 
+            }
+            return render(request,  'usuarios/turmas.html', context)
+    form = CriarTurmaForm(professor)
+    context = {
+        "form": form
+    }
+    return render(request, 'usuarios/create-turma.html', context)
+    
+
+@login_required
+@user_has_tag('is_professor')
+def turma_view(request, turma_id):
+    professor = Professor.objects.get(usuario=request.user)
+    turma = get_object_or_404(Turma, id=turma_id)
+
+    if not turma.professores.filter(id=professor.id).exists():
+        return HttpResponseForbidden("Nem tente")
+    context = {
+        "turma": turma
+    }
+    return render(request, 'usuarios/turma.html', context)
 
 @login_required
 def signupsucess(request):

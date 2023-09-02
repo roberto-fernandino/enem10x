@@ -15,9 +15,21 @@ body {
   padding: 0;
 }
 
+/* ==== main user-base div ==== */
+.content {
+  margin-left: 400px;
+}
+
 /*==== filters ====*/
 .filters {
-  margin-left: 500px;
+  margin-left: 330px;
+}
+
+/* ==== filtros para tags ===== */
+/* == links == */
+.no-text-decoration {
+  text-decoration: none;
+  color: #1B263B;
 }
 
 /*==== sidebar ====*/
@@ -178,15 +190,22 @@ h1 {
 }
 .account-form form .form-container {
   display: grid;
-  justify-content: center;
+  justify-items: center;
   background-color: #fff;
   padding-top: 80px;
   padding-left: 80px;
   padding-right: 80px;
   padding-bottom: 80px;
+  justify-items: center2;
   top: 50%;
   left: 50%;
   border-radius: 8px;
+}
+.account-form form .form-container .centered-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 250px;
 }
 .account-form form .form-container .form-title {
   font-family: "Poppins";
@@ -198,6 +217,17 @@ h1 {
 .account-form form .form-container input {
   width: 250px;
 }
+.account-form form .form-container .check-input {
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
+}
+.account-form form .form-container .check-input input {
+  width: 12px;
+}
+.account-form form .form-container .check-input label {
+  margin-right: 5px;
+}
 .account-form form .form-container .col-auto span {
   color: #0D1B2A;
 }
@@ -208,6 +238,7 @@ h1 {
 .account-form form .form-container .form-button .btn {
   color: white;
   background-color: #1B263B;
+  width: 250px;
 }
 .account-form form .form-container .form-button p .fa-solid {
   margin-left: 5px;
@@ -216,6 +247,71 @@ h1 {
   transition: 0.4s;
 }
 .account-form form .fa-solid:hover {
+  transform: translateY(-2px);
+  opacity: 0.6;
+}
+
+/* ==== turmas ==== */
+.turma-create-container {
+  max-width: 400px;
+  margin-top: 15px;
+  background-color: #fbfdff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.turma-create-container button {
+  border: none;
+  border-radius: 6px;
+  background-color: #fbfdff;
+  width: 120px;
+  margin-left: 5px;
+  height: 60px;
+  transition: 0.2s;
+}
+.turma-create-container button a {
+  font-size: 20px;
+  font-family: "Poppins", "sans-serif";
+  font-weight: 400;
+  color: #778da9;
+  width: 100%;
+  height: 100%;
+}
+.turma-create-container button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transform: translateY(-1px);
+}
+
+.turmas-container {
+  max-width: 400px;
+}
+.turmas-container .turma-box {
+  margin-top: 150px;
+  background-color: #fbfdff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  transition: 0.2s;
+  justify-content: center;
+  align-items: center;
+}
+.turmas-container .turma-box .turma-box-link .turma-box-header {
+  color: #415A77;
+}
+.turmas-container .turma-box .turma-box-link .turma-box-header i {
+  font-size: 30px;
+  margin-right: 5px;
+}
+.turmas-container .turma-box .turma-box-link .turma-body {
+  color: #778da9;
+}
+.turmas-container .turma-box:hover {
+  cursor: pointer;
   transform: translateY(-2px);
   opacity: 0.6;
 }

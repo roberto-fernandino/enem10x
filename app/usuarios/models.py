@@ -122,7 +122,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
     def esconde_cpf(self):
         return "*" * 7 + self.cpf[-5:-2] + "-" + self.cpf[-2] + self.cpf[-1]
 
-    
 
 class Notas(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -150,12 +149,23 @@ class MediaGeral(models.Model):
 
 class Professor(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+    alunos = models.IntegerField()
+    total_alunos = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.usuario}"
+
     class Meta:
         verbose_name_plural = "Professores"
 
+    def get_remaining_alunos(self):
+        return (self.total_alunos - self.alunos)
 
 class Aluno(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.usuario}"
 
 
 class Turma(models.Model):
@@ -166,3 +176,6 @@ class Turma(models.Model):
 
     def __str__(self) -> str:
         return f"{self.nome}"
+
+    def get_qtd_alunos(self):
+        return self.alunos.all().count()

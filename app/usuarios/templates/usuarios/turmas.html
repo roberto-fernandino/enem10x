@@ -1,0 +1,39 @@
+{% extends 'static/user-base.html' %} {% block title %} Turmas {% endblock %} 
+{% block content %}
+<style>
+  .alunos-restantes {
+    margin-left: 60px;
+  }
+</style>
+<div class="turma-create-container">
+  <button type="button">
+    <a href="{% url 'usuarios:criar-turma' %}" class="no-text-decoration">
+      Criar turma
+    </a>
+  </button>
+  <div class="alunos-restantes">
+    <span> Alunos restantes : {{ professor.get_remaining_alunos }}</span>
+  </div>
+</div>
+<div class="turmas-container">
+  {% if message %}
+  <div class="message">
+    <div class="alert alert-info">{{ message }}</div>
+  </div>
+  {% endif %} {% for turma in turmas %}
+  <div class="turma-box">
+    <a
+      href="{% url 'usuarios:turma' turma.id %}"
+      class="turma-box-link no-text-decoration"
+    >
+      <div class="turma-box-header">
+        <h2><i class="bi bi-pass"></i>{{ turma.nome }}</h2>
+      </div>
+      <div class="turma-body">
+        <h5>{{ turma.get_qtd_alunos }} Alunos</h5>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

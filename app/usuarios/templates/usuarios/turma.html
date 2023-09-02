@@ -1,0 +1,22 @@
+{% extends 'static/user-base.html' %} {% block title %} Turmas {% endblock %} 
+{% block content %}
+
+<div class="container">
+    <div class="header">
+        <h1>{{ turma.nome }}</h1>
+    </div>
+    <div class="body">
+        <h2>Professores</h2>
+        {% for professor in turma.professores.all %}
+        <span>{{professor }}</span>
+        {% endfor %}
+        <h2>Alunos</h2>
+        {% for aluno in turma.alunos.all %}
+        <span>{{ aluno }}</span>
+        {% endfor %}
+    </div>
+    <div class="footer">
+        <button type="button"></button>
+    </div>
+</div>
+{% endblock %}
