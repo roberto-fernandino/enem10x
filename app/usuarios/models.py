@@ -1,20 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from datetime import datetime
 from materiais.models import ProvaCompleta
 from django.utils import timezone
 
+
 # Create your models here.
 class AccountManager(BaseUserManager):
     def create_user(
-            self,
-            email,
-            nome,
-            telefone,
-            cpf,
-            data_nascimento,
-            data_criacao,
-            password=None,
+        self,
+        email,
+        nome,
+        telefone,
+        cpf,
+        data_nascimento,
+        data_criacao,
+        password=None,
     ):
         # User managemnt
         if not email:
@@ -39,16 +44,16 @@ class AccountManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
     def create_superuser(
-            self,
-            email,
-            nome,
-            telefone,
-            cpf,
-            data_nascimento,
-            data_criacao=datetime.now(),
-            password=None,
+        self,
+        email,
+        nome,
+        telefone,
+        cpf,
+        data_nascimento,
+        data_criacao=datetime.now(),
+        password=None,
     ):
         # User managemnt
         if not email:
@@ -78,8 +83,6 @@ class AccountManager(BaseUserManager):
         return user
 
 
-
-
 class Account(AbstractBaseUser, PermissionsMixin):
     # Fields para usuario
     email = models.EmailField(max_length=255, unique=True)
@@ -93,35 +96,34 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_aluno = models.BooleanField(default=False, verbose_name="Aluno")
     is_professor = models.BooleanField(default=False, verbose_name="Professor")
     is_verified = models.BooleanField(default=False, verbose_name="Verificado")
+    is_newsletter = models.BooleanField(default=True, verbose_name="Newsletter")
 
-    
     # Permissions
-    is_admin = models.BooleanField(default=False, verbose_name='admin')
+    is_admin = models.BooleanField(default=False, verbose_name="admin")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
     # Sent object to AccountManager to create user
     objects = AccountManager()
-    
-    USERNAME_FIELD = 'email'
+
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "cpf", "telefone", "data_nascimento"]
 
     def __str__(self):
         return f"{self.nome}"
-    
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
-    
+
     def has_module_perms(self, app_label: str) -> bool:
         return True
-    
+
     def esconde_cpf(self):
-        return "*" * 7 +  self.cpf[-5:-2] + '-' + self.cpf[-2] + self.cpf[-1]
-    
-
+        return "*" * 7 + self.cpf[-5:-2] + "-" + self.cpf[-2] + self.cpf[-1]
 
     
+
 class Notas(models.Model):
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
     data_calculada = models.DateField(default=timezone.now, null=True, blank=False)
@@ -129,8 +131,10 @@ class Notas(models.Model):
     nota_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
     nota_linguagens = models.FloatField(default=None, null=True, blank=True)
     nota_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
+
     class Meta:
-        verbose_name_plural = 'Notas provas'
+        verbose_name_plural = "Notas provas"
+
 
 class MediaGeral(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
@@ -139,6 +143,26 @@ class MediaGeral(models.Model):
     media_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
     media_linguagens = models.FloatField(default=None, null=True, blank=True)
     media_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
-    class Meta:
-        verbose_name_plural = 'Media Geral'
 
+    class Meta:
+        verbose_name_plural = "Media Geral"
+
+
+class Professor(models.Model):
+    usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name_plural = "Professores"
+
+
+class Aluno(models.Model):
+    usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+
+
+class Turma(models.Model):
+    nome = models.CharField(max_length=180, unique=True)
+    professores = models.ManyToManyField(Professor)
+    alunos = models.ManyToManyField(Aluno)
+    data_criada = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.nome}"
