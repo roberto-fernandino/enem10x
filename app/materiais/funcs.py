@@ -9,6 +9,12 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def conteudo(arquivo):
+    doc = docx.Document(arquivo)
+    
+
+
+
 def alternativas(arquivo):
     doc = docx.Document(arquivo)
     texto_completo = "\n".join(

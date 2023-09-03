@@ -25,14 +25,12 @@ header .navbar .navbar-toggler .navbar-toggler-icon {
   color: white;
 }
 
-body {
-  background-color: rgb(99, 99, 99);
-}
 body .subtitulos {
   color: #1B263B;
   text-align: center;
   padding-top: 50px;
   font-size: 22px;
+  margin-top: 50px;
 }
 body main {
   margin-bottom: 200px;
@@ -40,12 +38,15 @@ body main {
 body main .container {
   display: flex;
   align-items: start;
-  background-color: #1B263B;
+  background-color: #0D1B2A;
   box-shadow: 4px 2px 4px 2px #E0E1DD;
   border-radius: 35px;
 }
+body main .container .list-group-item {
+  border-radius: 10px;
+}
 body main .container .card {
-  background-color: #1B263B;
+  background-color: #0D1B2A;
   margin: 20px;
   padding-right: 15px;
   padding-left: 15px;
@@ -67,7 +68,7 @@ body main .container .card .card-body .container-text {
 
 /* Começo Pé do site */
 .pedosite {
-  position: fixed;
+  position: relative;
   bottom: 0;
   display: grid;
   justify-content: center;

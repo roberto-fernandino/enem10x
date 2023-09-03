@@ -39,23 +39,26 @@ header{
         
 
 body {
-    background-color: rgb(99, 99, 99);
     .subtitulos{
             color: $primarycolor;
             text-align: center;
             padding-top: 50px;
             font-size: 22px;
+            margin-top: 50px;
         }
     main{
         margin-bottom: 200px;
     .container {
         display: flex;
         align-items: start;
-        background-color: $primarycolor;
+        background-color: $details;
         box-shadow: 4px 2px 4px 2px $shadowcolor;
         border-radius: 35px;
+        .list-group-item{
+            border-radius: 10px;
+        }
         .card{
-            background-color: $primarycolor;
+            background-color: $details;
             margin: 20px;
             padding-right: 15px;
             padding-left: 15px;
@@ -85,7 +88,7 @@ body {
 
 /* Começo Pé do site */
 .pedosite {
-    position:fixed ;
+    position: relative ;
     bottom: 0;
     display: grid;
     justify-content: center;
