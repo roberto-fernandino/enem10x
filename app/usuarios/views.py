@@ -258,5 +258,7 @@ def sair_turma_aluno(request, turma_id, aluno_id):
     aluno = Aluno.objects.get(id=aluno_id)
     turma = Turma.objects.get(id=turma_id)
     turma.alunos.remove(aluno)
+    turma.criador.alunos -= 1
+    turma.criador.save()
     messages.add_message(request, messages.SUCCESS, f"Voce saiu da turma {turma.nome} com sucesso!")
     return redirect('usuarios:aluno-turmas')

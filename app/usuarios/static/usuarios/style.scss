@@ -336,22 +336,24 @@ h1 {
         width: 120px;
         margin-left: 5px;
         height: 60px;
+        display: flex;
         transition: 0.2s;
         a{
             font-size: 20px;
-            font-family: 'Poppins', 'sans-serif';
+            font-family: "Poppins", "sans-serif";
             font-weight: 400;
-            color: $background-color;
+            color: #778da9;
             width: 100%;
+            padding: 15px;
             height: 100%;
         }
+    }
     }
     button:hover{
         cursor: pointer;
         opacity: 0.6;
         transform: translateY(-1px);
     }
-}
 .turmas-container {
     max-width: 400px;
     margin-left: 400px;
