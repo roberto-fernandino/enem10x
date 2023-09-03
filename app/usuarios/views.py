@@ -8,6 +8,7 @@ from materiais.models import ProvaCompleta
 from django.http import JsonResponse, HttpResponseForbidden
 from usuarios.models import MediaGeral, Turma, Professor, Aluno
 from usuarios.decorators import user_has_tag
+from uuid import uuid4
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
@@ -120,10 +121,10 @@ def signup(request, *args, **kwargs):
 
 
 @login_required
-def turmas_view(request):
+def professor_turmas_view(request):
     if request.user.is_professor:
         professor = Professor.objects.get(usuario=request.user)
-        turmas = Turma.objects.filter(professores=professor)
+        turmas = professor.turmas.all()
         context = {
             'turmas':turmas,
             'professor': professor
@@ -132,21 +133,34 @@ def turmas_view(request):
     else:
         return HttpResponseForbidden("saia")
     
+@login_required
+def aluno_turmas_view(request):
+    if request.user.is_aluno:
+        aluno = Aluno.objects.get(usuario=request.user)
+        turmas = Turma.objects.filter(alunos=aluno)
+        context = {
+            'turmas':turmas,
+            'aluno': aluno
+            }
+        return render(request, "usuarios/turmas.html", context)
+    else:
+        return HttpResponseForbidden("Forbidden, don't try again.")
+    
 
 @login_required
 @user_has_tag('is_professor')   
 def criar_turma_view(request):
-    professor = Professor.objects.get(usuario=request.user)
+    professor_criador = Professor.objects.get(usuario=request.user)
     if request.method == "POST":
-        form = CriarTurmaForm(professor, request.POST)
+        form = CriarTurmaForm(professor_criador, request.POST)
         if form.is_valid():
-            form.save()
-            context = {
-                "form": form,
-                "message": "Turma criada com sucesso!" 
-            }
-            return render(request,  'usuarios/turmas.html', context)
-    form = CriarTurmaForm(professor)
+            turma = form.save()
+            turma.codigo = uuid4()
+            turma.criador = professor_criador
+            turma.save()
+            messages.add_message(request, messages.SUCCESS, 'Turma criada com sucesso')
+            return redirect('usuarios:professor-turmas')
+    form = CriarTurmaForm(professor_criador)
     context = {
         "form": form
     }
@@ -155,12 +169,25 @@ def criar_turma_view(request):
 
 @login_required
 @user_has_tag('is_professor')
-def turma_view(request, turma_id):
+def professor_turma_view(request, turma_id):
     professor = Professor.objects.get(usuario=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
 
     if not turma.professores.filter(id=professor.id).exists():
         return HttpResponseForbidden("Nem tente")
+    context = {
+        "turma": turma,
+        "professor":professor,
+    }
+    return render(request, 'usuarios/turma.html', context)
+
+@login_required
+@user_has_tag('is_aluno')
+def aluno_turma_view(request, turma_id):
+    aluno = Aluno.objects.get(usuario=request.user)
+    turma = get_object_or_404(Turma, id=turma_id)
+    if not turma.alunos.filter(id=aluno.id).exists():
+        return HttpResponseForbidden("403 Forbidden")
     context = {
         "turma": turma
     }
@@ -170,7 +197,65 @@ def turma_view(request, turma_id):
 def signupsucess(request):
     return render(request, "usuarios/signup-sucess.html")
 
-
+@login_required
 def logout_view(request):
     logout(request)
     return redirect("home:home")
+
+@login_required
+def entra_turma(request):
+    if request.user.is_aluno or request.user.is_professor:
+        usuario = request.user
+        if request.method == "POST":
+            codigo = request.POST['codigo']
+            turma = get_object_or_404(Turma, codigo=codigo)               
+            if  request.user.is_aluno:
+                aluno = Aluno.objects.get(usuario=usuario)
+                if turma.criador.get_remaining_alunos() <= 0:
+                    messages.add_message(request, messages.ERROR,"Esse professor ja atingiu seu limite de alunos" )
+                    return render(request,"usuarios/erro.html")
+                else:
+                    turma.alunos.add(aluno)
+                    turma.criador.alunos += 1
+                    turma.criador.save()
+                    messages.add_message(request, messages.SUCCESS, f"{usuario.nome} voce entrou na turma com sucesso")
+                    return redirect('usuarios:aluno-turmas')
+            if request.user.is_professor:
+                professor = Professor.objects.get(usuario=usuario)
+                turma.professores.add(professor)
+                messages.add_message(request, messages.SUCCESS, "Entrou na conta com sucesso {}")
+                return redirect('usuarios:professor-turmas')
+        return render(request, 'usuarios/entrar-turma.html')
+    else:
+        return HttpResponseForbidden("Você não tem permissão para acessar esta página. Esse acesso será rastreado..")
+    
+@login_required
+def delete_turma(request, turma_id):
+    turma = Turma.objects.get(id=turma_id)
+    turma.delete()
+    return redirect('usuarios:professor-turmas')
+
+@login_required
+@user_has_tag('is_professor')
+def remover_aluno(request, turma_id , aluno_id):
+    usuario = request.user
+    turma = get_object_or_404(Turma,id=turma_id)
+    criador = turma.criador
+    if usuario == criador.usuario:
+        aluno = Aluno.objects.get(id=aluno_id)
+        turma.alunos.remove(aluno)
+        criador.alunos -= 1
+        criador.save()
+    else:
+        return HttpResponseForbidden("Usuario nao é o criador da turma.")
+    messages.add_message(request, messages.SUCCESS, "Aluno removido com sucesso.")
+    return redirect('usuarios:professor-turma', turma_id)
+
+@login_required
+@user_has_tag('is_aluno')
+def sair_turma_aluno(request, turma_id, aluno_id):
+    aluno = Aluno.objects.get(id=aluno_id)
+    turma = Turma.objects.get(id=turma_id)
+    turma.alunos.remove(aluno)
+    messages.add_message(request, messages.SUCCESS, f"Voce saiu da turma {turma.nome} com sucesso!")
+    return redirect('usuarios:aluno-turma')

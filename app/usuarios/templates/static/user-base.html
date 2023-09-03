@@ -100,9 +100,15 @@
               <span class="text nav-text">Simulados</span>
             </a>
           </li>
+          <li class="nav-link">
+            <a href="{% url 'usuarios:aluno-turmas' %}">
+              <i class='bx bx-library'></i>
+              <span class="text nav-text">Salas</span>
+            </a>
+          </li>
           {% endif %} {% if user.is_professor %}
           <li class="nav-link">
-            <a href="{% url 'usuarios:turmas' %}">
+            <a href="{% url 'usuarios:professor-turmas' %}">
               <i class="bi bi-people"></i>
               <span class="text nav-text">Turmas</span>
             </a>
@@ -111,12 +117,6 @@
             <a href="">
               <i class="bx bx-test-tube"></i>
               <span class="text nav-text">Provas</span>
-            </a>
-          </li>
-          <li class="nav-link">
-            <a href="">
-              <i class="bx bx-test-tube"></i>
-              <span class="text nav-text">Alunos</span>
             </a>
           </li>
           {% endif %}

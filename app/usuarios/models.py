@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 from datetime import datetime
 from materiais.models import ProvaCompleta
 from django.utils import timezone
-
+import uuid
 
 # Create your models here.
 class AccountManager(BaseUserManager):
@@ -149,8 +149,8 @@ class MediaGeral(models.Model):
 
 class Professor(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
-    alunos = models.IntegerField()
-    total_alunos = models.IntegerField()
+    alunos = models.IntegerField(default=0)
+    total_alunos = models.IntegerField(default=60)
 
     def __str__(self) -> str:
         return f"{self.usuario}"
@@ -170,9 +170,11 @@ class Aluno(models.Model):
 
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)
-    professores = models.ManyToManyField(Professor)
+    professores = models.ManyToManyField(Professor, related_name='turmas')
+    criador = models.ForeignKey(Professor, default=None, null=True, related_name='criador_turma', on_delete=models.CASCADE)
     alunos = models.ManyToManyField(Aluno)
     data_criada = models.DateTimeField(auto_now_add=True)
+    codigo = models.UUIDField(default=uuid.uuid4, unique=True)
 
     def __str__(self) -> str:
         return f"{self.nome}"

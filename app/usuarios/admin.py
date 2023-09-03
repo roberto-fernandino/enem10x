@@ -57,6 +57,7 @@ class AccountAdmin(BaseUserAdmin):
                     "nome",
                     "data_nascimento",
                     "cpf",
+                    "telefone",
                     "password1",
                     "password2",
                 ],
@@ -165,7 +166,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
 
 
 class TurmaAdmin(admin.ModelAdmin):
-    list_display = ["nome"]
+    list_display = ["nome", "id"]
     fieldssets = (
         ("Alunos", {"fields": ["alunos"]}),
         ("Professores", {"fields": ["professores"]}),

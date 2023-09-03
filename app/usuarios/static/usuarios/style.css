@@ -286,6 +286,10 @@ h1 {
 
 .turmas-container {
   max-width: 400px;
+  margin-left: 400px;
+}
+.turmas-container .message {
+  margin-top: 21px;
 }
 .turmas-container .turma-box {
   margin-top: 150px;
@@ -314,6 +318,11 @@ h1 {
   cursor: pointer;
   transform: translateY(-2px);
   opacity: 0.6;
+}
+
+/* ==== codigo-form ====*/
+.codigo-container {
+  margin-top: 200px;
 }
 
 /*# sourceMappingURL=style.css.map */

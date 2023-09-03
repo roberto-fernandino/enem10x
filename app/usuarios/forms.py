@@ -172,7 +172,6 @@ class CriarTurmaForm(forms.ModelForm):
         model = Turma
         fields = [
             'nome',
-
         ]
 
     def save(self, commit=True):
@@ -180,4 +179,5 @@ class CriarTurmaForm(forms.ModelForm):
         if commit:
             turma.save()
             turma.professores.add(self.professor)
+        return turma
         
