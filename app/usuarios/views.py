@@ -189,7 +189,8 @@ def aluno_turma_view(request, turma_id):
     if not turma.alunos.filter(id=aluno.id).exists():
         return HttpResponseForbidden("403 Forbidden")
     context = {
-        "turma": turma
+        "turma": turma,
+        "aluno": aluno,
     }
     return render(request, 'usuarios/turma.html', context)
 
@@ -218,7 +219,7 @@ def entra_turma(request):
                     turma.alunos.add(aluno)
                     turma.criador.alunos += 1
                     turma.criador.save()
-                    messages.add_message(request, messages.SUCCESS, f"{usuario.nome} voce entrou na turma com sucesso")
+                    messages.add_message(request, messages.SUCCESS, f"{usuario.nome} voce entrou na {turma.nome} com sucesso!")
                     return redirect('usuarios:aluno-turmas')
             if request.user.is_professor:
                 professor = Professor.objects.get(usuario=usuario)
@@ -258,4 +259,4 @@ def sair_turma_aluno(request, turma_id, aluno_id):
     turma = Turma.objects.get(id=turma_id)
     turma.alunos.remove(aluno)
     messages.add_message(request, messages.SUCCESS, f"Voce saiu da turma {turma.nome} com sucesso!")
-    return redirect('usuarios:aluno-turma')
+    return redirect('usuarios:aluno-turmas')

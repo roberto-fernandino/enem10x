@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -138,10 +139,10 @@ class Notas(models.Model):
 class MediaGeral(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
     data_atualizada = models.DateTimeField(auto_now=True)
-    media_matematica = models.FloatField(default=None, null=True, blank=True)
-    media_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
-    media_linguagens = models.FloatField(default=None, null=True, blank=True)
-    media_ciencias_humanas = models.FloatField(default=None, null=True, blank=True)
+    media_matematica = models.FloatField(default=0, null=True, blank=True)
+    media_ciencias_natureza = models.FloatField(default=0, null=True, blank=True)
+    media_linguagens = models.FloatField(default=0, null=True, blank=True)
+    media_ciencias_humanas = models.FloatField(default=0, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Media Geral"
@@ -163,10 +164,13 @@ class Professor(models.Model):
 
 class Aluno(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
-
+    
     def __str__(self) -> str:
         return f"{self.usuario}"
-
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        MediaGeral.objects.get_or_create(usuario=self.usuario)
 
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)

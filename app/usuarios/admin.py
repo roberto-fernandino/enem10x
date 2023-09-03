@@ -179,8 +179,8 @@ class AlunoAdmin(admin.ModelAdmin):
 
 
 class ProfessorAdmin(admin.ModelAdmin):
-    list_display = ["usuario"]
-    fieldssets = (("Professor", {"fields": ["usuario"]}),)
+    list_display = ["usuario", "alunos", "total_alunos"]
+    fieldssets = (("Professor", {"fields": ["usuario", "alunos", "total_alunos"]}),)
 
 
 admin.site.register(Aluno, AlunoAdmin)
