@@ -37,6 +37,33 @@ body .subtitulos {
 body main {
   margin-bottom: 200px;
 }
+body main .container {
+  display: flex;
+  align-items: start;
+  background-color: #1B263B;
+  box-shadow: 4px 2px 4px 2px #E0E1DD;
+  border-radius: 35px;
+}
+body main .container .card {
+  background-color: #1B263B;
+  margin: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+body main .container .card a {
+  text-decoration: none;
+  color: white;
+}
+body main .container .card .card-title {
+  color: white;
+}
+body main .container .card .card-body .container-text {
+  margin-top: 40px;
+  flex: 1;
+  color: white;
+}
 
 /* Começo Pé do site */
 .pedosite {

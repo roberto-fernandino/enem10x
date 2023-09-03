@@ -48,8 +48,39 @@ body {
         }
     main{
         margin-bottom: 200px;
+    .container {
+        display: flex;
+        align-items: start;
+        background-color: $primarycolor;
+        box-shadow: 4px 2px 4px 2px $shadowcolor;
+        border-radius: 35px;
+        .card{
+            background-color: $primarycolor;
+            margin: 20px;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 60px;
+            padding-bottom: 60px;
+            a{ 
+                text-decoration: none;
+                color: $font-color;
+                
+                }
+            .card-title{
+                color: $font-color;
+            }
+            .card-body{
+                .container-text {
+                    margin-top: 40px ;
+                    flex: 1;
+                    color: $font-color;
+                    }
+                }
+            }
+        }
     }
 }
+
 
 
 /* Começo Pé do site */
