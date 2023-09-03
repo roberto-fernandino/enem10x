@@ -4,6 +4,7 @@ from subprocess import run
 
 def adciona_questoes(arquivo:str):
     """Adciona questoes no banco de dadosFormato:
+    conteudo,
     enunciado,
     imagem,
     opcao correta"""
