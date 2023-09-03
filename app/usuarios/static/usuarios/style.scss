@@ -339,13 +339,13 @@ h1 {
         display: flex;
         transition: 0.2s;
         a{
-            font-size: 20px;
+            font-size: 16px;
             font-family: "Poppins", "sans-serif";
             font-weight: 400;
             color: #778da9;
-            width: 100%;
-            padding: 15px;
-            height: 100%;
+            max-width: 100%;
+            padding: 12px;
+            max-height: 100%;
         }
     }
     }
