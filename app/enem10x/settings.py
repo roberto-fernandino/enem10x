@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'enem10x.wsgi.application'
 
 
 #postgress
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
@@ -96,10 +96,10 @@ DATABASES = {
         'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
-'''
+
 
 #sqlite3
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -107,7 +107,7 @@ DATABASES = {
 
     }
 }
-
+'''
 
 
 # Password validation

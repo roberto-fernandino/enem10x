@@ -18,6 +18,7 @@ class AccountAdmin(BaseUserAdmin):
         "data_criacao",
         "is_aluno",
         "is_professor",
+        "id",
     ]
 
     fieldsets = (
