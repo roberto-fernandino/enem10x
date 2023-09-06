@@ -7,44 +7,19 @@ import os
 import re
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-PATTERN_SUP_TAG = re.compile(r"(\d+(\.\d+)?x10\s*)(\-?\d+)")
 PATTERN_CONTEUDO = re.compile(r"(.+?) / ?(.+?)\n")
 
 
-'''def get_conteudos(texto_extraido_do_docx_com_conteudos_aplicados: str) -> list:
-    conteudo_global = []
-    sub_subconteudo_global = []
-    texto_completo = texto_extraido_do_docx_com_conteudos_aplicados
-
-    # Dividir texto pelo marcador "Conteudo"
-    conteudos = texto_completo.split("Conteudo:")[1:]  # ignora o primeiro fragmento
-    for num, conteudo in enumerate(conteudos, 1):
-        # Dicionário para armazenar o conteudo de cada questão
-        conteudo_questao = {}
-
-        # O fim do conteudo informado como  ;
-        fim = conteudo.find(";")
-
-        # Armazenazenando o Conteudo das questões
-        conteudo_questao["conteudo"] = conteudo[:fim].strip()
-
-        # Adiciona este dicionário ao conteúdo global
-        conteudo_global.append(conteudo_questao)
-
-    for index, conteudo in enumerate(conteudo_global):
-        sub_conteudo = conteudo["conteudo"].split("/")
-        sub_subconteudo_global.append(sub_conteudo)
-
-    return sub_subconteudo_global
-'''
+def replace_in_runs(paragraph, pattern, replacement):
+    for run in paragraph.runs:
+        if pattern.search(run.text):
+            print(f"Encontrado em {run.text}")
+            run.text = pattern.sub(replacement, run.text)
 
 
-# print(get_conteudos('app/leitores/questionsfinal.docx'))
-
-
-def alternativas(text_after_docx_to_str_with_conteudos_aplicados):
+def extrai_alternativas(text_after_docx_to_str_with_conteudos_aplicados):
     # Todo paragrafo existente no documento sendo adicionado a variavel
-    texto_completo  = text_after_docx_to_str_with_conteudos_aplicados
+    texto_completo = text_after_docx_to_str_with_conteudos_aplicados
     # Dividindo todos paragrafos por questão, Assim salvando apenas a Questão, enunciado e alternativas
     questoes = texto_completo.split("Questão")[1:]
     # Lista de dicionarios, com alternativas de cada questão, um dicionario por questão
@@ -98,14 +73,10 @@ def alternativas(text_after_docx_to_str_with_conteudos_aplicados):
     return alternativas_global  # Retorna alternativa_global
 
 
-
-
 # print(alternativas('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
-def extrair_enunciados(arquivo):
+def extrair_enunciados(doc_obj):
     lista_enunciados = []
-
-    doc = docx.Document(arquivo)
-    texto_completo = "\n".join([paragrafo.text for paragrafo in doc.paragraphs])
+    texto_completo = "\n".join([paragrafo.text for paragrafo in doc_obj.paragraphs])
 
     questoes = re.split("Questão-\d+", texto_completo)[1:]
 
@@ -134,8 +105,11 @@ def extrair_enunciados(arquivo):
 
 
 def define_image_path(instance, filename: str) -> str:
-    ext = os.path.splitext(filename)[1]
-    filename = f'enem.{ext.lstrip(".")}'
+    """
+    Define path para questoes que serao adcionadas.
+    """
+    ext = os.path.splitext(filename)[-1]
+    filename = f"questao_{instance.questao.indentificador_unico}.{ext}"
     return Path(f"questoes/{filename}png")
 
 
@@ -168,27 +142,11 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
 
 
 def procura_imagens() -> list:
-    '''
-    Lista todas as imagens atualmente no diretorio de imagens e retorna uma lista contendo todas elas'''
+    """
+    Lista todas as imagens atualmente no diretorio de imagens e retorna uma lista contendo todas elas
+    """
     imagens = os.listdir(f"{BASE_DIR}/media/imagens")
     return imagens
-
-
-def apply_sup_tags(doc_obj, doc_path):
-    """
-    Aplica suptags em notacoes cientificas, e salva no arquivo.docx.
-    """
-    for paragraph in doc_obj.paragraphs:
-        new_text = paragraph.text
-        for match in re.finditer(PATTERN_SUP_TAG, paragraph.text):
-            whole, base, expoente = match.group(0), match.group(1), match.group(3)
-            if "<sup>" not in whole:
-                new_text = new_text.replace(whole, f"{base}<sup>{expoente}</sup>")
-        for run in paragraph.runs:
-            run.clear()
-
-        paragraph.add_run(new_text)
-    doc_obj.save(doc_path)
 
 
 def docx_to_text(doc_obj):
@@ -201,36 +159,71 @@ def docx_to_text(doc_obj):
     return "\n".join(full_text)
 
 
-def apply_conteudos(texto_extraido_do_docx_em_string: str) -> str:
-    """
-    Aplica conteudos no texto e retorna uma lista com os conteudos de cada questao em ordem.
-    """
-    texto_modificado = texto_extraido_do_docx_em_string
-    matches = list(PATTERN_CONTEUDO.finditer(texto_extraido_do_docx_em_string))
-    for match in matches:
-       
-        whole, conteudo, sub_conteudo = match.group(0), match.group(1), match.group(2)
-        if len(conteudo) < 50 and len(sub_conteudo) < 50:  
-            replace = f"Conteudo: {conteudo} / {sub_conteudo};\n"
-            texto_modificado = texto_modificado.replace(whole, replace, 1)
-    return texto_modificado
-
-
-def get_conteudos(texto_extraido_do_docx: str) -> list:
+def trata_conteudos(texto_extraido_do_docx: str) -> list:
     matches = PATTERN_CONTEUDO.findall(texto_extraido_do_docx)
-    print(matches)
     sub_subconteudo_global = []
     for match in matches:
         conteudo, sub_conteudo = match[0].strip(), match[1].strip()
-        if len(conteudo) < 70  and len(sub_conteudo) < 70:
+        if len(conteudo) < 70 and len(sub_conteudo) < 70:
             sub_subconteudo_global.append([conteudo, sub_conteudo])
     return sub_subconteudo_global
 
-doc_obj = docx.Document("app/leitores/P002284[1].docx")
-apply_sup_tags(doc_obj=doc_obj, doc_path="app/leitores/P002284[1].docx")
-doc_text_completo = docx_to_text(doc_obj)
-conteudos = get_conteudos(doc_text_completo)
-doc_text_conteudos_aplicados = apply_conteudos(doc_text_completo)
-alternativa_s = alternativas(doc_text_conteudos_aplicados)
-print(alternativa_s, conteudos)
 
+def possui_img_tag(text: str) -> bool:
+    return "[IMG]" in text
+
+
+def checa_imagens_questoes(doc_obj):
+    estamos_no_enunciado = False
+    questoes = []
+    questao = {
+        "imagem_no_enunciado": False,
+        "imagem_na_a": False,
+        "imagem_na_b": False,
+        "imagem_na_c": False,
+        "imagem_na_d": False,
+        "imagem_na_e": False,
+    }
+    for para in doc_obj.paragraphs:
+        texto = para.text
+        if "Questão-" in texto:
+            if questao:
+                questoes.append(questao)
+            questao = {
+            "imagem_no_enunciado": False,
+            "imagem_na_a": False,
+            "imagem_na_b": False,
+            "imagem_na_c": False,
+            "imagem_na_d": False,
+            "imagem_na_e": False,
+            }
+            estamos_no_enunciado = True
+
+        if re.match(r"[a-e]\$", texto):
+            estamos_no_enunciado = False
+
+        counter_img_enunciado = 0
+        if estamos_no_enunciado:
+            if possui_img_tag(texto):
+                counter_img_enunciado += 1
+                questao["imagem_no_enunciado"] = True
+
+        if not estamos_no_enunciado:
+            if "a$" in texto and possui_img_tag(texto):
+                questao["imagem_na_a"] = True
+            if "b$" in texto and possui_img_tag(texto):
+                questao["imagem_na_b"] = True
+            if "c$" in texto and possui_img_tag(texto):
+                questao["imagem_na_c"] = True
+            if "d$" in texto and possui_img_tag(texto):
+                questao["imagem_na_d"] = True
+            if "e$" in texto and possui_img_tag(texto):
+                questao["imagem_na_e"] = True
+    if questao:
+        questoes.append(questao)
+    questoes.pop(0)
+    return questoes
+doc_obj = docx.Document('app/leitores/questoesmat.docx')
+questoes = checa_imagens_questoes(doc_obj)
+for questao in questoes:
+    print(questao)
