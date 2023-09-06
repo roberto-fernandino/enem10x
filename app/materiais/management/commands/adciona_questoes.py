@@ -18,7 +18,7 @@ class Command(BaseCommand):
         if materia:
             print(materia)
             try:
-                adciona_questoes(arquivo=arquivo, materia=materia)
+                adciona_questoes(arquivo_path=arquivo, materia=materia)
                 self.stdout.write(self.style.SUCCESS('Todas questões adicionadas com sucesso!'))
             except Exception as e:
                 print("erro: ", e)
