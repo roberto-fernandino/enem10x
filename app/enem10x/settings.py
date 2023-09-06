@@ -23,7 +23,7 @@ DATA_DIR = BASE_DIR.parent / 'data' / 'web'
 SECRET_KEY = str(getenv("SECRET_KEY", "django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(getenv("DEBUG", 0)))
+DEBUG = bool(int(getenv("DEBUG", 1)))
 
 ALLOWED_HOSTS = [
     h.strip() for h in getenv("ALLOWED_HOSTS",  "").split(',') if h.strip()
