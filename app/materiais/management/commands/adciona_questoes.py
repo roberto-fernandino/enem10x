@@ -16,12 +16,11 @@ class Command(BaseCommand):
         arquivo = kwargs['arquivo'] if kwargs['arquivo'] else None
         materia = kwargs['materia'] if kwargs['materia'] else None
         if materia:
-            print(materia)
             try:
                 adciona_questoes(arquivo_path=arquivo, materia=materia)
                 self.stdout.write(self.style.SUCCESS('Todas questões adicionadas com sucesso!'))
-            except Exception as e:
-                print("erro: ", e)
+            except IndexError:
+                self.stdout.write(self.style.ERROR('Lembre-se de criar o arquivo com os identificadores unicos presente no arquivo, colocar os conteudos em todas as questoes, e transformar as imagens em png.'))
         else:
             self.stdout.write(self.style.ERROR('Iformar uma materia eh obrigatorio. Informe uma materia com --materia <materia>.'))
 

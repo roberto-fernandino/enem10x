@@ -54,13 +54,14 @@ class Tipo(models.Model):
         return f"{self.nome}"
 
 class OpcaoImagem(models.Model):
-    questao = models.OneToOneField("materiais.Questao")
+    questao = models.OneToOneField("materiais.Questao", on_delete=models.CASCADE)
     imagem_a = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_b = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_c = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_d = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_e = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-
+    class Meta:
+        verbose_name_plural = 'Opcoes com imagem'
 
 class Questao(models.Model):
     enunciado = models.TextField(default=None, blank=False, null=True)
@@ -78,13 +79,13 @@ class Questao(models.Model):
         Nivel, on_delete=models.DO_NOTHING, null=True, blank=True, default=None
     )
 
-    indentificador_unico = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    identificador_unico = models.CharField(max_length=20, null=True, blank=True, unique=True)
 
     class Meta:
         verbose_name_plural = "Questoes"
 
     def __str__(self):
-        return f"{self.id} - {self.nivel}"
+        return f"{self.id} - {self.identificador_unico}"
 
 
 
