@@ -1639,6 +1639,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 84	usuarios	0021_turma_criador_alter_turma_codigo_alter_turma_nome_and_more	2023-09-03 09:40:33.682885-03
 85	usuarios	0018_alter_turma_professores	2023-09-03 09:54:13.888521-03
 86	usuarios	0019_alter_professor_alunos_alter_professor_total_alunos	2023-09-03 09:59:23.006516-03
+87	usuarios	0021_alter_mediageral_media_ciencias_humanas_and_more	2023-09-04 23:09:12.547848-03
 \.
 
 
@@ -1658,6 +1659,7 @@ xn673y48lrf423p2kt2z6jtqq1dr7l0f	.eJxVjEEOwiAQRe_C2hCGUqAu3XsGMgODVA0kpV0Z765Nut
 e1kfu3hb5lnq2vr8rkpn9ytrg751jrp6	.eJxVjEEOwiAQRe_C2hCGUqAu3XsGMgODVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwJ3EWIE6_G2F8cN1BumO9NRlbXZeZ5K7Ig3Z5bYmfl8P9OyjYy7fOPGE0biBvYdDgkEzSFjLkEZOOaFAZrZQHy1McnGcgTBx19pzBjiTeH-lfOE0:1qa1cX:R2IQIzfuy6ve6HIJpL5r57sC2AUnzz4RIOF9GA9ncJM	2023-09-02 19:19:05.968443-03
 27sp2mpp7asjfhrikedmivtd81ieho0l	.eJxVjEEOwiAQRe_C2hCGUqAu3XsGMgODVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwJ3EWIE6_G2F8cN1BumO9NRlbXZeZ5K7Ig3Z5bYmfl8P9OyjYy7fOPGE0biBvYdDgkEzSFjLkEZOOaFAZrZQHy1McnGcgTBx19pzBjiTeH-lfOE0:1qaES3:5T4BZ-Elnu30Ywvjx9L7C4o7eR_ip9g7QMeXY9Fl1qU	2023-09-03 09:01:07.362226-03
 gj8ifjnyzajvj8lgm65o204an3nrl8yq	.eJxVjksOgjAURffSsSG8tpTC0LkrMKZ5_UkVKaHFiXHvlgQTnd3cz8l9EYVrHtSa3KKCJT0Bcvj1NJq7m7bA3nC6xsrEKS9BV1ul2tNUnaJ143Hv_gEGTENZe9eh4S3TUgCj0KLmlgrw4Bu01CDHmtO6liBcZ1grHWi0zlAvnQfR6ALNYY5qXuITCy-FxzqijcX_yvJfjSFl0p8JI5f3B16BSVo:1qaRe0:hBMdTW_Eqd01LfnqU5bSoDczhyhVvSmydaDE6qXbgxg	2023-09-03 23:06:20.166961-03
+82jx5cez9jpexhjnjxkh5cwbxf51obt9	.eJxVjEEOwiAQRe_C2hCGUqAu3XsGMgODVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwJ3EWIE6_G2F8cN1BumO9NRlbXZeZ5K7Ig3Z5bYmfl8P9OyjYy7fOPGE0biBvYdDgkEzSFjLkEZOOaFAZrZQHy1McnGcgTBx19pzBjiTeH-lfOE0:1qdLVO:YQLlcxpP5TUO8jDEW8-q0xBNzwxCnpNtKf2Pq4gyeR0	2023-09-11 23:09:26.72044-03
 \.
 
 
@@ -1681,6 +1683,9 @@ COPY public.materiais_conteudo (id, nome, sub_materia_id) FROM stdin;
 16	Leitura de Musica	14
 8	Variação de Posição	9
 17	Comprimento	7
+18	Movimentos Circulares	15
+19	Movimento Uniforme	16
+20	Fundamentos da Cinemática	16
 \.
 
 
@@ -1741,7 +1746,12 @@ COPY public.materiais_provarespondida (id, resposta, acerto, questao_id, prova_c
 --
 
 COPY public.materiais_questao (id, enunciado, imagem, opcoes, opcao_correta, nivel_id) FROM stdin;
+18	(ENEM MEC/2019)  \n  \nAstrônomos medem a velocidade de afastamento de galáxias distantes pela detecção da luz emitida por esses sistemas. A Lei de Hubble afirma que a velocidade de afastamento de uma galáxia em km/s  é proporcional à sua distância até a Terra, medida em megaparsec (Mpc). Nessa lei, a constante de proporcionalidade é a constante de Hubble (H0) e seu valor mais aceito é de 72km/s /Mpc. O parsec (pc) é uma unidade de distância utilizada em astronomia que vale aproximadamente 3x10<sup>16</sup> m. Observações astronômicas determinaram que a velocidade de afastamento de uma determinada galáxia é de 1 440 km/.\n\nUtilizando a Lei de Hubble, pode-se concluir que a distância até essa galáxia, medida em km, é igual a:		["20x10<sup>0</sup>", "20x10<sup>6</sup>", "6x10<sup>20</sup>", "6x10<sup>23</sup>", "6x10<sup>26</sup>"]	C	\N
+19	(ENEM MEC/2021)  \n \nNo dia 14 de julho de 2015, a sonda espacial norte-americana New Horizons atingiu o ponto mais próximo que qualquer artefato humano esteve do planeta-anão Plutão. Neste instante a distância da sonda à Terra era de aproximadamente 5 bilhões de quilômetros. As primeiras imagens de Plutão não chegaram à Terra instantaneamente quando enviadas através de um sinal de rádio, pois a velocidade da luz é de 3x10<sup>8</sup> m/s.\nNOGUEIRA, S. Uma jornada até Plutão. Pesquisa Fapesp, n. 234, ago. 2015.\nDisponível em: https://revistapesquisa.fapesp.br. Acesso em: 2 jul. 2019 (adaptado).\n\nNo momento da máxima aproximação de Plutão, o valor mais próximo do tempo decorrido entre o envio de uma imagem pela antena transmissora da sonda e sua recepção por uma antena receptora na Terra é		["4,6x10<sup>3</sup> s.", "9,3x10<sup>3</sup> s.", "1,6x10<sup>1</sup> s.", "1,7x10<sup>4</sup> s.", "3,4x10<sup>4</sup> s."]	D	\N
 6	(ENEM/2014)\r\nDurante a formação de uma tempestade, são observadas várias descargas elétricas, os raios, que podem ocorrer das nuvens para o solo (descarga descendente ), do solo para as nuvens ( descarga ascendente ) ou entre uma nuvem e outra. Normalmente, observa-se primeiro um clarão no céu ( relâmpago ) e somente alguns segundos depois ouve-se o barulho ( trovão ) causado pela descarga elétrica. O trovão ocorre devido ao aquecimento do ar pela descarga elétrica que sofre uma expansão e se propaga em forma de onda sonora.O fenômeno de ouvir o trovão certo tempo após a descarga elétrica ter ocorrido deve-se		["à velocidade de propagação do som ser diminuída por conta do aquecimento do ar.", "à propagação da luz ocorrer através do ar e a propagação do som ocorrer através do solo.", "à velocidade de propagação da luz ser maior do que a velocidade de propagação do som no ar.", "ao relâmpago ser gerado pelo movimento de cargas elétricas, enquanto o som é gerado a partir da expansão do ar.", "ao tempo da duração da descarga elétrica ser menor que o tempo gasto pelo som para percorrer a distância entre o raio e quem o observa."]	b	2
+15	(ENEM MEC/2016)  \n  \nA invenção e o acoplamento entre engrenagens revolucionaram a ciência na época e propiciaram a invenção de várias tecnologias, como os relógios. Ao construir um pequeno cronômetro, um relojoeiro usa o sistema de engrenagens mostrado. De acordo com a figura, um motor é ligado ao eixo e movimenta as engrenagens fazendo o ponteiro girar. A frequência do motor é de 18 RPM, e o número de dentes das engrenagens está apresentado no quadro.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA frequência de giro do ponteiro, em RPM, é	questoes/enem.png	["3.", "2.", "4.", "81.", "162."]	B	\N
+16	(ENEM MEC/2022)  \n \nO sinal sonoro oriundo da queda de um grande bloco de gelo de uma geleira é detectado por dois dispositivos situados em um barco, sendo que o detector A está imerso em água e o B, na proa da embarcação. Sabe-se que a velocidade do som na água é de 1540m/s  e no ar é de 340m/s \n\n\n\nOs gráficos indicam, em tempo real, o sinal sonoro detectado pelos dois\ndispositivos, os quais foram ligados simultaneamente em um instante anterior à queda do bloco de gelo. Ao comparar pontos correspondentes desse sinal em cada dispositivo, é possível obter informações sobre a onda sonora.\n\n\nA distância L, em metro, entre o barco e a geleira é mais próxima de	questoes/enem_AIVHEbs.png	["339 000.", "78 900.", "14 400.", "5 240.", "100."]	D	\N
+17	(ENEM MEC/2001)  \n  \nSEU OLHAR\n(Gilberto Gil, 1984)\n\nNa eternidade\nEu quisera ter\nTantos anos-luz\nQuantos fosse precisar\nPra cruzar o túnel\nDo tempo do seu olhar\n\nGilberto Gil usa na letra da música a palavra composta anos-luz. O sentido prático, em geral, não é obrigatoriamente o mesmo que na ciência. Na Física, um ano luz é uma medida que relaciona a velocidade da luz e o tempo de um ano e que, portanto, se refere a		["tempo.", "aceleração.", "distância.", "velocidade.", "luminosidade."]	C	\N
 9	(ENEM/2012)\r\nEm apresentações musicais realizadas em espaços onde o público fica longe do palco, é necessária a instalação de alto-falantes adicionais a grandes distâncias, além daqueles localizados no palco. Como a velocidade com que o som se propaga no ar (vsom = 3,4 × 102 m/submatopico) é muito menor do que a velocidade com que o sinal elétrico se propaga nos cabos (vsinal = 2,6 × 108 m/submatopico), é necessário atrasar o sinal elétrico de modo que este chegue pelo cabo ao alto-falante no mesmo instante em que o som vindo do palco chega pelo ar. Para tentar contornar esse problema, um técnico de som pensou em simplesmente instalar um cabo elétrico com comprimento suficiente para o sinal elétrico chegar ao mesmo tempo que o som, em um alto-falante que está a uma distância de 680 metros do palco.\r\nA solução é inviável, pois seria necessário um cabo elétrico de comprimento mais próximo de		["1,1 × 103 km.", "8,9 × 104 km.", "1,3 × 105 km.", "5,2 × 105 km.", "6,0 × 1013 km."]	d	2
 3	(ENEM/2019)\r\nA agricultura de precisão reúne técnicas agrícolas que consideram particularidades locais do solo ou lavoura a fim de otimizar o uso de recursos. Uma das formas de adquirir informações sobre essas particularidades é a fotografia aérea de baixa altitude realizada por um veículo aéreo não tripulado (vantopico). Na fase de aquisição é importante determinar o nível de sobreposição entre as fotografias. A figura ilustra como uma sequência de imagens é coletada por um vant e como são formadas as sobreposições frontais.\r\n\r\nO operador do vant recebe uma encomenda na qual as imagens devem ter uma sobreposição frontal de 20% em um terreno plano. Para realizar a aquisição das imagens, seleciona uma altitude H fixa de voo de 1 000 m, a uma velocidade constante de 50 m s–1. A abertura da câmera fotográfica do vant é de 90°. Considere tg(45º) = 1.\r\nNatural Resources Canada. Concepts of Aerial Photography.\r\nDisponível em: www.nrcan.gc.ca. Acesso em: 26 abr. 2019 (adaptado).\r\nCom que intervalo de tempo o operador deve adquirir duas imagens consecutivas?	questoes/enem_1CYh4gs.png	["40 segundos.", "32 segundos.", "28 segundos.", "16 segundos.", "8 segundos."]	b	2
 1	(ENEM/2003)\r\nO tempo que um ônibus gasta para ir do ponto inicial ao ponto final de uma linha varia, durante o dia, conforme as condições do trânsito, demorando mais nos horários de maior movimento. A empresa que opera essa linha forneceu, no gráfico abaixo, o tempo médio de duração da viagem conforme o horário de saída do ponto inicial, no período da manhã.\r\n\r\nDe acordo com as informações do gráfico, um passageiro que necessita chegar até as 10h30min ao ponto final dessa linha, deve tomar o ônibus no ponto inicial, no máximo, até as:	questoes/enem.png	["9h20min", "9h30min", "9h00min", "8h30min", "8h50min"]	e	1
@@ -1782,6 +1792,11 @@ COPY public.materiais_questao_conteudo (id, questao_id, conteudo_id) FROM stdin;
 19	11	6
 20	12	13
 21	13	16
+24	15	18
+25	16	19
+26	17	20
+27	18	20
+28	19	19
 \.
 
 
@@ -1867,6 +1882,8 @@ COPY public.materiais_submateria (id, nome, materia_id) FROM stdin;
 12	Impacto e Colisões	6
 13	Hubble	6
 14	Interpretação de texto	3
+15	Movimento Circular Uniforme	6
+16	Movimentos, Classificação e Função Horária	6
 \.
 
 
@@ -1884,7 +1901,7 @@ COPY public.materiais_tipo (id, nome) FROM stdin;
 
 COPY public.usuarios_account (id, password, last_login, email, nome, cpf, telefone, data_nascimento, data_criacao, is_admin, is_active, is_staff, is_superuser, is_aluno, is_professor, is_verified, is_newsletter) FROM stdin;
 4	pbkdf2_sha256$600000$IawhFIdu4vJceSTfQuP8nK$dQFw9Z43cha0bdZ0BN3zgN0J2/zyprRiQxyNVb/vckU=	2023-08-27 23:05:38.372304-03	teste2@gmail.com	teste	123.123.444.-44	31984603322	2000-02-01	2023-08-27 23:05:37.810655-03	f	t	f	f	t	f	f	t
-1	pbkdf2_sha256$600000$V5PTQlMENoGvflZMcUQA6p$fvoqSFJ2dJwpBjIqLMB21MVgXdaFOQ8II54dAb88Tb8=	2023-08-27 23:06:05.981165-03	romfernandino@gmail.com	Roberto	701.136.996-11	31984603356	2005-03-20	2023-08-22 20:24:33.966145-03	t	t	t	t	f	f	f	t
+1	pbkdf2_sha256$600000$V5PTQlMENoGvflZMcUQA6p$fvoqSFJ2dJwpBjIqLMB21MVgXdaFOQ8II54dAb88Tb8=	2023-09-04 23:09:26.714959-03	romfernandino@gmail.com	Roberto	701.136.996-11	31984603356	2005-03-20	2023-08-22 20:24:33.966145-03	t	t	t	t	f	f	f	t
 2	pbkdf2_sha256$600000$AhN8EYmMqQqwsFRt8fC6Cj$q2fPX0FsGcGlBzgqtVENxg3jHnhXyICZnnMg0LFhNiQ=	2023-08-26 19:01:43.626235-03	diegocheib@gmail.com	cheibinho	54141133604	31984723836	2023-08-21	2023-08-26 19:01:43.040605-03	f	t	f	f	t	f	f	t
 3	pbkdf2_sha256$600000$ASfRZ5vmsW9H1nmrcweZkK$9ElnY13z4NtxkhoT3gInczJz1NUxbABb1XtAlSyluak=	2023-08-27 23:00:21.554938-03	emailteste@gmail.com	robertin	123.412.313.-21	31984603343	2005-01-17	2023-08-27 23:00:21.019927-03	f	t	f	f	t	f	f	t
 \.
@@ -2001,14 +2018,14 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 21, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: roberto
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 86, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 87, true);
 
 
 --
 -- Name: materiais_conteudo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: roberto
 --
 
-SELECT pg_catalog.setval('public.materiais_conteudo_id_seq', 17, true);
+SELECT pg_catalog.setval('public.materiais_conteudo_id_seq', 20, true);
 
 
 --
@@ -2043,14 +2060,14 @@ SELECT pg_catalog.setval('public.materiais_provarespondida_id_seq', 20, true);
 -- Name: materiais_questao_conteudo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: roberto
 --
 
-SELECT pg_catalog.setval('public.materiais_questao_conteudo_id_seq', 23, true);
+SELECT pg_catalog.setval('public.materiais_questao_conteudo_id_seq', 28, true);
 
 
 --
 -- Name: materiais_questao_id_seq; Type: SEQUENCE SET; Schema: public; Owner: roberto
 --
 
-SELECT pg_catalog.setval('public.materiais_questao_id_seq', 14, true);
+SELECT pg_catalog.setval('public.materiais_questao_id_seq', 19, true);
 
 
 --
@@ -2085,7 +2102,7 @@ SELECT pg_catalog.setval('public.materiais_simulado_materia_id_seq', 14, true);
 -- Name: materiais_submateria_id_seq; Type: SEQUENCE SET; Schema: public; Owner: roberto
 --
 
-SELECT pg_catalog.setval('public.materiais_submateria_id_seq', 14, true);
+SELECT pg_catalog.setval('public.materiais_submateria_id_seq', 16, true);
 
 
 --
