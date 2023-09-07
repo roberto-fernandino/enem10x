@@ -143,12 +143,12 @@ def define_ranking_conteudo_prova(conteudos_errados: list, conteudos_acertados: 
     )
 
 
-def lista_imagens() -> list:
+def lista_arquivos(diretorio) -> list:
     """
     Lista todas as imagens atualmente no diretorio de imagens e retorna uma lista contendo todas elas
     """
-    imagens = os.listdir(f"{BASE_DIR}/media/imagens")
-    return imagens
+    arquivos = os.listdir(diretorio)
+    return arquivos
 
 
 def docx_to_text(doc_obj):
@@ -175,9 +175,9 @@ def extrai_identificadores_unicos(texto_extraido_do_docx: str) -> list:
     return re.findall(r"Questão-\d+ \((\d+)\)", texto_extraido_do_docx)
 
 
-def remove_todas_imagens_do_diretorio_local_para_proxima_extracao() -> None:
-    imagens = lista_imagens()
+def remove_todas_imagens_do_diretorio_local() -> None:
+    imagens = lista_arquivos(f"{BASE_DIR}/media/questoes/")
     for imagem in imagens:
         if imagem != None:
-            if os.path.exists(f"{BASE_DIR}/media/imagens/{imagem}"):
-                os.remove(f"{BASE_DIR}/media/imagens/{imagem}")
+            if os.path.exists(f"{BASE_DIR}/media/questoes/{imagem}"):
+                os.remove(f"{BASE_DIR}/media/questoes/{imagem}")
