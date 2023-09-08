@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+
+$primarycolor: #1B263B;
+$secondarycolor: #415A77;
+$shadowcolor: #E0E1DD;
+$background-color: #778da9;
+$details: #0D1B2A;
+$font-color: white;
+$light-bg: #dfe7f1;
+$very-light-bg: #fbfdff;
+$chart-color: rgb(163, 236, 118);
+$alert-color: rgb(232, 110, 110);
+$very-very-light-bg: #fbfdff;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: $light-bg;
+}
+
+* {
+    font-family: 'Poppins', 'sans-serif ';
+    margin: 0;
+    padding: 0;
+}
+
+/* ==== turma style ==== */
+
+.body{
+    .aluno-list{
+        display: inline-block;
+        padding: 0;
+        li{
+            list-style-type: none;
+            background-color: $very-very-light-bg;
+            font-weight: 400;
+            font-size: 20px;
+            border-radius: 4px;
+            padding: 5px;
+        }
+    }
+}
+
+.message{
+    display: inline-block;
+}
+.codigo-container{
+    display: flex;
+    margin: 0;
+    align-items: center;
+    margin-bottom: 30px;
+    .codigo-reveal{
+        margin-left: 5px;
+        transition: 0.4s;
+        .reveal-button{
+            background-color: $very-light-bg;
+            font-size: 20px;
+            color: $details;
+            border: none;
+            padding: 5px;
+            border-radius: 70px;
+
+        }
+    }
+    .codigo-reveal:hover{
+        cursor: pointer;
+        opacity: 0.6;
+    }
+}

@@ -20,10 +20,10 @@ DATA_DIR = BASE_DIR.parent / 'data' / 'web'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(getenv("SECRET_KEY"))
+SECRET_KEY = str(getenv("SECRET_KEY", "django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(getenv("DEBUG", 0)))
+DEBUG = bool(int(getenv("DEBUG", default=1)))
 
 ALLOWED_HOSTS = [
     h.strip() for h in getenv("ALLOWED_HOSTS",  "").split(',') if h.strip()
@@ -85,17 +85,27 @@ WSGI_APPLICATION = 'enem10x.wsgi.application'
 
 
 #postgress
+
 DATABASES = {
     'default': {
         'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
         'NAME': getenv('POSTGRES_DB', 'enem'),
         'USER': getenv('POSTGRES_USER', 'roberto'),
-        'PASSWORD': getenv('POSTGRES_PASSWORD', 'Dulce2014'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD', 'dulce20145'),
+        'HOST': getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': getenv('POSTGRES_PORT', '5432'),
+    },
+    'replica':{
+        'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': getenv('POSTGRES_DB', 'enem'),
+        'USER': getenv('POSTGRES_USER', 'repuser'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD', 'repuser'),
         'HOST': getenv('POSTGRES_HOST', 'localhost'),
         'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
 
+DATABASE_ROUTERS = ['enem10x.routers.Router']
 
 #sqlite3
 '''
@@ -105,8 +115,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
 
     }
-}'''
-
+}
+'''
 
 
 # Password validation
@@ -183,3 +193,8 @@ JAZZMIN_SETTINGS = {
     "changeform_format": "collapsible",
 }
 
+# CELERY -> REDIS
+
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"

@@ -1,0 +1,67 @@
+{% extends 'static/user-base.html' %} {% block title %} Turma - {{turma.nome}} {% endblock %} 
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/turma.css' %}">
+<div class="message">
+  {% if messages %}
+  <div class="alert alert-info">
+    {% for message in messages %} {{ message }} {% endfor %}
+  </div>
+  {% endif %}
+</div>
+<div class="container">
+    <div class="header">
+        <h1>{{ turma.nome }}</h1>
+    </div>
+    <div class="body">
+        <h2>Professores</h2>
+        {% for professor in turma.professores.all %}
+        <h6>{{professor }}</h6>
+        {% endfor %}
+        <h2>Alunos</h2>
+        <ul class="aluno-list">
+            {% for aluno in turma.alunos.all %}
+            <li>
+                <i class='bx bx-user' ></i>
+                <a href="" class="no-text-decoration">{{ aluno.usuario }}</a>
+                {% if professor == turma.criador %}
+                <button type="button">
+                  <a href="{% url 'usuarios:remover-aluno' turma.id aluno.id %}" class="no-text-decoration">Remover aluno</a>
+                </button>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if user.is_professor %}
+    <div class="footer">
+       <h2>Codigo de acesso:</h2>
+       <div class="codigo-container">
+        <div class="codigo-text">
+          <span>{{turma.codigo}}</span>
+        </div>
+        <div class="codigo-reveal">
+          <button type="button" class="reveal-button">
+            <i class='bx bx-low-vision'></i>
+          </button>
+        </div>
+       </div>
+    </div>
+    <div class="turma-actions">
+        <div class="action">
+          <button type="button" class="btn btn-danger">
+            <a href="{% url 'usuarios:delete-turma' turma.id %}" class="no-text-decoration">Deletar Turma</a>
+          </button>
+        </div>
+      </div>
+      {% elif user.is_aluno %}
+      <div class="turma-actions">
+        <div class="action">
+          <button type="button" class="btn btn-danger">
+            <a href="{% url 'usuarios:aluno-sair-turma' turma.id aluno.id %}" class="no-text-decoration">Sair da turma</a>
+          </button>
+        </div>
+      </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,6 +1,10 @@
-$primarycolor : #0e151a;
-$secondarycolor :#fff;
-$shadowcolor: #918989;
+@charset "UTF-8";
+$primarycolor: #1B263B;
+$secondarycolor: #415A77;
+$shadowcolor: #E0E1DD;
+$background-color: #778da9;
+$details: #0D1B2A;
+$font-color: white;
 
 
 * {
@@ -9,44 +13,25 @@ $shadowcolor: #918989;
 }
 
 body{
-    height: 200vh;
+    background-color: $background-color;
 }
 
 
+/* inicio da parte superior */
 header{
-        /* inicio da parte superior */
-    .top-bar {
-        padding: 20px;
-        position: fixed;
-        width: 100%;
+    .navbar{
+        .brand-img{
+            border-radius: 3px;
+        }
         background-color: $primarycolor;
-        text-align: center;
-        height: 90px;
-        .navbar-nav{ 
-            margin-left: 150px;
-            font-size: 22px;
-            display: flex;
-            .nav-link{
-                color: $secondarycolor;
-                margin-left: 60px;
-            }
-            .profilearea{
-                display: flex;
-                align-items: center;
-                font-size: 30px;
-            }
+        .navbar-brand{
+            color: $font-color;
         }
-        a{
-            align-items: center;
-            text-decoration: none;
-            font-size: 25px;
-            color: $secondarycolor;
-            transition: 0.3s;
-        }
-        a:hover {
-            opacity: 0.5;
-            transform: translateY(-3px);
-            
+        .navbar-toggler{
+            border: none;
+            .navbar-toggler-icon{
+                color: $font-color;
+            }
         }
     }
 }
@@ -54,21 +39,56 @@ header{
         
 
 body {
-    background-color: rgb(99, 99, 99);
     .subtitulos{
             color: $primarycolor;
             text-align: center;
             padding-top: 50px;
             font-size: 22px;
+            margin-top: 50px;
         }
     main{
         margin-bottom: 200px;
+    .container {
+        display: flex;
+        align-items: start;
+        background-color: $details;
+        box-shadow: 4px 2px 4px 2px $shadowcolor;
+        border-radius: 35px;
+        .list-group-item{
+            border-radius: 10px;
+        }
+        .card{
+            background-color: $details;
+            margin: 20px;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 60px;
+            padding-bottom: 60px;
+            a{ 
+                text-decoration: none;
+                color: $font-color;
+                
+                }
+            .card-title{
+                color: $font-color;
+            }
+            .card-body{
+                .container-text {
+                    margin-top: 42px ;
+                    flex: 1;
+                    color: $font-color;
+                    }
+                }
+            }
+        }
     }
 }
 
 
+
 /* Começo Pé do site */
 .pedosite {
+    position: relative;
     bottom: 0;
     display: grid;
     justify-content: center;

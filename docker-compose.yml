@@ -1,12 +1,60 @@
-version: '3.9'
+version: "3.9"
+
 services:
-  db:
-    image: postgres
+
+  nginx:
+    build: 
+      context: .
+    ports:
+      - 8000:80
+    image: nginx:alpine
+    container_name: nginx
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    container_name: postgres_db  
-    env_file:
-      - .env
+      - ./html/:/usr/share/nginx/html/
+      
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  db-master:
+    image: postgres
+    ports:
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: roberto
+      POSTGRES_PASSWORD: Dulce2014
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./master:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_master
+
+  db-replication-1:
+    image: postgres
+    ports:
+      - target: 5432
+        published: 5434
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: repuser
+      POSTGRES_PASSWORD: repuser
+      POSTGRES_HOST: db-replication-1
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./replication:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_replication_1
+
   app:
     build: .
     volumes:
@@ -17,10 +65,20 @@ services:
     image: app:django
     container_name: django_app
     depends_on:
-      - db
+      - db-master
     env_file:
       - .env
 
-volumes:
-  postgres_data:
-
+  celery:
+    restart: always
+    container_name: celery1
+    build:
+      context: .
+      # DEBUG ONLY FOR DEVELOPMENT
+    command: celery -A enem10x worker -l DEBUG
+    volumes:
+      - ./app:/app
+    depends_on:
+      - db-master
+      - redis
+      - app

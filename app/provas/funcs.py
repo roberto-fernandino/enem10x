@@ -1,6 +1,7 @@
 from math import floor
 from usuarios.funcs import filtra_questoes_feitas
 from materiais.models import Conteudo, Questao, SubMateria
+import os
 
 
 def retorna_questoes_unicas(
@@ -90,3 +91,7 @@ def filtra_questoes_simulado_matematica(
 
 
     return questoes
+
+
+
+    

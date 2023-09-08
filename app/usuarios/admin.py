@@ -1,33 +1,52 @@
-from typing import Any, List, Optional, Tuple, Union
 from django.contrib import admin
-from django.http.request import HttpRequest
-from usuarios.models import Account, MediaGeral
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from usuarios.models import Account, Notas, MediaGeral, Turma, Professor, Aluno
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from usuarios.forms import AccountCreationForm, AccountChangeForm
-from django.utils import timezone
 
 # Register your models here.
+
 
 class AccountAdmin(BaseUserAdmin):
     form = AccountChangeForm
     add_form = AccountCreationForm
-    
+
     list_display = [
         "email",
         "nome",
         "last_login",
         "data_criacao",
-        "is_admin",
-        "is_aluno"
+        "is_aluno",
+        "is_professor",
+        "id",
     ]
 
-
     fieldsets = (
-        ("Informacao Geral", {"fields": ["email", "password", "last_login"]}),
-        ("Informacao Pessoal", {"fields": ["cpf", "telefone", "data_nascimento", ]}),
-        ("Informacao Permissoes", {"fields": ["is_aluno", "is_admin", "is_staff", "is_superuser"]}),
+        ("Informações Geral", {"fields": ["email", "password", "last_login"]}),
+        (
+            "Informações Pessoais",
+            {
+                "fields": [
+                    "cpf",
+                    "telefone",
+                    "data_nascimento",
+                ]
+            },
+        ),
+        (
+            "Tags",
+            {
+                "fields": [
+                    "is_aluno",
+                    "is_professor",
+                    "is_verified",
+                    "is_admin",
+                    "is_staff",
+                    "is_superuser",
+                    "is_newsletter",
+                ]
+            },
+        ),
     )
     add_fieldsets = [
         (
@@ -39,35 +58,46 @@ class AccountAdmin(BaseUserAdmin):
                     "nome",
                     "data_nascimento",
                     "cpf",
+                    "telefone",
                     "password1",
-                    "password2"
+                    "password2",
                 ],
             },
         )
     ]
 
-    list_filter = ['is_aluno', 'data_criacao']
-    search_fields = ['email', 'nome']
-    ordering = ['-last_login']
+    list_filter = ["is_aluno", "data_criacao"]
+    search_fields = ["email", "nome"]
+    ordering = ["-last_login"]
     list_per_page = 50
-    filter_horizontal = ['user_permissions']
-    date_hierarchy = 'data_criacao'
+    filter_horizontal = ["user_permissions"]
+    date_hierarchy = "data_criacao"
 
-class MediaGeralAdmin(admin.ModelAdmin):
+
+class NotasAdmin(admin.ModelAdmin):
     list_display = [
-        'usuario',
-        'data_calculada',
-        'media_matematica',
-        'media_ciencias_natureza',
-        'media_linguagens',
-        'media_ciencias_humanas',
-
-        ]
-    
-
+        "usuario",
+        "data_calculada",
+        "nota_matematica",
+        "nota_ciencias_natureza",
+        "nota_linguagens",
+        "nota_ciencias_humanas",
+    ]
 
     fieldsets = (
-        (None, {"fields": ['usuario',"media_matematica", "media_ciencias_natureza", "media_ciencias_humanas", "media_linguagens", "data_calculada"]}),
+        (
+            None,
+            {
+                "fields": [
+                    "usuario",
+                    "nota_matematica",
+                    "nota_ciencias_natureza",
+                    "nota_ciencias_humanas",
+                    "nota_linguagens",
+                    "data_calculada",
+                ]
+            },
+        ),
     )
     add_fieldsets = [
         (
@@ -77,6 +107,51 @@ class MediaGeralAdmin(admin.ModelAdmin):
                 "fields": [
                     "usuario",
                     "data_calculada",
+                    "nota_matematica",
+                    "nota_ciencias_natureza",
+                    "nota_ciencias_humanas",
+                    "nota_linguagens",
+                ],
+            },
+        )
+    ]
+    search_fields = ["usuario"]
+    list_per_page = 50
+    list_filter = ["data_calculada"]
+    date_hierarchy = "data_calculada"
+
+
+class MediaGeralAdmin(admin.ModelAdmin):
+    list_display = [
+        "usuario",
+        "data_atualizada",
+        "media_matematica",
+        "media_ciencias_natureza",
+        "media_linguagens",
+        "media_ciencias_humanas",
+    ]
+
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": [
+                    "usuario",
+                    "media_matematica",
+                    "media_ciencias_natureza",
+                    "media_ciencias_humanas",
+                    "media_linguagens",
+                ]
+            },
+        ),
+    )
+    add_fieldsets = [
+        (
+            None,
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "usuario",
                     "media_matematica",
                     "media_ciencias_natureza",
                     "media_ciencias_humanas",
@@ -85,12 +160,34 @@ class MediaGeralAdmin(admin.ModelAdmin):
             },
         )
     ]
-    search_fields = ['usuario']
+    search_fields = ["usuario"]
     list_per_page = 50
-    list_filter = ['data_calculada']
-    date_hierarchy = 'data_calculada'
-    
+    list_filter = ["data_atualizada"]
+    date_hierarchy = "data_atualizada"
 
+
+class TurmaAdmin(admin.ModelAdmin):
+    list_display = ["nome", "id"]
+    fieldssets = (
+        ("Alunos", {"fields": ["alunos"]}),
+        ("Professores", {"fields": ["professores"]}),
+    )
+
+
+class AlunoAdmin(admin.ModelAdmin):
+    list_display = ["usuario"]
+    fieldssets = (("Aluno", {"fields": ["usuario"]}),)
+
+
+class ProfessorAdmin(admin.ModelAdmin):
+    list_display = ["usuario", "alunos", "total_alunos"]
+    fieldssets = (("Professor", {"fields": ["usuario", "alunos", "total_alunos"]}),)
+
+
+admin.site.register(Aluno, AlunoAdmin)
+admin.site.register(Professor, ProfessorAdmin)
+admin.site.register(Turma, TurmaAdmin)
+admin.site.register(Notas, NotasAdmin)
 admin.site.register(MediaGeral, MediaGeralAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.unregister(Group)

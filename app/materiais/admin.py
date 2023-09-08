@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado, OpcaoImagem
 # Register your models here.
 
 
@@ -58,20 +58,40 @@ class ConteudoAdmin(admin.ModelAdmin):
 class QuestoesAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        "identificador_unico",
         'nivel',
         'Materia',
     ]
     fieldsets = (
-       (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel' ]}),
+       (None, {"fields": [
+           'enunciado',
+            'imagem_enunciado',
+            'identificador_unico',
+            'opcoes',
+            'opcao_correta',
+            'conteudo',
+            'nivel',
+            ]}),
     )
     ordering = ['id']
     list_filter = ['conteudo']
+    list_display_links = ['identificador_unico']
     
 
     def Materia(self, obj):
         return ' - '.join([str(conteudo.sub_materia) for conteudo in obj.conteudo.all()])
-    
-    
+
+@admin.register(OpcaoImagem)
+class QuestoesImagemAdmin(admin.ModelAdmin):
+    list_display = [
+        'questao',
+        'id',
+        ]
+    ordering = ['id']
+    list_display_links = ['questao']
+    fieldsets = (
+        (None, {"fields": ['questao', 'imagem_a',  'imagem_b', 'imagem_c', 'imagem_d', 'imagem_e']}),
+    )
 '''class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
@@ -103,26 +123,8 @@ class TipoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['conteudo']
 
-'''class ProvaRespondidaAdmin(admin.ModelAdmin):
-    list_display = [
-        'id',
-        'questao',
-        'resposta',
-        'acerto',
-        ]
-    
-    fieldsets = (
-        (None, {"fields": ['questao', 'resposta', 'acerto']}),
-    )
 
-    def get_tipo(self, obj):
-        return obj.get_tipo()
     
-    get_tipo.admin_order_field = 'tipo'
-    get_tipo.admin_short_description = 'Tipo'
-    list_display_links = ['questao']
-    
-'''
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',

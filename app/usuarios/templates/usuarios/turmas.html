@@ -1,0 +1,61 @@
+{% extends 'static/user-base.html' %} {% block title %} Turmas {% endblock %} 
+{% block content %}
+<style>
+  .alunos-restantes {
+    margin-left: 60px;
+  }
+</style>
+<div class="turma-create-container">
+  {% if user.is_professor %}
+  <button type="button">
+    <a href="{% url 'usuarios:criar-turma' %}" class="no-text-decoration">
+      Criar turma
+    </a>
+  </button>
+  <div class="alunos-restantes">
+    <span> Alunos restantes : {{ professor.get_remaining_alunos }}</span>
+  </div>
+  {% elif user.is_aluno %}
+  <button type="button">
+    <a href="{% url 'usuarios:entrar-turma' %}" class="no-text-decoration">
+      Entrar
+    </a>
+  </button>
+  {% endif %}
+</div>
+  
+</div>
+<div class="turmas-container">
+  {% if messages %}
+  <div class="message">
+    <div class="alert alert-info">
+      {% for message in messages %}{{ message }} <br />{% endfor %}
+    </div>
+  </div>
+  {% endif %} 
+  {% if turmas %}
+  {% for turma in turmas %}
+  <div class="turma-box">
+    {% if user.is_professor %}
+    <a
+      href="{% url 'usuarios:professor-turma' turma.id %}"
+      class="turma-box-link no-text-decoration"
+    >
+    {% elif user.is_aluno %}
+    <a
+    href="{% url 'usuarios:aluno-turma' turma.id %}"
+    class="turma-box-link no-text-decoration"
+  >
+  {% endif %}
+      <div class="turma-box-header">
+        <h2><i class="bi bi-pass"></i>{{ turma.nome }}</h2>
+      </div>
+      <div class="turma-body">
+        <h5>{{ turma.get_qtd_alunos }} Alunos</h5>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

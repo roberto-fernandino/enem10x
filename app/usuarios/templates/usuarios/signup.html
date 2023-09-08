@@ -1,67 +1,52 @@
-{% extends 'static/user-form-base.html' %} {% block title %} {% endblock %} 
-
-{% block content %}
-
-<div class="acount-form">
+{% extends 'static/user-form-base.html' %} {% block title %} Signup {%endblock%}
+{% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
+<div class="account-form">
   {% if form.errors %}
   <div class="form-message">
-    {% for field, errors in form.errors.items %}
-        <div>{{field}}: {{errors|first}}</div>
+    {% for field, error in form.errors.items %}
+    <div>{{field}}: {{ error|first }}</div>
     {% endfor %}
   </div>
   {% endif %}
   <form action="{% url 'usuarios:signup' %}" method="post">
     {% csrf_token %}
-    <div class="input">
-      {{ form.email }}
-      <label for="email" class="input-label">
-        <span>Email</span>
-      </label>
+    <div class="form-container">
+      <h1 class="form-title">Cadastro</h1>
+      <div class="input">{{ form.email }}</div>
+      <div class="input">{{ form.nome }}</div>
+      <div class="input">{{ form.telefone }}</div>
+      <div class="input">{{ form.password1 }}</div>
+      <div class="input">{{ form.password2 }}</div>
+      <div class="input">{{ form.data_nascimento }}</div>
+      <div class="input">{{ form.cpf }}</div>
+      <div class="centered-input">
+        <div class="check-input">
+          <label for="is_newsletter">Deseja receber newsletter?</label>
+          {{ form.is_newsletter }}
+        </div>
+        <div class="input">
+          <label for="termos"
+            >Voce concorda com os
+            <a class="no-text-decoration" href="">Termos termos de uso</a> e
+            política de privacidade?</label
+          >
+          <input type="checkbox" name="termos" required />
+        </div>
+        <div class="form-button">
+          <button value="Cadastrar" type="submit" class="btn btn-primary">
+            Cadastrar
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="input">
-      {{ form.nome }}
-      <label for="nome" class="input-label">
-        <span>Nome</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.telefone }}
-      <label for="telefone" class="input-label">
-        <span>Telefone</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.password1 }}
-      <label for="password1" class="input-label">
-        <span>Senha</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.password2 }}
-      <label for="password2" class="input-label">
-        <span>Confirme sua Senha</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.data_nascimento }}
-      <label for="data_nascimento" class="input-label">
-        <span>Data de Nascimento</span>
-      </label>
-    </div>
-    <div class="input">
-      {{ form.cpf }}
-      <label for="cpf" class="input-label">
-        <span>cpf</span>
-      </label>
-    </div>
-    <button value="Cadastrar" type="submit">Cadastrar</button>
   </form>
 </div>
-{% endblock %}
-{% block javascripts %}
+{% endblock %} {% block javascripts %}
 <script>
   $(document).ready(function () {
-    $("#cpf").mask("000.000.000.-00", { reverse: true });
+    $("#cpf").mask("000.000.000-00", { reverse: true });
+    $("#telefone").mask("(00) 00000-0000");
   });
 </script>
 {% endblock %}

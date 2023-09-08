@@ -1,0 +1,65 @@
+$primarycolor: #1B263B;
+$secondarycolor: #415A77;
+$shadowcolor: #E0E1DD;
+$background-color: #b0c3de;
+$details: #0D1B2A;
+$font-color: white;
+$light-bg: #dfe7f1;
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    font-family: 'Poppins', 'sans-serif';
+}
+/*==== Grafico ====*/
+
+.chart-container {
+    h1 {
+        padding-top: 10px;
+        color: $secondarycolor;
+        /* Cor cinza */
+        font-weight: 600;
+        /* Negrito */
+        font-size: 32px;
+        /* Tamanho da fonte */
+        text-transform: capitalize;
+        /* Letras maiúsculas */
+        /* Espaçamento entre as letras */
+    }
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    max-width: 770px;
+    margin-bottom: 40px;
+    .chart-display {
+        margin-top: 50px;
+        display: flex;
+        max-width: 350px;
+        margin-left: 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+        background-color: hsla(0, 0%, 100%, 0.914);
+        border-radius: 15px;
+    }
+}
+
+
+
+/*==== Medias ====*/
+
+@media (max-width: 768px) {
+    .chart-container .chart-display {
+        canvas {
+            height: 355px;
+            width: 355px;
+            margin-left: 20px;
+            display: block;
+            box-sizing: border-box;
+        }
+    }
+}

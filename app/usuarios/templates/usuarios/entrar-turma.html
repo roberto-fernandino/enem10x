@@ -1,0 +1,14 @@
+{% extends 'static/user-form-base.html' %} {% block title %} Entrar Turma 
+{% endblock %} {% load static %} {% block content %}
+<div class="codigo-container">
+  <button onclick="window.history.back()" class="back">voltar</button>
+  <h1>Entrar em uma turma</h1>
+
+  <form action="{% url 'usuarios:entrar-turma' %}" method="post">
+    {% csrf_token %}
+    <label for="codigo">Digite o codigo</label>
+    <input type="text" name="codigo" class="turma-codigo-input" />
+    <button type="submit">Entrar</button>
+  </form>
+</div>
+{% endblock %}
