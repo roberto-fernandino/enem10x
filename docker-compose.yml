@@ -1,16 +1,60 @@
-version: '3.9'
+version: "3.9"
+
 services:
+
+  nginx:
+    build: 
+      context: .
+    ports:
+      - 8000:80
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./html/:/usr/share/nginx/html/
+      
   redis:
     image: redis:alpine
     container_name: redis
 
-  db:
+  db-master:
     image: postgres
+    ports:
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: roberto
+      POSTGRES_PASSWORD: Dulce2014
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    container_name: postgres_db  
-    env_file:
-      - .env
+      - ./master:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_master
+
+  db-replication-1:
+    image: postgres
+    ports:
+      - target: 5432
+        published: 5434
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: repuser
+      POSTGRES_PASSWORD: repuser
+      POSTGRES_HOST: db-replication-1
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./replication:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_replication_1
+
   app:
     build: .
     volumes:
@@ -21,9 +65,10 @@ services:
     image: app:django
     container_name: django_app
     depends_on:
-      - db
+      - db-master
     env_file:
       - .env
+
   celery:
     restart: always
     container_name: celery1
@@ -34,10 +79,6 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - db
+      - db-master
       - redis
       - app
-
-volumes:
-  postgres_data:
-
