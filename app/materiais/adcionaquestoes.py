@@ -1,6 +1,5 @@
 from materiais.models import Questao, Materia, SubMateria, Conteudo, OpcaoImagem
 from materiais.funcs import (
-    lista_imagens,
     process,
     extrair_enunciados,
     extrai_alternativas,
@@ -8,6 +7,8 @@ from materiais.funcs import (
     docx_to_text,
     extrai_conteudos,
     extrai_identificadores_unicos,
+    remove_todas_imagens_do_diretorio_local,
+    lista_arquivos,
 )
 from subprocess import run
 from docx import Document
@@ -30,6 +31,8 @@ def adciona_questoes(arquivo_path: str, materia: str):
     identificadores_unicos_list = extrai_identificadores_unicos(DOC_ALL_TEXT)
     ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
     CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
+
+    
     
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
@@ -48,7 +51,7 @@ def adciona_questoes(arquivo_path: str, materia: str):
         "e": "imagem_e",
     }
     # Salva quantidade de imagens total no diretorio para controle.
-    img_count = len(lista_imagens())
+    img_count = len(lista_arquivos(img_dir))
 
     # Checa se existem imagens se existir seta tem_imagens pra True
     tem_imagens = False
@@ -69,10 +72,14 @@ def adciona_questoes(arquivo_path: str, materia: str):
         actual_alternativas_dict = ALTERNATIVAS_LIST_DICT[questoes_count]
         questao_obj.opcao_correta = actual_alternativas_dict["w"]
         actual_images_check_dict = img_check_questoes_list_dict[questoes_count]
+        print(actual_images_check_dict)
         if tem_imagens:
             if actual_images_check_dict["imagem_no_enunciado"]:
+                print('Tem imagem no enunciado')
                 with img_path.open("rb") as image_file:
-                    questao_obj.imagem_enunciado.save(image_file, save=False)
+                    ext = os.path.splitext(img_path)[-1]
+                    questao_obj.imagem_enunciado.save(f"questao_enunciado_{questao_obj.identificador_unico}.{ext}",image_file, save=False)
+                    print('Imagem do enunciado adcionada')
                 count += 1
                 img_path = img_dir / f"image{count}.png"
 
@@ -91,7 +98,7 @@ def adciona_questoes(arquivo_path: str, materia: str):
                 with img_path.open("rb") as image_file:
                     ext = os.path.splitext(img_path)[-1]
                     field_name = imagem_fields_map[opcao]
-                    getattr(questao_imgs_obj, field_name).save(f"questoes_{opcao}.{ext}", image_file, save=False)
+                    getattr(questao_imgs_obj, field_name).save(f"questoes_{questao_obj.identificador_unico}_{opcao}.{ext}", image_file, save=False)
                 count += 1
                 img_path = img_dir / f"image{count}.png"
         print(opcoes_list)
@@ -119,3 +126,6 @@ def adciona_questoes(arquivo_path: str, materia: str):
         questao_obj.save()
 
         print(f"{questoes_count} Questoes adcionadas com sucesso!")
+        
+    # Limpa img_dir
+    remove_todas_imagens_do_diretorio_local()
