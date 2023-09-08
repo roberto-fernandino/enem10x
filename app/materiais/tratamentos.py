@@ -138,9 +138,9 @@ class tratamento_geral_pra_extracao:
 
             if re.match(r"[a-e]\$", texto):
                 estamos_no_enunciado = False
+
             if estamos_no_enunciado:
                 if possui_img_tag(texto):
-                    counter_img_enunciado += 1
                     questao["imagem_no_enunciado"] = True
 
             if not estamos_no_enunciado:
