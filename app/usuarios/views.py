@@ -10,11 +10,13 @@ from usuarios.models import MediaGeral, Turma, Professor, Aluno
 from usuarios.decorators import user_has_tag
 from uuid import uuid4
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import cache_page
 # Create your views here.
 
 
 # CACHE AQUI
-@login_required()
+@login_required
+
 def notas_graph(request):
     if request.user.is_aluno or request.user.is_admin:
         (
@@ -121,6 +123,7 @@ def signup(request, *args, **kwargs):
 
 
 @login_required
+@cache_page(5*60)
 def professor_turmas_view(request):
     if request.user.is_professor:
         professor = Professor.objects.get(usuario=request.user)
@@ -134,6 +137,7 @@ def professor_turmas_view(request):
         return HttpResponseForbidden("saia")
     
 @login_required
+@cache_page(60*5)
 def aluno_turmas_view(request):
     if request.user.is_aluno:
         aluno = Aluno.objects.get(usuario=request.user)
