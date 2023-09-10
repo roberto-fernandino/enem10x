@@ -98,9 +98,9 @@ DATABASES = {
     'replica':{
         'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
         'NAME': getenv('POSTGRES_DB', 'enem'),
-        'USER': getenv('POSTGRES_USER', 'repuser'),
-        'PASSWORD': getenv('POSTGRES_PASSWORD', 'repuser'),
-        'HOST': getenv('POSTGRES_HOST', 'localhost'),
+        'USER': getenv('POSTGRES_REPLICATION_USER', 'roberto'),
+        'PASSWORD': getenv('POSTGRES_REPLICATION_PASSWORD', 'dulce20145'),
+        'HOST': getenv('POSTGRES_HOST_REPLICATION_1', 'localhost'),
         'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
