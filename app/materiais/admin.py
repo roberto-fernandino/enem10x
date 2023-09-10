@@ -128,7 +128,7 @@ class TipoAdmin(admin.ModelAdmin):
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'usuario',
+        'aluno',
         'nota',
         'acertos',
         'data_feita',
@@ -143,7 +143,7 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
 
 @admin.register(QuestaoRespondida)
 class QuestoesRespondidasAdmin(admin.ModelAdmin):
-    list_display = ['usuario', 'questao']
+    list_display = ['aluno', 'questao']
 
 @admin.register(Simulado)
 class SimuladoAdmin(admin.ModelAdmin):
