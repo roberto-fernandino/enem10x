@@ -13,14 +13,15 @@ from materiais.models import (
 from provas.forms import ProvaChoose
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from usuarios.funcs import filtra_questoes_feitas
 from math import floor
 from provas.funcs import (
     filtra_questoes_simulado_linguagens,
     filtra_questoes_simulado_natureza,
     filtra_questoes_simulado_matematica,
 )
-
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from usuarios.decorators import user_has_tag
 
 # Create your views here.
 @login_required
@@ -28,6 +29,7 @@ def prova_choose(request):
     if request.method == "POST":
         choose_prova = ProvaChoose(request.POST)
         if choose_prova.is_valid():
+            print("valid")
             tipo_prova = choose_prova.cleaned_data["tipo_prova"]
             num_questoes = int(choose_prova.cleaned_data["num_questoes"])
             request.session["tipo_prova"] = tipo_prova
@@ -80,7 +82,6 @@ def prova_choose(request):
                             num_questoes,
                             materia_in_simulado,
                             questoes,
-                            request.user,
                             questoes_unicas,
                         )
                     # Se um dos simulados for de ciencias da natureza
@@ -89,7 +90,6 @@ def prova_choose(request):
                             num_questoes,
                             materia_in_simulado,
                             questoes,
-                            request.user,
                             questoes_unicas,
                         )
                     # Se um dos simulados for de Linguagens
@@ -98,7 +98,6 @@ def prova_choose(request):
                             num_questoes,
                             materia_in_simulado,
                             questoes,
-                            request.user,
                             questoes_unicas,
                         )
                 context = {
@@ -112,19 +111,21 @@ def prova_choose(request):
     }
     return render(request, "provas/escolha-prova.html", context)
 
-
+@login_required
+@user_has_tag('is_aluno')
 def prova_respondida(request):
     if request.method == "POST":
         tipo_prova = request.session.get("tipo_prova")
+        aluno = request.user.aluno
         # se a prova for materia_escolhida
         if tipo_prova == "materia_escolhida":
-            prova_completa = ProvaCompleta.objects.create(usuario=request.user)
+            prova_completa = ProvaCompleta.objects.create(aluno=aluno)
             for questao_id, resposta in request.POST.items():
                 if "questao_id-" in questao_id:
                     real_questao_id = questao_id.split("-")[1]
                     questao = Questao.objects.get(id=real_questao_id)
                     prova_respondida_obj = ProvaRespondida.objects.create(
-                        usuario=request.user,
+                        aluno=aluno,
                         questao=questao,
                         resposta=resposta,
                         prova_completa=prova_completa,
@@ -134,24 +135,26 @@ def prova_respondida(request):
             questao_respondida = QuestaoRespondida()
             questao_respondida.set_questoes_ja_respondidas(request.user)
             prova_completa.gera_relatorio()
+            # Deleta as questoes respondidas do usuario para nao poluir o banco de dados com informacao inutil.
             prova_completa.deleta_respostas()
             prova_completa_url = reverse(
                 "provas:prova-completa", args=[prova_completa.id]
             )
             context = {"prova_completa_url": prova_completa_url}
+            cache.delete(f"aluno")
             return render(request, "provas/prova-respondida.html", context)
         # se a prova for simulado
         if tipo_prova == "simulado":
             simulado_id_list = request.session.get("simulado_id_list")
             simulados = Simulado.objects.filter(pk__in=simulado_id_list)
             for simulado in simulados:
-                prova_completa = ProvaCompleta.objects.create(usuario=request.user)
+                prova_completa = ProvaCompleta.objects.create(aluno=aluno)
                 for questao_id, resposta in request.POST.items():
                     if "questao_id-" in questao_id:
                         real_questao_id = questao_id.split("-")[1]
                         questao = Questao.objects.get(pk=real_questao_id)
                         prova_respondida_obj = ProvaRespondida.objects.create(
-                            usuario=request.user,
+                            aluno=aluno,
                             questao=questao,
                             resposta=resposta,
                             prova_completa=prova_completa,
@@ -166,6 +169,8 @@ def prova_respondida(request):
                     "provas:prova-completa", args=[prova_completa.id]
                 )
                 context = {"prova_completa_url": prova_completa_url}
+                cache.delete(f"aluno_provas_feitas_{aluno.id}")
+                cache.delete(f"turmas_graph_{aluno.id}")
             return render(request, "provas/prova-respondida.html", context)
 
 
@@ -202,4 +207,8 @@ def prova_completa(request, prova_id):
         "data": data,
         "acerto_dificuldade": acerto_dificuldade,
     }
+    
     return render(request, "provas/prova-completa.html", context)
+
+
+
