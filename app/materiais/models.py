@@ -54,12 +54,25 @@ class Tipo(models.Model):
         return f"{self.nome}"
 
 class OpcaoImagem(models.Model):
-    questao = models.OneToOneField("materiais.Questao", on_delete=models.CASCADE)
+    questao = models.OneToOneField("materiais.Questao", on_delete=models.CASCADE, related_name='opcoes_imagem')
     imagem_a = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_b = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_c = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_d = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
     imagem_e = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
+    
+    
+    def opcoes_imagem_dict(self):
+        images = {
+            'a': self.imagem_a,
+            'b': self.imagem_b,
+            'c': self.imagem_c,
+            'd': self.imagem_d,
+            'e': self.imagem_e,
+        }
+        return {key: img for key, img in images.items() if img}
+    
+    
     class Meta:
         verbose_name_plural = 'Opcoes com imagem'
 
@@ -97,7 +110,7 @@ class ProvaRespondida(models.Model):
         \t-resposta\n
         \t-prova_completa\n
         \t-simulado'''
-    usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE, null=True)
+    aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE, null=True)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
     resposta = models.CharField(default=None, null=True, max_length=1, blank=True)
     acerto = models.BooleanField(default=None, blank=True, null=True)
@@ -122,22 +135,22 @@ class Simulado(models.Model):
         return f"{self.tipo}"
 
 class QuestaoRespondida(models.Model):
-    """Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco"""
+    """Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco."""
 
-    usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
+    aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True)
 
     @classmethod
-    def set_questoes_ja_respondidas(cls, usuario):
-        prova_respondidas = ProvaRespondida.objects.filter(usuario=usuario)
+    def set_questoes_ja_respondidas(cls, aluno):
+        prova_respondidas = ProvaRespondida.objects.filter(usuario=aluno)
         for prova_respondida in prova_respondidas:
             questao = prova_respondida.questao
-            cls.objects.create(usuario=usuario, questao=questao)
+            cls.objects.create(aluno=aluno, questao=questao)
 
 
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
-    usuario = models.ForeignKey("usuarios.Account", on_delete=models.CASCADE)
+    aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
     nota = models.FloatField(default=0, null=True)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
