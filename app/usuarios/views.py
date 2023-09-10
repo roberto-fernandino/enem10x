@@ -5,20 +5,26 @@ from django.contrib.auth import authenticate, login, logout
 from usuarios.forms import AccountCreationForm, CriarTurmaForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
 from usuarios.models import MediaGeral, Turma, Professor, Aluno
 from usuarios.decorators import user_has_tag
 from uuid import uuid4
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+
 # Create your views here.
 
 
 # CACHE AQUI
 @login_required
-
 def notas_graph(request):
     if request.user.is_aluno or request.user.is_admin:
+        aluno = request.user.aluno
+        cache_key = f"notas_graph_{aluno.id}"
+        cached_page = cache.get(cache_key)
+        if cached_page:
+            return HttpResponse(response.content)
         (
             data_mat,
             data_nat,
@@ -44,13 +50,16 @@ def notas_graph(request):
             "media_lin": media_lin,
             "media_hum": media_hum,
         }
-        return render(request, "usuarios/notas-graph.html", context)
+        response = render(request, "usuarios/notas-graph.html", context)
+        cache.set(cache_key, response.content, 60 * 10)
     else:
-        return HttpResponseForbidden('Voce nao tem autorizacao de acessar essa pagina')
+        return HttpResponseForbidden("403 forbidden")
+
 
 @login_required
 def user_view(request):
-    return render(request, 'static/user-base.html')
+    return render(request, "static/user-base.html")
+
 
 @login_required
 def filter_graph_time(request):
@@ -123,70 +132,77 @@ def signup(request, *args, **kwargs):
 
 
 @login_required
-@cache_page(5*60)
 def professor_turmas_view(request):
     if request.user.is_professor:
-        professor = Professor.objects.get(usuario=request.user)
+        professor = request.user.professor
+        cache_key = f"professor_turmas_view_{professor.id}"
+        cached_page = cache.get(cache_key)
+        if cached_page:
+            return HttpResponseForbidden(cached_page)
         turmas = professor.turmas.all()
-        context = {
-            'turmas':turmas,
-            'professor': professor
-            }
-        return render(request, "usuarios/turmas.html", context)
+        context = {"turmas": turmas, "professor": professor}
+        response = render(request, "usuarios/turmas.html", context)
+        cache.set(cache_key, response.content, 60 * 10)
+        return response
     else:
         return HttpResponseForbidden("saia")
-    
-@login_required
-@cache_page(60*5)
-def aluno_turmas_view(request):
-    if request.user.is_aluno:
-        aluno = Aluno.objects.get(usuario=request.user)
-        turmas = Turma.objects.filter(alunos=aluno)
-        context = {
-            'turmas':turmas,
-            'aluno': aluno
-            }
-        return render(request, "usuarios/turmas.html", context)
-    else:
-        return HttpResponseForbidden("Forbidden, don't try again.")
-    
+
 
 @login_required
-@user_has_tag('is_professor')   
+@user_has_tag("is_aluno")
+def aluno_turmas_view(request):
+    if request.user.is_aluno:
+        aluno = request.user.aluno
+        cache_key = f"aluno_turmas_view_{aluno.id}"
+        cached_page = cache.get(cache_key)
+        if cached_page:
+            print(f"Pagina com cache recuperada {cache_key}")
+            return HttpResponse(cached_page)
+
+        turmas = Turma.objects.filter(alunos=aluno)
+        context = {"turmas": turmas, "aluno": aluno}
+        response = render(request, "usuarios/turmas.html", context)
+        cache.set(cache_key, response.content, 60 * 10)
+        return response
+    else:
+        return HttpResponseForbidden("Forbidden, don't try again.")
+
+
+@login_required
+@user_has_tag("is_professor")
 def criar_turma_view(request):
     professor_criador = Professor.objects.get(usuario=request.user)
     if request.method == "POST":
         form = CriarTurmaForm(professor_criador, request.POST)
         if form.is_valid():
-            turma = form.save()
+            turma = form.save(commit=False)
             turma.codigo = uuid4()
             turma.criador = professor_criador
             turma.save()
-            messages.add_message(request, messages.SUCCESS, 'Turma criada com sucesso')
-            return redirect('usuarios:professor-turmas')
+            messages.add_message(request, messages.SUCCESS, "Turma criada com sucesso")
+            return redirect("usuarios:professor-turmas")
     form = CriarTurmaForm(professor_criador)
-    context = {
-        "form": form
-    }
-    return render(request, 'usuarios/create-turma.html', context)
-    
+    context = {"form": form}
+    return render(request, "usuarios/create-turma.html", context)
+
 
 @login_required
-@user_has_tag('is_professor')
+@user_has_tag("is_professor")
 def professor_turma_view(request, turma_id):
     professor = Professor.objects.get(usuario=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
 
     if not turma.professores.filter(id=professor.id).exists():
-        return HttpResponseForbidden("Nem tente")
+        return HttpResponseForbidden("403 Forbidden")
     context = {
         "turma": turma,
-        "professor":professor,
+        "professor": professor,
     }
-    return render(request, 'usuarios/turma.html', context)
+    return render(request, "usuarios/turma.html", context)
+
 
 @login_required
-@user_has_tag('is_aluno')
+@user_has_tag("is_aluno")
 def aluno_turma_view(request, turma_id):
     aluno = Aluno.objects.get(usuario=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
@@ -196,55 +212,78 @@ def aluno_turma_view(request, turma_id):
         "turma": turma,
         "aluno": aluno,
     }
-    return render(request, 'usuarios/turma.html', context)
+    return render(request, "usuarios/turma.html", context)
+
 
 @login_required
 def signupsucess(request):
     return render(request, "usuarios/signup-sucess.html")
+
 
 @login_required
 def logout_view(request):
     logout(request)
     return redirect("home:home")
 
+
 @login_required
 def entra_turma(request):
     if request.user.is_aluno or request.user.is_professor:
         usuario = request.user
         if request.method == "POST":
-            codigo = request.POST['codigo']
-            turma = get_object_or_404(Turma, codigo=codigo)               
-            if  request.user.is_aluno:
-                aluno = Aluno.objects.get(usuario=usuario)
+            codigo = request.POST["codigo"]
+            turma = get_object_or_404(Turma, codigo=codigo)
+            if request.user.is_aluno:
                 if turma.criador.get_remaining_alunos() <= 0:
-                    messages.add_message(request, messages.ERROR,"Esse professor ja atingiu seu limite de alunos" )
-                    return render(request,"usuarios/erro.html")
+                    messages.add_message(
+                        request,
+                        messages.ERROR,
+                        "Esse professor ja atingiu seu limite de alunos.",
+                    )
+                    return render(request, "usuarios/erro.html")
                 else:
+                    aluno = request.user.aluno
+                    cache_key = f"aluno_turmas_{aluno.id}"
                     turma.alunos.add(aluno)
                     turma.criador.alunos += 1
                     turma.criador.save()
-                    messages.add_message(request, messages.SUCCESS, f"{usuario.nome} voce entrou na {turma.nome} com sucesso!")
-                    return redirect('usuarios:aluno-turmas')
+                    cache.delete(cache_key)
+                    messages.add_message(
+                        request,
+                        messages.SUCCESS,
+                        f"{usuario.nome} voce entrou na {turma.nome} com sucesso!",
+                    )
+                    return redirect("usuarios:aluno-turmas")
             if request.user.is_professor:
-                professor = Professor.objects.get(usuario=usuario)
+                professor = request.user.professor
+                cache_key = f"professor_turmas_{professor.id}"
                 turma.professores.add(professor)
-                messages.add_message(request, messages.SUCCESS, "Entrou na conta com sucesso {}")
-                return redirect('usuarios:professor-turmas')
-        return render(request, 'usuarios/entrar-turma.html')
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    f"{usuario.nome} voce entrou na {turma.nome} com sucesso !",
+                )
+                cache.delete(cache_key)
+                return redirect("usuarios:professor-turmas")
+        return render(request, "usuarios/entrar-turma.html")
     else:
-        return HttpResponseForbidden("Você não tem permissão para acessar esta página. Esse acesso será rastreado..")
-    
+        return HttpResponseForbidden(
+            "Você não tem permissão para acessar esta página. Esse acesso será rastreado.."
+        )
+
+
 @login_required
 def delete_turma(request, turma_id):
     turma = Turma.objects.get(id=turma_id)
     turma.delete()
-    return redirect('usuarios:professor-turmas')
+    return redirect("usuarios:professor-turmas")
+
 
 @login_required
-@user_has_tag('is_professor')
-def remover_aluno(request, turma_id , aluno_id):
+@user_has_tag("is_professor")
+def remover_aluno(request, turma_id, aluno_id):
     usuario = request.user
-    turma = get_object_or_404(Turma,id=turma_id)
+    turma = get_object_or_404(Turma, id=turma_id)
     criador = turma.criador
     if usuario == criador.usuario:
         aluno = Aluno.objects.get(id=aluno_id)
@@ -254,15 +293,34 @@ def remover_aluno(request, turma_id , aluno_id):
     else:
         return HttpResponseForbidden("Usuario nao é o criador da turma.")
     messages.add_message(request, messages.SUCCESS, "Aluno removido com sucesso.")
-    return redirect('usuarios:professor-turma', turma_id)
+    return redirect("usuarios:professor-turma", turma_id)
+
 
 @login_required
-@user_has_tag('is_aluno')
+@user_has_tag("is_aluno")
 def sair_turma_aluno(request, turma_id, aluno_id):
     aluno = Aluno.objects.get(id=aluno_id)
     turma = Turma.objects.get(id=turma_id)
     turma.alunos.remove(aluno)
     turma.criador.alunos -= 1
     turma.criador.save()
-    messages.add_message(request, messages.SUCCESS, f"Voce saiu da turma {turma.nome} com sucesso!")
-    return redirect('usuarios:aluno-turmas')
+    messages.add_message(
+        request, messages.SUCCESS, f"Voce saiu da turma {turma.nome} com sucesso!"
+    )
+    return redirect("usuarios:aluno-turmas")
+
+
+@login_required
+@user_has_tag("is_aluno")
+def aluno_provas_feitas(request):
+    aluno = request.user.aluno
+    cache_key = f"aluno_provas_feitas_{aluno.id}"
+    cached_page = cache.get(cache_key)
+    if cached_page:
+        return HttpResponse(response.content)
+
+    provas_feitas_do_usuario = ProvaCompleta.objects.filter(aluno=aluno)
+    context = {"provas_feita_do_usuario": provas_feitas_do_usuario}
+    response = render(request, "usuarios/provas-feitas.html", context)
+    cache.set(cache_key, response.content, 60*10)
+    return response
