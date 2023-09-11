@@ -11,7 +11,7 @@ class Router:
         in the primary/replica pool.
         """
         db_set = {"default", "replica"}
-        if obj1._state.db in db_set and obj2._stated.db in db_set:
+        if obj1._state.db in db_set and obj2._state.db in db_set:
             return True
         return None
     
