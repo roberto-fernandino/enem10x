@@ -133,7 +133,7 @@ def prova_respondida(request):
                     # Define acerto da questao
                     prova_respondida_obj.set_acerto()
             questao_respondida = QuestaoRespondida()
-            questao_respondida.set_questoes_ja_respondidas(request.user)
+            questao_respondida.set_questoes_ja_respondidas(aluno)
             prova_completa.gera_relatorio()
             # Deleta as questoes respondidas do usuario para nao poluir o banco de dados com informacao inutil.
             prova_completa.deleta_respostas()
@@ -162,7 +162,7 @@ def prova_respondida(request):
                         )
                         prova_respondida_obj.set_acerto()
                 questao_respondida = QuestaoRespondida()
-                questao_respondida.set_questoes_ja_respondidas(request.user)
+                questao_respondida.set_questoes_ja_respondidas(aluno)
                 prova_completa.gera_relatorio()
                 prova_completa.deleta_respostas()
                 prova_completa_url = reverse(

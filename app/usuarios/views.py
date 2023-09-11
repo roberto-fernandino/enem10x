@@ -24,7 +24,7 @@ def notas_graph(request):
         cache_key = f"notas_graph_{aluno.id}"
         cached_page = cache.get(cache_key)
         if cached_page:
-            return HttpResponse(response.content)
+            return HttpResponse(cached_page)
         (
             data_mat,
             data_nat,
@@ -156,7 +156,6 @@ def aluno_turmas_view(request):
         cache_key = f"aluno_turmas_view_{aluno.id}"
         cached_page = cache.get(cache_key)
         if cached_page:
-            print(f"Pagina com cache recuperada {cache_key}")
             return HttpResponse(cached_page)
 
         turmas = Turma.objects.filter(alunos=aluno)
@@ -317,7 +316,8 @@ def aluno_provas_feitas(request):
     cache_key = f"aluno_provas_feitas_{aluno.id}"
     cached_page = cache.get(cache_key)
     if cached_page:
-        return HttpResponse(response.content)
+        print("Cached page.")
+        return HttpResponse(cached_page)
 
     provas_feitas_do_usuario = ProvaCompleta.objects.filter(aluno=aluno)
     context = {"provas_feita_do_usuario": provas_feitas_do_usuario}
