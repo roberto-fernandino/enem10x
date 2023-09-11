@@ -108,10 +108,10 @@ def define_image_path(instance, filename: str) -> str:
     """
     if instance.__class__.__name__ == "Questao":
         ext = os.path.splitext(filename)[-1]
-        filename = f"questao_enunciado_{instance.identificador_unico}.{ext}"
+        filename = f"questao_enunciado_{instance.identificador_unico}{ext}"
     if instance.__class__.__name__ == "OpcaoImagem":
         ext = os.path.splitext(filename)[-1]
-        filename = f"questao_{instance.questao.identificador_unico}.{ext}"
+        filename = f"questao_{instance.questao.identificador_unico}{ext}"
     return Path(f"questoes/{filename}")
 
 
