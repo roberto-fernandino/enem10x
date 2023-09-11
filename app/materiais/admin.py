@@ -134,7 +134,7 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
         'data_feita',
         ]
     fieldsets = (
-        ('Informacao do Estudante', {"fields": ['usuario']}),
+        ('Informacao do Estudante', {"fields": ['aluno']}),
         ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'acerto_dificuldade']}),
         ('Acertos e Erros', {"fields": ['acertos', 'erros']})
 
