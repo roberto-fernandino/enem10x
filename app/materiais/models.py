@@ -64,11 +64,11 @@ class OpcaoImagem(models.Model):
     
     def opcoes_imagem_dict(self):
         images = {
-            'a': self.imagem_a,
-            'b': self.imagem_b,
-            'c': self.imagem_c,
-            'd': self.imagem_d,
-            'e': self.imagem_e,
+            'a': self.imagem_a.url if self.imagem_a else None,
+            'b': self.imagem_b.url if self.imagem_b else None,
+            'c': self.imagem_c.url if self.imagem_c else None,
+            'd': self.imagem_d.url if self.imagem_d else None,
+            'e': self.imagem_e.url if self.imagem_e else None,
         }
         return {key: img for key, img in images.items() if img}
     
@@ -142,7 +142,7 @@ class QuestaoRespondida(models.Model):
 
     @classmethod
     def set_questoes_ja_respondidas(cls, aluno):
-        prova_respondidas = ProvaRespondida.objects.filter(usuario=aluno)
+        prova_respondidas = ProvaRespondida.objects.filter(aluno=aluno)
         for prova_respondida in prova_respondidas:
             questao = prova_respondida.questao
             cls.objects.create(aluno=aluno, questao=questao)
@@ -160,6 +160,9 @@ class ProvaCompleta(models.Model):
     acerto_dificuldade = models.JSONField(null=True)
 
     def gera_relatorio(self):
+        '''
+        Gera um relatorio baseado no objeto provacompleta.
+        '''
         conteudos_errados = []
         conteudos_acertados = []
         acertos = 0
@@ -167,8 +170,7 @@ class ProvaCompleta(models.Model):
         acerto_questoes_faceis = 0
         acerto_questoes_medianas = 0
         acerto_questoes_dificeis = 0
-        qtd_questoes = 0
-        for resposta in self.respostas.filter(usuario=self.usuario):
+        for resposta in self.respostas.filter(aluno=self.aluno):
             if resposta.acerto:
                 acertos += 1
                 for conteudo in resposta.questao.conteudo.all():
@@ -210,7 +212,7 @@ class ProvaCompleta(models.Model):
 
     def deleta_respostas(self):
         # Deleta todas as respostas do usuario em ProvaRespondida pra maior otimizacao
-        self.respostas.filter(usuario=self.usuario).delete()
+        self.respostas.filter(aluno=self.aluno).delete()
 
     def __str__(self):
-        return f"{self.usuario} - {self.data_feita}"
+        return f"{self.aluno} - {self.data_feita}"
