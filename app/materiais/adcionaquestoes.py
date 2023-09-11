@@ -14,6 +14,8 @@ from subprocess import run
 from docx import Document
 from materiais.tratamentos import tratamento_geral_pra_extracao
 import os
+from django.core.cache import cache
+
 
 def adciona_questoes(arquivo_path: str, materia: str):
     """Adciona questoes no banco de dados."""
@@ -62,7 +64,6 @@ def adciona_questoes(arquivo_path: str, materia: str):
     questoes_count = 0
 
     for questao in extrair_enunciados(DOC_ALL_TEXT):
-        # Objeto questao
         img_path = img_dir / f"image{count}.png"
 
         questao_obj = Questao()
@@ -111,10 +112,10 @@ def adciona_questoes(arquivo_path: str, materia: str):
         # Submateria obj = sub_materia
 
         sub_materia, _ = SubMateria.objects.get_or_create(
-            nome=actual_conteudos_list[1], materia=materia_
+            nome=actual_conteudos_list[0], materia=materia_
         )
         conteudo, _ = Conteudo.objects.get_or_create(
-            nome=actual_conteudos_list[0], sub_materia=sub_materia
+            nome=actual_conteudos_list[1], sub_materia=sub_materia
         )
 
         if (img_count + 1) == count:
@@ -129,3 +130,5 @@ def adciona_questoes(arquivo_path: str, materia: str):
         
     # Limpa img_dir
     remove_todas_imagens_do_diretorio_local()
+    #Limpa cache de pagina de questoes de professores pra atualizar com as novas questoes.
+    cache.delete(f"criar_prova_professor")
