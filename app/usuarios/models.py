@@ -172,6 +172,9 @@ class Aluno(models.Model):
         super().save(*args, **kwargs)
         MediaGeral.objects.get_or_create(usuario=self.usuario)
 
+class Prova_pra_Turma(models.Model):
+    prova = models.ForeignKey("materiais.ProvaCriadaProfessor", on_delete=models.CASCADE)
+
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)
     professores = models.ManyToManyField(Professor, related_name='turmas')
