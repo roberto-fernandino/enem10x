@@ -55,12 +55,14 @@ class ConteudoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['nome']
 
-class QuestoesAdmin(admin.ModelAdmin):
+class QuestaoAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         "identificador_unico",
         'nivel',
         'Materia',
+        'Submateria',
+        'Conteudo',
     ]
     fieldsets = (
        (None, {"fields": [
@@ -79,7 +81,11 @@ class QuestoesAdmin(admin.ModelAdmin):
     
 
     def Materia(self, obj):
-        return ' - '.join([str(conteudo.sub_materia) for conteudo in obj.conteudo.all()])
+        return [str(conteudo.sub_materia.materia) for conteudo in obj.conteudo.all()]
+    def Conteudo(self, obj):
+        return [str(conteudo) for conteudo in obj.conteudo.all()]
+    def Submateria(self, obj):
+        return [str(conteudo.sub_materia) for conteudo in obj.conteudo.all()]
 
 @admin.register(OpcaoImagem)
 class QuestoesImagemAdmin(admin.ModelAdmin):
@@ -157,4 +163,4 @@ admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
 admin.site.register(Materia, MateriaAdmin)
 admin.site.register(SubMateria, SubMateriaAdmin)
-admin.site.register(Questao, QuestoesAdmin)
+admin.site.register(Questao, QuestaoAdmin)

@@ -3,6 +3,15 @@ from django.db import models
 
 
 # Create your models here.
+
+
+class Tipo(models.Model):
+    nome = models.CharField(max_length=80)
+
+    def __str__(self) -> str:
+        return f"{self.nome}"
+
+
 class Nivel(models.Model):
     nivel = models.CharField(max_length=10)
     peso = models.FloatField()
@@ -24,11 +33,15 @@ class Materia(models.Model):
 class SubMateria(models.Model):
     nome = models.CharField(max_length=50)
     materia = models.ForeignKey(
-        Materia, on_delete=models.CASCADE, default=None, null=True
+        Materia,
+        on_delete=models.CASCADE,
+        default=None,
+        null=True,
+        related_name="sub_materia",
     )
 
     def __str__(self) -> str:
-        return f"{self.nome} - {self.materia}"
+        return f"{self.nome}"
 
     class Meta:
         verbose_name_plural = "Sub Materias"
@@ -41,46 +54,15 @@ class Conteudo(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        related_name="conteudo",
     )
-
-    def __str__(self) -> str:
-        return f"{self.nome} - {self.sub_materia}"
-
-
-class Tipo(models.Model):
-    nome = models.CharField(max_length=80)
 
     def __str__(self) -> str:
         return f"{self.nome}"
 
-class OpcaoImagem(models.Model):
-    questao = models.OneToOneField("materiais.Questao", on_delete=models.CASCADE, related_name='opcoes_imagem')
-    imagem_a = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-    imagem_b = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-    imagem_c = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-    imagem_d = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-    imagem_e = models.ImageField(upload_to=define_image_path, null=True, blank=True, default=None)
-    
-    
-    def opcoes_imagem_dict(self):
-        """
-        return every image url not the object itself and 
-        checking if the object existes else returning None."""
-        images = {
-            'a': self.imagem_a.url if self.imagem_a else None,
-            'b': self.imagem_b.url if self.imagem_b else None,
-            'c': self.imagem_c.url if self.imagem_c else None,
-            'd': self.imagem_d.url if self.imagem_d else None,
-            'e': self.imagem_e.url if self.imagem_e else None,
-        }
-        return {key: img for key, img in images.items() if img}
-    
-    
-    class Meta:
-        verbose_name_plural = 'Opcoes com imagem'
 
 class Questao(models.Model):
-    enunciado = models.TextField(default=None, blank=False, null=True)
+    enunciado = models.TextField(default=None, blank=True, null=True)
     imagem_enunciado = models.ImageField(
         upload_to=define_image_path, null=True, blank=True, default=None
     )
@@ -95,7 +77,9 @@ class Questao(models.Model):
         Nivel, on_delete=models.DO_NOTHING, null=True, blank=True, default=None
     )
 
-    identificador_unico = models.CharField(max_length=20, null=True, blank=True, unique=True)
+    identificador_unico = models.CharField(
+        max_length=20, null=True, blank=True, unique=True
+    )
 
     class Meta:
         verbose_name_plural = "Questoes"
@@ -104,16 +88,58 @@ class Questao(models.Model):
         return f"{self.id} - {self.identificador_unico}"
 
 
+class OpcaoImagem(models.Model):
+    questao = models.OneToOneField(
+        "materiais.Questao", on_delete=models.CASCADE, related_name="opcoes_imagem"
+    )
+    imagem_a = models.ImageField(
+        upload_to=define_image_path, null=True, blank=True, default=None
+    )
+    imagem_b = models.ImageField(
+        upload_to=define_image_path, null=True, blank=True, default=None
+    )
+    imagem_c = models.ImageField(
+        upload_to=define_image_path, null=True, blank=True, default=None
+    )
+    imagem_d = models.ImageField(
+        upload_to=define_image_path, null=True, blank=True, default=None
+    )
+    imagem_e = models.ImageField(
+        upload_to=define_image_path, null=True, blank=True, default=None
+    )
+
+    def opcoes_imagem_dict(self):
+        """
+        return every image url not the object itself and
+        checking if the object existes else returning None."""
+        images = {
+            "a": self.imagem_a.url if self.imagem_a else None,
+            "b": self.imagem_b.url if self.imagem_b else None,
+            "c": self.imagem_c.url if self.imagem_c else None,
+            "d": self.imagem_d.url if self.imagem_d else None,
+            "e": self.imagem_e.url if self.imagem_e else None,
+        }
+        return {key: img for key, img in images.items() if img}
+
+    class Meta:
+        verbose_name_plural = "Opcoes com imagem"
+
+
+class ProvaCriadaProfessor(models.Model):
+    questao = models.ManyToManyField(Questao)
+
 
 class ProvaRespondida(models.Model):
-    '''Objeto temporario que armazena respostas de um usuario pra uma prova especifica
+    """Objeto temporario que armazena respostas de um usuario pra uma prova especifica
     Parametros:\n
         \t-aluno\n
         \t-questao\n
         \t-resposta\n
         \t-prova_completa\n
         \t-simulado\n
-    Se resposta for igual a None (nao respondida), se deleta para nao cair em QuestoesRespondidas posteiromente.'''
+    Se resposta for igual a None (nao respondida), se deleta para nao cair em QuestoesRespondidas posteiromente.
+    """
+
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE, null=True)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
     resposta = models.CharField(default=None, null=True, max_length=1, blank=True)
@@ -121,13 +147,19 @@ class ProvaRespondida(models.Model):
     prova_completa = models.ForeignKey(
         "ProvaCompleta", on_delete=models.CASCADE, related_name="respostas", null=True
     )
-    simulado = models.ForeignKey("materiais.Simulado", on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
+    simulado = models.ForeignKey(
+        "materiais.Simulado",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        default=None,
+    )
 
     def set_acerto(self):
         if self.resposta == None:
-            self.delete() 
-            return 
-        
+            self.delete()
+            return
+
         if self.questao.opcao_correta == self.resposta:
             self.acerto = True
         else:
@@ -142,17 +174,20 @@ class Simulado(models.Model):
     def __str__(self):
         return f"{self.tipo}"
 
+
 class QuestaoRespondida(models.Model):
     """Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco."""
 
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
-    questao = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True)
+    questao = models.OneToOneField(
+        Questao, on_delete=models.CASCADE, db_index=True, unique=True
+    )
 
     @classmethod
     def set_questoes_ja_respondidas(cls, aluno):
-        '''
+        """
         Este metodo adciona questoes respondidas de uma ProvaRespondida realizada pelo usuario
-        '''
+        """
         prova_respondidas = ProvaRespondida.objects.filter(aluno=aluno)
         for prova_respondida in prova_respondidas:
             questao = prova_respondida.questao
@@ -163,11 +198,9 @@ class QuestaoRespondida(models.Model):
         return cls.objects.get(questao=questao_id).exists()
 
 
-        
-
-
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
+
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
     nota = models.FloatField(default=0, null=True)
     acertos = models.IntegerField(default=0)
@@ -178,9 +211,9 @@ class ProvaCompleta(models.Model):
     acerto_dificuldade = models.JSONField(null=True)
 
     def gera_relatorio(self):
-        '''
+        """
         Gera um relatorio baseado no objeto provacompleta.
-        '''
+        """
         conteudos_errados = []
         conteudos_acertados = []
         acertos = 0
@@ -221,7 +254,7 @@ class ProvaCompleta(models.Model):
         ) = define_ranking_conteudo_prova(
             conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados
         )
-        
+
         # Salva tipos de prova, erros, acertos, materias
 
         self.erros = erros
