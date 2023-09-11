@@ -52,6 +52,7 @@ def notas_graph(request):
         }
         response = render(request, "usuarios/notas-graph.html", context)
         cache.set(cache_key, response.content, 60 * 10)
+        return response
     else:
         return HttpResponseForbidden("403 forbidden")
 
