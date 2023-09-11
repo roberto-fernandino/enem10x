@@ -123,9 +123,13 @@ class ProvaRespondida(models.Model):
     simulado = models.ForeignKey("materiais.Simulado", on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 
     def set_acerto(self):
+        if self.resposta == None:
+            self.delete() 
+            return 
+        
         if self.questao.opcao_correta == self.resposta:
             self.acerto = True
-        else:       
+        else:
             self.acerto = False
         self.save()
 
@@ -145,10 +149,20 @@ class QuestaoRespondida(models.Model):
 
     @classmethod
     def set_questoes_ja_respondidas(cls, aluno):
+        '''
+        Este metodo adciona questoes respondidas de uma ProvaRespondida realizada pelo usuario
+        '''
         prova_respondidas = ProvaRespondida.objects.filter(aluno=aluno)
         for prova_respondida in prova_respondidas:
             questao = prova_respondida.questao
             cls.objects.create(aluno=aluno, questao=questao)
+
+    @classmethod
+    def check_se_questao_respondida(cls, questao_id):
+        return cls.objects.get(questao=questao_id).exists()
+
+
+        
 
 
 class ProvaCompleta(models.Model):
@@ -214,7 +228,7 @@ class ProvaCompleta(models.Model):
         self.save()
 
     def deleta_respostas(self):
-        # Deleta todas as respostas do usuario em ProvaRespondida pra maior otimizacao
+        # Deleta todas as "ProvaRespondida" do usuario em ProvaRespondida pra maior otimizacao
         self.respostas.filter(aluno=self.aluno).delete()
 
     def __str__(self):
