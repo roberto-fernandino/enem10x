@@ -14,12 +14,12 @@ from pathlib import Path
 from os import path, getenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR.parent / 'data' / 'web'
+DATA_DIR = BASE_DIR.parent / 'data' 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key usqed in production secret!
 SECRET_KEY = str(getenv("SECRET_KEY", "django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -177,7 +177,7 @@ SESSION_COOKIE_AGE = 604800  # 1 semana
 
 # Define local para armezanemto de medias
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/data/media/'
 MEDIA_ROOT = DATA_DIR / 'media'
 
 # admin panel plugin settings
@@ -199,8 +199,14 @@ JAZZMIN_SETTINGS = {
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 
-
 CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+
+'''CACHES = {
     "default":{
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": CELERY_BROKER_URL,
@@ -208,4 +214,4 @@ CACHES = {
             "CLIENT_CLASS":"django_redis.client.DefaultClient",
         }
     }
-}
+}'''
