@@ -63,6 +63,9 @@ class OpcaoImagem(models.Model):
     
     
     def opcoes_imagem_dict(self):
+        """
+        return every image url not the object itself and 
+        checking if the object existes else returning None."""
         images = {
             'a': self.imagem_a.url if self.imagem_a else None,
             'b': self.imagem_b.url if self.imagem_b else None,

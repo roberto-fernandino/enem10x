@@ -1,0 +1,35 @@
+{% extends 'static/user-base.html' %} {% block title %} Usuario {% endblock %}
+{% load static %}
+{% block content %} 
+<div class="prova-create-container">
+    {% if user.is_professor %}
+    <button type="button">
+      <a href="{% url 'provas:prova-choose' %}" class="no-text-decoration">
+        Criar prova
+      </a>
+    </button>
+    {% elif user.is_aluno %}
+    <button type="button">
+      <a href="{% url 'provas:prova-choose' %}" class="no-text-decoration">
+        Realizar prova
+      </a>
+    </button>
+    {% endif %}
+  </div>
+
+{% if provas_feita_do_usuario %}
+    {% for prova in provas_feita_do_usuario %}
+
+    <div>
+        <div>
+            {{prova}} {{prova.nota}} {{prova.data_feita}} <a href="{% url 'provas:prova-completa' prova.id %}">relatorio</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div>
+    Nenhuma prova realizada faca uma agora clicando no botao acima.
+</div>
+{% endif %}
+
+{% endblock %}

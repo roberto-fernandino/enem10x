@@ -21,13 +21,22 @@
     <div>
         {% for questao in questoes %}
             <p>{{forloop.counter}}) {{questao.enunciado}}</p>
-            {% if questao.imagem %}
-                <img src="{{ questao.imagem.url }}" alt="{{ questao.conteudo }} Imagem"> <br>
+            {% if questao.imagem_enunciado %}
+                <img src="{{ questao.imagem_enunciado.url }}" alt="{{ questao.conteudo }} Imagem"> <br>
             {% endif %}
-            {% for opcao in questao.opcoes %}
-                <input type="radio" name="questao_id-{{questao.id}}" value="{{ forloop.counter0|opcao_em_letra }}">
-                {{forloop.counter0|opcao_em_letra}}) {{ opcao }} <br>
-            {% endfor %}
+            {% with opcoes_imagem=questao.opcoes_imagem.opcoes_imagem_dict %}
+                {% for opcao in questao.opcoes %}
+                    {% with letra=forloop.counter0|opcao_em_letra %}
+                        {% if opcao == '[IMG]' %}
+                            <input type="radio" name="questao_id-{{questao.id}}" value="{{ forloop.counter0|opcao_em_letra }}">
+                            {{ forloop.counter0|opcao_em_letra }}) <img src="{{ opcoes_imagem|get_dictionary_item:letra }}" alt="Imagem {{ forloop.counter0|opcao_em_letra }}" height="40px"> <br>
+                            {% else %}
+                            <input type="radio" name="questao_id-{{questao.id}}" value="{{ forloop.counter0|opcao_em_letra }}">
+                            {{forloop.counter0|opcao_em_letra}}) {{ opcao }} <br>
+                        {% endif %}
+                    {% endwith %}
+                {% endfor %}
+            {% endwith %}
         {% endfor %}
     </div>
     {% endif %}

@@ -83,7 +83,7 @@
           </li>
           {% if user.is_aluno %}
           <li class="nav-link">
-            <a href="">
+            <a href="{% url 'usuarios:aluno-provas-feitas' %}">
               <i class="bx bx-test-tube"></i>
               <span class="text nav-text">Provas</span>
             </a>
@@ -124,6 +124,12 @@
             <a href="">
               <i class="bx bx-cog"></i>
               <span class="text nav-text">Settings</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="{% url 'admin:index' %}">
+              <i class='bx bxl-git'></i>
+              <span class="text nav-text">Admin</span>
             </a>
           </li>
           <li class="nav-link logout">

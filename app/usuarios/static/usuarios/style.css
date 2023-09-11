@@ -328,4 +328,76 @@ button:hover {
   margin-top: 200px;
 }
 
+/* ==== provas ==== */
+.prova-create-container {
+  max-width: 400px;
+  margin-top: 15px;
+  background-color: #fbfdff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.prova-create-container button {
+  border: none;
+  border-radius: 6px;
+  background-color: #fbfdff;
+  width: 120px;
+  margin-left: 5px;
+  height: 60px;
+  display: flex;
+  transition: 0.2s;
+}
+.prova-create-container button a {
+  font-size: 16px;
+  font-family: "Poppins", "sans-serif";
+  font-weight: 400;
+  color: #778da9;
+  max-width: 100%;
+  padding: 12px;
+  max-height: 100%;
+}
+
+button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transform: translateY(-1px);
+}
+
+.prova-container {
+  max-width: 400px;
+  margin-left: 400px;
+}
+.prova-container .message {
+  margin-top: 21px;
+}
+.prova-container .prova-box {
+  margin-top: 150px;
+  background-color: #fbfdff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  transition: 0.2s;
+  justify-content: center;
+  align-items: center;
+}
+.prova-container .prova-box .prova-box-link .prova-box-header {
+  color: #415A77;
+}
+.prova-container .prova-box .prova-box-link .prova-box-header i {
+  font-size: 30px;
+  margin-right: 5px;
+}
+.prova-container .prova-box .prova-box-link .prova-body {
+  color: #778da9;
+}
+.prova-container .prova-box:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  opacity: 0.6;
+}
+
 /*# sourceMappingURL=style.css.map */
