@@ -22,6 +22,8 @@ from provas.funcs import (
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from usuarios.decorators import user_has_tag
+from django.http import HttpResponse
+
 
 # Create your views here.
 @login_required
@@ -141,7 +143,8 @@ def prova_respondida(request):
                 "provas:prova-completa", args=[prova_completa.id]
             )
             context = {"prova_completa_url": prova_completa_url}
-            cache.delete(f"aluno")
+            cache.delete(f"aluno_provas_feitas_{aluno.id}")
+            cache.delete(f"turmas_graph_{aluno.id}")
             return render(request, "provas/prova-respondida.html", context)
         # se a prova for simulado
         if tipo_prova == "simulado":
@@ -210,5 +213,41 @@ def prova_completa(request, prova_id):
     
     return render(request, "provas/prova-completa.html", context)
 
+@login_required
+@user_has_tag('is_professor')
+def criar_prova_professor(request):
+    materias =  Materia.objects.all().prefetch_related('sub_materia__conteudo__questoes')
+    materias_data = []
+    for materia in materias:
+        materias_dict = {
+            'nome': materia.nome,
+            'sub_materias': []
+        }
+        for sub_materia in materia.sub_materia.all():
+            sub_materia_dict = {
+                'nome': sub_materia.nome,
+                'conteudos': [],
+            } 
+            for conteudo in sub_materia.conteudo.all():
+                conteudo_dict = {
+                    'nome': conteudo.nome,
+                    'questoes': set(conteudo.questoes.all())
+                }
+                sub_materia_dict["conteudos"].append(conteudo_dict)
+            materias_dict["sub_materias"].append(sub_materia_dict)
+        materias_data.append(materias_dict)
 
+    print(materias_data)
 
+    
+    cache_key = f'criar_prova_professor'
+    cached_page = cache.get(cache_key)
+    if cached_page:
+        return HttpResponse(cached_page)
+    
+    context = {
+        "materias_data":materias_data,
+    }
+    response = render(request, 'provas/criacao-prova-professor.html', context)
+    cache.set(cache_key, response.content, 60*10)
+    return response

@@ -1,0 +1,39 @@
+{% extends 'static/user-base.html' %}
+{% block title %} Criar prova {% endblock %}
+
+
+{% block content %}
+
+{% if materias_data %}
+
+<div class="materias">
+    {% for materia in materias_data %}
+    <div class="materia">
+        {{ materia.nome }}
+        <div class="conteudo hidden">
+            <ul>
+                {% for sub_materia in materia.sub_materias %}
+                    <li>
+                        {{ sub_materia.nome }}
+                        <ul>
+                            {% for conteudo in sub_materia.conteudos %}
+                            <li> {{ conteudo.nome }} </li>
+                            <ul>
+                                {% for questao in conteudo.questoes %}
+                                ------------------------------------------- <br>
+                                Questao ({{ questao.identificador_unico }}) <br>
+                                {{ questao.enunciado|truncatechars:50}} <br>
+                                
+                                {% endfor %}
+                            </ul>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
