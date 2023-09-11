@@ -108,11 +108,12 @@ class Questao(models.Model):
 class ProvaRespondida(models.Model):
     '''Objeto temporario que armazena respostas de um usuario pra uma prova especifica
     Parametros:\n
-        \t-usuario\n
+        \t-aluno\n
         \t-questao\n
         \t-resposta\n
         \t-prova_completa\n
-        \t-simulado'''
+        \t-simulado\n
+    Se resposta for igual a None (nao respondida), se deleta para nao cair em QuestoesRespondidas posteiromente.'''
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE, null=True)
     questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
     resposta = models.CharField(default=None, null=True, max_length=1, blank=True)
