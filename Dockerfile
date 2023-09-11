@@ -28,15 +28,15 @@ RUN ls -la /app &&  \
     /venv/bin/pip install --upgrade pip &&\
     /venv/bin/pip install -r requirements.txt &&\
     adduser --disabled-password --no-create-home admin &&\
-    mkdir -p /data/web/static && \
-    mkdir -p /data/web/media && \
-    chown -R admin:admin /data/web/static && \
-    chown -R admin:admin /data/web/media && \
+    mkdir -p /data/static && \
+    mkdir -p /data/media && \
+    chown -R admin:admin /data/static && \
+    chown -R admin:admin /data/media && \
     chown -R admin:admin /venv && \
     chown -R admin:admin /scripts && \
     chown -R admin:admin /app  &&\
-    chmod -R 755 /data/web/static && \
-    chmod -R 755 /data/web/media && \
+    chmod -R 755 /data/static && \
+    chmod -R 755 /data/media && \
     chmod -R 755 /app/ && \
     chmod +x /scripts/commands.sh
 
