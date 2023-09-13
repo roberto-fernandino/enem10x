@@ -17,7 +17,8 @@ import os
 from django.core.cache import cache
 
 
-def adciona_questoes(arquivo_path: str, materia: str):
+
+def adiciona_questoes(arquivo_path: str, materia: str):
     """Adciona questoes no banco de dados."""
 
     # Cria doc_obj e variaveis que serao utilizadas no script inteiro
@@ -34,8 +35,8 @@ def adciona_questoes(arquivo_path: str, materia: str):
     ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
     CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
 
-    
-    
+   
+
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
 
@@ -62,28 +63,36 @@ def adciona_questoes(arquivo_path: str, materia: str):
 
     # Inicia contagens para questoes.
     questoes_count = 0
+    questoes_adcionadas_count = 0
 
     for questao in extrair_enunciados(DOC_ALL_TEXT):
+        if Questao.objects.filter(identificador_unico=identificadores_unicos_list[questoes_count]).exists():
+           print("\033[91mQuestao ja existe no banco de dados, pulando pra proxima.\033[0m")
+           questoes_count += 1
+           continue
         img_path = img_dir / f"image{count}.png"
 
         questao_obj = Questao()
         questao_obj.enunciado = questao
-        questao_obj.identificador_unico = identificadores_unicos_list[questoes_count]
+        
         # Salva no objeto a opcao correta
         actual_alternativas_dict = ALTERNATIVAS_LIST_DICT[questoes_count]
         questao_obj.opcao_correta = actual_alternativas_dict["w"]
         actual_images_check_dict = img_check_questoes_list_dict[questoes_count]
-        print(actual_images_check_dict)
+       
         if tem_imagens:
             if actual_images_check_dict["imagem_no_enunciado"]:
-                print('Tem imagem no enunciado')
+               
                 with img_path.open("rb") as image_file:
                     ext = os.path.splitext(img_path)[-1]
-                    questao_obj.imagem_enunciado.save(f"questao_enunciado_{questao_obj.identificador_unico}.{ext}",image_file, save=False)
-                    print('Imagem do enunciado adcionada')
+                    questao_obj.imagem_enunciado.save(
+                        f"questao_enunciado_{questao_obj.identificador_unico}.{ext}",
+                        image_file,
+                        save=False,
+                    )
+                    
                 count += 1
                 img_path = img_dir / f"image{count}.png"
-
         questao_obj.save()
         questao_imgs_obj = OpcaoImagem.objects.create(questao=questao_obj)
         questao_imgs_obj.questao = questao_obj
@@ -94,15 +103,18 @@ def adciona_questoes(arquivo_path: str, materia: str):
         opcoes_list = []
         # Salva todas as opcoes de a-e na lista de opcoes
         opcoes_list = [actual_alternativas_dict[letra] for letra in "abcde"]
-        for chave, opcao in enumerate('abcde'):
+        for chave, opcao in enumerate("abcde"):
             if actual_images_check_dict[f"imagem_na_{opcao}"] == True:
                 with img_path.open("rb") as image_file:
                     ext = os.path.splitext(img_path)[-1]
                     field_name = imagem_fields_map[opcao]
-                    getattr(questao_imgs_obj, field_name).save(f"questoes_{questao_obj.identificador_unico}_{opcao}.{ext}", image_file, save=False)
+                    getattr(questao_imgs_obj, field_name).save(
+                        f"questoes_{questao_obj.identificador_unico}_{opcao}.{ext}",
+                        image_file,
+                        save=False,
+                    )
                 count += 1
                 img_path = img_dir / f"image{count}.png"
-        print(opcoes_list)
 
         # Salva no objeto todas opcoes
         questao_obj.opcoes = opcoes_list
@@ -121,14 +133,16 @@ def adciona_questoes(arquivo_path: str, materia: str):
         if (img_count + 1) == count:
             tem_imagens = False
 
+        questao_obj.identificador_unico = identificadores_unicos_list[questoes_count]
+        questao_obj.save()
         questao_obj.conteudo.add(conteudo)
         questao_imgs_obj.save()
         questoes_count += 1
-        questao_obj.save()
+        questoes_adcionadas_count += 1
+        print(f"\033[92m{questoes_adcionadas_count} Questoes adcionadas com sucesso!\033[0m")
 
-        print(f"{questoes_count} Questoes adcionadas com sucesso!")
-        
     # Limpa img_dir
     remove_todas_imagens_do_diretorio_local()
-    #Limpa cache de pagina de questoes de professores pra atualizar com as novas questoes.
+    # Limpa cache de pagina de questoes de professores pra atualizar com as novas questoes.
     cache.delete(f"criar_prova_professor")
+    return questoes_adcionadas_count
