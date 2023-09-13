@@ -21,7 +21,8 @@ EXPOSE 8000
 # imagem como uma nova camada.
 # Agrupar os comandos em um único RUN pode reduzir a quantidade de camadas da 
 # imagem e torná-la mais eficiente.
-RUN apk update && apk add gcc python3-dev libpq-dev musl-dev postgresql-dev netcat-openbsd
+RUN apk update && apk add gcc python3-dev libpq-dev musl-dev postgresql-dev netcat-openbsd imagemagick parallel
+        
 
 RUN ls -la /app &&  \
     python3 -m venv /venv &&\
@@ -38,9 +39,9 @@ RUN ls -la /app &&  \
     chmod -R 755 /data/static && \
     chmod -R 755 /data/media && \
     chmod -R 755 /app/ && \
-    chmod +x /scripts/commands.sh
-
-
+    chmod +x /scripts/commands.sh &&\
+    chmod +x /scripts/zipextract.sh 
+    
 
 # Adcionando scripts e binarios da bin pra antes no PATH
 ENV PATH="/scripts:/venv/bin:$PATH"
@@ -48,3 +49,5 @@ ENV PATH="/scripts:/venv/bin:$PATH"
 USER admin
 
 CMD ["commands.sh"]
+
+

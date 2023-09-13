@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #onw
+    #'debug_toolbar',
     'materiais',
     'provas',
     'usuarios',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -190,9 +192,14 @@ JAZZMIN_SETTINGS = {
     "site_logo":"home/enem10xlogo.png",
     "welcome_sign": "Enem 10x admin",
     "copyright": "Enem 10x",
-    "changeform_format": "collapsible",
+    "changeform_format": "vertical_tabs",
+    
 }
 
+JAZZMIN_UI_TWEAKS = {
+    "theme": "sandstone",
+    "dark_mode_theme": "darkly",
+}
 # CELERY -> REDIS
 
 
@@ -215,3 +222,13 @@ CACHES = {
         }
     }
 }'''
+
+#The Debug Toolbar is shown only if your IP address is listed in Django’s INTERNAL_IPS setting. 
+# This means that for local development, you must add "127.0.0.1" to 
+# INTERNAL_IPS. You’ll need to create this setting if it doesn’t already exist in your settings module:
+# Internal ips
+
+if DEBUG:
+    import socket  # only if you haven't already imported this
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]

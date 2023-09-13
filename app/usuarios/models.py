@@ -173,13 +173,17 @@ class Aluno(models.Model):
         MediaGeral.objects.get_or_create(usuario=self.usuario)
 
 class Prova_pra_Turma(models.Model):
-    prova = models.ForeignKey("materiais.ProvaCriadaProfessor", on_delete=models.CASCADE)
+    prova = models.ForeignKey(
+        "materiais.ProvaCriadaProfessor",
+        on_delete=models.CASCADE,
+        related_name='prova_pra_turma')
+
 
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)
-    professores = models.ManyToManyField(Professor, related_name='turmas')
-    criador = models.ForeignKey(Professor, default=None, null=True, related_name='criador_turma', on_delete=models.CASCADE)
-    alunos = models.ManyToManyField(Aluno)
+    professores = models.ManyToManyField(Professor, related_name='turmas', blank=True, default=None)
+    criador = models.OneToOneField(Professor, default=None, null=True, related_name='criador_turma', on_delete=models.CASCADE)
+    alunos = models.ManyToManyField(Aluno, blank=True, default=None)
     data_criada = models.DateTimeField(auto_now_add=True)
     codigo = models.UUIDField(default=uuid.uuid4, unique=True)
 

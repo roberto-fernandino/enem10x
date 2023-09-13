@@ -69,7 +69,7 @@ class Questao(models.Model):
     conteudo = models.ManyToManyField(
         Conteudo, default=None, blank=True, related_name="questoes"
     )
-    opcoes = models.JSONField(null=True)
+    opcoes = models.JSONField(null=True) 
     opcao_correta = models.CharField(
         null=False, blank=False, default=None, max_length=1
     )
@@ -78,7 +78,7 @@ class Questao(models.Model):
     )
 
     identificador_unico = models.CharField(
-        max_length=20, null=True, blank=True, unique=True
+        max_length=255, null=True, blank=True, unique=True
     )
 
     class Meta:

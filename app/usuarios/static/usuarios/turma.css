@@ -14,6 +14,20 @@ body {
   padding: 0;
 }
 
+FASE EHE .no-text-decoration {
+  text-decoration: none;
+  color: #1B263B;
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: #7F00FF;
+  --bs-tooltip-color: var(--bs-white);
+}
+
+.blur-text {
+  filter: blur(6px);
+}
+
 /* ==== turma style ==== */
 .body .aluno-list {
   display: inline-block;
@@ -38,21 +52,30 @@ body {
   align-items: center;
   margin-bottom: 30px;
 }
+.codigo-container .codigo-text .blur-text #uuidLink {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}
 .codigo-container .codigo-reveal {
   margin-left: 5px;
-  transition: 0.4s;
 }
 .codigo-container .codigo-reveal .reveal-button {
-  background-color: #fbfdff;
+  background-color: transparent;
   font-size: 20px;
   color: #0D1B2A;
   border: none;
   padding: 5px;
   border-radius: 70px;
+  transition: 0.5s;
 }
-.codigo-container .codigo-reveal:hover {
+.codigo-container .reveal-button:hover {
   cursor: pointer;
   opacity: 0.6;
+  transform: translateY(-2px);
+}
+
+.footer .info-text {
+  font-size: 10px;
 }
 
 /*# sourceMappingURL=turma.css.map */

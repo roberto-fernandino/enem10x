@@ -12,7 +12,7 @@ from uuid import uuid4
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
-
+from django.urls import reverse
 # Create your views here.
 
 
@@ -139,8 +139,10 @@ def professor_turmas_view(request):
         cache_key = f"professor_turmas_view_{professor.id}"
         cached_page = cache.get(cache_key)
         if cached_page:
-            return HttpResponseForbidden(cached_page)
-        turmas = professor.turmas.all()
+            return HttpResponse(cached_page)
+        turmas_1 = Turma.objects.filter(criador=professor)
+        turmas_2 = professor.turmas.all()
+        turmas = set(turmas_1) | set(turmas_2)
         context = {"turmas": turmas, "professor": professor}
         response = render(request, "usuarios/turmas.html", context)
         cache.set(cache_key, response.content, 60 * 10)
@@ -180,7 +182,8 @@ def criar_turma_view(request):
             turma.criador = professor_criador
             turma.save()
             messages.add_message(request, messages.SUCCESS, "Turma criada com sucesso")
-            return redirect("usuarios:professor-turmas")
+            cache.delete(f"professor_turmas_view_{professor_criador.id}")
+            return redirect(reverse("usuarios:professor-turmas"))
     form = CriarTurmaForm(professor_criador)
     context = {"form": form}
     return render(request, "usuarios/create-turma.html", context)
@@ -191,9 +194,10 @@ def criar_turma_view(request):
 def professor_turma_view(request, turma_id):
     professor = Professor.objects.get(usuario=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
-
-    if not turma.professores.filter(id=professor.id).exists():
-        return HttpResponseForbidden("403 Forbidden")
+    
+    if not turma.professores.filter(id=professor.id).exists() and turma.criador != professor:
+        return HttpResponseForbidden('403 Forbidden')
+    
     context = {
         "turma": turma,
         "professor": professor,
