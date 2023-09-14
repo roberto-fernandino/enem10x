@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #onw
-    #'debug_toolbar',
+    'debug_toolbar',
     'materiais',
     'provas',
     'usuarios',
@@ -53,8 +53,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -197,8 +197,7 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "sandstone",
-    "dark_mode_theme": "darkly",
+    "theme": "darkly",
 }
 # CELERY -> REDIS
 
@@ -206,6 +205,8 @@ JAZZMIN_UI_TWEAKS = {
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 
+
+# Fake cache for DEV
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -213,6 +214,8 @@ CACHES = {
 }
 
 
+
+# Real cache for PROD
 '''CACHES = {
     "default":{
         "BACKEND": "django_redis.cache.RedisCache",
