@@ -21,9 +21,9 @@ services:
         mode: host
     environment:
       POSTGRES_DB: enem
+      POSTGRES_USER: roberto
       POSTGRES_PASSWORD: Dulce2014
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_USER: roberto
     volumes:
       - ./master:/var/lib/postgresql/data
       - type: tmpfs
@@ -66,9 +66,8 @@ services:
     env_file:
       - .env
 
-
   celery:
-    #restart: always
+    restart: always
     container_name: celery1
     build:
       context: .
