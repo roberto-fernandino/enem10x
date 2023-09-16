@@ -1,4 +1,4 @@
-from materiais.funcs import define_image_path, define_ranking_conteudo_prova
+from materiais.funcs import define_image_path_questoes, define_ranking_conteudo_prova
 from django.db import models
 
 
@@ -64,7 +64,7 @@ class Conteudo(models.Model):
 class Questao(models.Model):
     enunciado = models.TextField(default=None, blank=True, null=True)
     imagem_enunciado = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
     conteudo = models.ManyToManyField(
         Conteudo, default=None, blank=True, related_name="questoes"
@@ -93,19 +93,19 @@ class OpcaoImagem(models.Model):
         "materiais.Questao", on_delete=models.CASCADE, related_name="opcoes_imagem"
     )
     imagem_a = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
     imagem_b = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
     imagem_c = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
     imagem_d = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
     imagem_e = models.ImageField(
-        upload_to=define_image_path, null=True, blank=True, default=None
+        upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
 
     def opcoes_imagem_dict(self):
@@ -127,6 +127,39 @@ class OpcaoImagem(models.Model):
 
 class ProvaCriadaProfessor(models.Model):
     questao = models.ManyToManyField(Questao)
+
+
+
+
+class Simulado(models.Model):
+    tipo = models.CharField(max_length=70)
+    materia = models.ManyToManyField(Materia, default=None, blank=True)
+
+    def __str__(self):
+        return f"{self.tipo}"
+
+
+class QuestaoRespondida(models.Model):
+    """Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco."""
+
+    aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
+    questao = models.OneToOneField(
+        Questao, on_delete=models.CASCADE, db_index=True, unique=True
+    )
+
+    @classmethod
+    def set_questoes_ja_respondidas(cls, aluno):
+        """
+        Este metodo adciona questoes respondidas de uma ProvaRespondida realizada pelo usuario
+        """
+        prova_respondidas = ProvaRespondida.objects.filter(aluno=aluno)
+        for prova_respondida in prova_respondidas:
+            questao = prova_respondida.questao
+            cls.objects.create(aluno=aluno, questao=questao)
+
+    @classmethod
+    def check_se_questao_respondida(cls, questao_id):
+        return cls.objects.get(questao=questao_id).exists()
 
 
 class ProvaRespondida(models.Model):
@@ -167,37 +200,6 @@ class ProvaRespondida(models.Model):
         self.save()
 
 
-class Simulado(models.Model):
-    tipo = models.CharField(max_length=70)
-    materia = models.ManyToManyField(Materia, default=None, blank=True)
-
-    def __str__(self):
-        return f"{self.tipo}"
-
-
-class QuestaoRespondida(models.Model):
-    """Tabela de questoes ja respondidas pra um usuario para nao utilizalas novamente ao criar provas, nao conta questoes que o usuario deixou em branco."""
-
-    aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
-    questao = models.OneToOneField(
-        Questao, on_delete=models.CASCADE, db_index=True, unique=True
-    )
-
-    @classmethod
-    def set_questoes_ja_respondidas(cls, aluno):
-        """
-        Este metodo adciona questoes respondidas de uma ProvaRespondida realizada pelo usuario
-        """
-        prova_respondidas = ProvaRespondida.objects.filter(aluno=aluno)
-        for prova_respondida in prova_respondidas:
-            questao = prova_respondida.questao
-            cls.objects.create(aluno=aluno, questao=questao)
-
-    @classmethod
-    def check_se_questao_respondida(cls, questao_id):
-        return cls.objects.get(questao=questao_id).exists()
-
-
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
 
@@ -209,6 +211,7 @@ class ProvaCompleta(models.Model):
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
     data_feita = models.DateTimeField(auto_now_add=True)
     acerto_dificuldade = models.JSONField(null=True)
+    porcentagem_acerto = models.IntegerField(default=0, null=True, blank=True)
 
     def gera_relatorio(self):
         """
@@ -218,36 +221,28 @@ class ProvaCompleta(models.Model):
         conteudos_acertados = []
         acertos = 0
         erros = 0
-        acerto_questoes_faceis = 0
-        acerto_questoes_medianas = 0
-        acerto_questoes_dificeis = 0
-        for resposta in self.respostas.filter(aluno=self.aluno):
+        
+        # Por cada resposta checa se foi acertada e confere o nivel da questao caso tenha sido acertada
+        respostas = self.respostas.filter(aluno=self.aluno).select_related("questao__nivel")
+        for resposta in respostas:
+            conteudos = list(resposta.questao.conteudo.all()) # Todos conteudos da questao atual no loop
             if resposta.acerto:
                 acertos += 1
-                for conteudo in resposta.questao.conteudo.all():
-                    conteudos_acertados.append(conteudo)
-                if resposta.questao.nivel.nivel == "Fácil":
-                    acerto_questoes_faceis += 1
-                elif resposta.questao.nivel.nivel == "Média":
-                    acerto_questoes_medianas += 1
-                else:
-                    acerto_questoes_dificeis += 1
+                conteudos_acertados.extend(conteudos)
+               
             else:
                 erros += 1
-                for conteudo in resposta.questao.conteudo.all():
-                    conteudos_errados.append(conteudo)
+                conteudos_errados.extend(conteudos)
+                print(conteudos_errados)
+
+        qtd_questoes = acertos + erros
 
         """{
             1: qtd_facil,
             2: qtd_medias,
             3: qtd dificil
         }"""
-        dificuldades_acerto_dict = {}
-        dificuldades_acerto_dict[1] = acerto_questoes_faceis
-        dificuldades_acerto_dict[2] = acerto_questoes_medianas
-        dificuldades_acerto_dict[3] = acerto_questoes_dificeis
 
-        self.acerto_dificuldade = dificuldades_acerto_dict
         (
             self.ranking_piores_conteudos,
             self.ranking_melhores_conteudos,
@@ -259,10 +254,11 @@ class ProvaCompleta(models.Model):
 
         self.erros = erros
         self.acertos = acertos
+        self.porcentagem_acerto = (self.acertos / qtd_questoes) * 100
         self.save()
 
     def deleta_respostas(self):
-        # Deleta todas as "ProvaRespondida" do usuario em ProvaRespondida pra maior otimizacao
+        # Deleta todas as "ProvaRespondida" do aluno em ProvaRespondida pra maior otimizacao, limpeza de coisas inuteis no banco de dados.
         self.respostas.filter(aluno=self.aluno).delete()
 
     def __str__(self):
