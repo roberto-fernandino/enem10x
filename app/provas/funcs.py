@@ -1,24 +1,21 @@
 from math import floor
-from materiais.models import Conteudo, Questao, SubMateria, Materia
+from materiais.models import Conteudo, Questao, SubMateria, Materia, QuestaoRespondida
+from usuarios.models import Aluno
 import os
 
 
 def retorna_questoes_unicas(
-    questoes: list, num_questoes: int, questoes_da_materia, questoes_unicas: set
+    aluno: Aluno
 ) -> list:
-    """Nao deixa questoes serem repetidas em qualquer prova e as adciona na table de questoes feitas pelo usuario"""
-
-    for questao in questoes_da_materia:
-        if len(questoes) >= num_questoes:
-            break
-        if questao.id not in questoes_unicas:
-            questoes.append(questao)
-            questoes_unicas.add(questao.id)
-    return questoes
+    """Nao deixa questoes serem repetidas em qualquer prova filtrando tambem pela table QuestaoRespondida
+    onde aluno=aluno e adiciona retorna questoes_unicas"""
+    
+    questoes_unicas = (QuestaoRespondida.objects.filter(aluno=aluno).values_list("questao_id", flat=True)) # Pega todas as questoes ja respondidas 
+    return questoes_unicas
 
 
 def filtra_questoes_simulado_linguagens(
-    num_questoes: int, materia_in_simulado, questoes: list, questoes_unicas: set
+    num_questoes: int, materia_in_simulado, questoes: list, questoes_unicas: set, aluno: Aluno
 ) -> list:
     """
     Esse algoritimo maluco arrendoda via porcentagem o numero de questoes por materias especificadas em
@@ -41,14 +38,14 @@ def filtra_questoes_simulado_linguagens(
             "?"
         )
         questoes = retorna_questoes_unicas(
-            questoes, num_questoes, questoes_da_materia, questoes_unicas
+            questoes, num_questoes, questoes_da_materia, aluno, questoes_unicas
         )
 
     return questoes
 
 
 def filtra_questoes_simulado_natureza(
-    num_questoes: int, materia_in_simulado, questoes: list, questoes_unicas: set
+    num_questoes: int, materia_in_simulado, questoes: list, questoes_unicas: set, aluno: Aluno
 ) -> list:
     """
     Tenta dividir o numero de questoes escolhidas pelo usuario pelo numero de materias no simulado
@@ -78,17 +75,18 @@ def filtra_questoes_simulado_natureza(
 
 
 def filtra_questoes_simulado_matematica(
-    num_questoes: int, materia_in_simulado, questoes: list, questoes_unicas: set
+    num_questoes: int, materia_in_simulado, questoes_unicas: set, aluno: Aluno
 ) -> list:
     """Faz a mesma coisa que as outras funcoes desse arquivo porem como a prova de matematica so tem\n
     matematica como materia eh mais simplificada."""
-    sub_materias_da_materia = SubMateria.objects.filter(materia=materia_in_simulado[0])
-    conteudos = Conteudo.objects.filter(sub_materia__in=sub_materias_da_materia)
-    questoes_da_materia = Questao.objects.filter(conteudo__in=conteudos).order_by("?")
 
-    questoes = retorna_questoes_unicas(
-        questoes, num_questoes, questoes_da_materia, questoes_unicas
-    )
+    questoes_unicas.update(retorna_questoes_unicas(aluno))
+    questoes_ids = Questao.objects.filter(
+        conteudo__sub_materia__materia=materia_in_simulado[0]
+    ).exclude(id__in=questoes_unicas).values_list("id", flat=True).order_by("?")[:num_questoes]
+    
+    questoes_list = list(Questao.objects.filter(id__in=questoes_ids))
+    
 
-    return questoes
+    return questoes_list
 
