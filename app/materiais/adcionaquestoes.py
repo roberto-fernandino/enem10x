@@ -40,9 +40,6 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
 
-    # Processa o arquivo e salva as imagens no direitorio especificado em img_dir
-    process(arquivo_path, img_dir)
-
     # Inicia contagem que sera utilizada para contar imagens guardadas, nomealas em ordem.
     count = 1
 
@@ -70,7 +67,9 @@ def adiciona_questoes(arquivo_path: str, materia: str):
            print("\033[91mQuestao ja existe no banco de dados, pulando pra proxima.\033[0m")
            questoes_count += 1
            continue
+
         img_path = img_dir / f"image{count}.png"
+      
 
         questao_obj = Questao()
         questao_obj.enunciado = questao
@@ -79,23 +78,29 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         actual_alternativas_dict = ALTERNATIVAS_LIST_DICT[questoes_count]
         questao_obj.opcao_correta = actual_alternativas_dict["w"]
         actual_images_check_dict = img_check_questoes_list_dict[questoes_count]
-       
+
+        # Ja adcioan identificador unico para adcionar img com nome certo.
+        questao_obj.identificador_unico = identificadores_unicos_list[questoes_count]
+
         if tem_imagens:
             if actual_images_check_dict["imagem_no_enunciado"]:
-               
                 with img_path.open("rb") as image_file:
                     ext = os.path.splitext(img_path)[-1]
                     questao_obj.imagem_enunciado.save(
-                        f"questao_enunciado_{questao_obj.identificador_unico}.{ext}",
+                        f"questao_enunciado_{questao_obj.identificador_unico}{ext}",
                         image_file,
                         save=False,
                     )
                     
                 count += 1
                 img_path = img_dir / f"image{count}.png"
-        questao_obj.save()
-        questao_imgs_obj = OpcaoImagem.objects.create(questao=questao_obj)
-        questao_imgs_obj.questao = questao_obj
+        try:
+            questao_obj.save()
+        except:
+            print("\033[91mErro ao adiciona a questao\033[0m")
+            print(actual_alternativas_dict)
+            print(actual_conteudos_list)
+
         # Salva em um dicionario as alternativas e conteudos atuais
         actual_conteudos_list = CONTEUDOS_LIST_LIST[questoes_count]
 
@@ -103,18 +108,29 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         opcoes_list = []
         # Salva todas as opcoes de a-e na lista de opcoes
         opcoes_list = [actual_alternativas_dict[letra] for letra in "abcde"]
-        for chave, opcao in enumerate("abcde"):
-            if actual_images_check_dict[f"imagem_na_{opcao}"] == True:
-                with img_path.open("rb") as image_file:
-                    ext = os.path.splitext(img_path)[-1]
-                    field_name = imagem_fields_map[opcao]
-                    getattr(questao_imgs_obj, field_name).save(
-                        f"questoes_{questao_obj.identificador_unico}_{opcao}.{ext}",
-                        image_file,
-                        save=False,
-                    )
-                count += 1
-                img_path = img_dir / f"image{count}.png"
+
+        # None para nao dar erro caso nao ache imagem_no_enunciado
+        actual_images_check_dict.pop('imagem_no_enunciado', None)
+
+        any_image_in_question = False
+        # Checa se existe imagem no dicionario de imagens nas alternativas
+        if any(actual_images_check_dict.values()):
+            any_image_in_question = True 
+        if any_image_in_question:
+            questao_imgs_obj = OpcaoImagem.objects.create(questao=questao_obj)
+            questao_imgs_obj.questao = questao_obj
+            for chave, opcao in enumerate("abcde"):
+                if actual_images_check_dict[f"imagem_na_{opcao}"] == True:
+                    with img_path.open("rb") as image_file:
+                        ext = os.path.splitext(img_path)[-1]
+                        field_name = imagem_fields_map[opcao]
+                        getattr(questao_imgs_obj, field_name).save(
+                            f"questoes_{questao_obj.identificador_unico}_{opcao}{ext}",
+                            image_file,
+                            save=False,
+                        )
+                    count += 1
+                    img_path = img_dir / f"image{count}.png"
 
         # Salva no objeto todas opcoes
         questao_obj.opcoes = opcoes_list
@@ -132,17 +148,21 @@ def adiciona_questoes(arquivo_path: str, materia: str):
 
         if (img_count + 1) == count:
             tem_imagens = False
-
-        questao_obj.identificador_unico = identificadores_unicos_list[questoes_count]
-        questao_obj.save()
+        try:
+            questao_obj.save()
+        except:
+            print(f"ERROR SAVING QUESTION {questoes_count}.")
         questao_obj.conteudo.add(conteudo)
-        questao_imgs_obj.save()
+        if any_image_in_question:
+            questao_imgs_obj.save()
         questoes_count += 1
         questoes_adcionadas_count += 1
         print(f"\033[92m{questoes_adcionadas_count} Questoes adcionadas com sucesso!\033[0m")
 
     # Limpa img_dir
     remove_todas_imagens_do_diretorio_local()
+
     # Limpa cache de pagina de questoes de professores pra atualizar com as novas questoes.
     cache.delete(f"criar_prova_professor")
+
     return questoes_adcionadas_count

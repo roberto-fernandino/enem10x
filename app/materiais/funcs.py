@@ -102,16 +102,10 @@ def extrair_enunciados(texto_completo_tratado:str) -> list:
 # print(extrair_enunciados('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
 
 
-def define_image_path(instance, filename: str) -> str:
+def define_image_path_questoes(instance, filename: str) -> str:
     """
     Define path para questoes que serao adcionadas.
     """
-    if instance.__class__.__name__ == "Questao":
-        ext = os.path.splitext(filename)[-1]
-        filename = f"questao_enunciado_{instance.identificador_unico}{ext}"
-    if instance.__class__.__name__ == "OpcaoImagem":
-        ext = os.path.splitext(filename)[-1]
-        filename = f"questao_{instance.questao.identificador_unico}{ext}"
     return Path(f"questoes/{filename}")
 
 
@@ -166,7 +160,7 @@ def extrai_conteudos(texto_extraido_do_docx: str) -> list:
     sub_subconteudo_global = []
     for match in matches:
         conteudo, sub_conteudo = match[0].replace("Conteudo:", "").strip() , match[1].replace(';','').strip()
-        if len(conteudo) < 70 and len(sub_conteudo) < 70:
+        if len(conteudo) < 80 and len(sub_conteudo) < 80:
             sub_subconteudo_global.append([conteudo, sub_conteudo])
     return sub_subconteudo_global
 
