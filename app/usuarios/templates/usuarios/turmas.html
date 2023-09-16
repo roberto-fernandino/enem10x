@@ -34,28 +34,28 @@
   </div>
   {% endif %} 
   {% if turmas %}
-  {% for turma in turmas %}
-  <div class="turma-box">
-    {% if user.is_professor %}
-    <a
-      href="{% url 'usuarios:professor-turma' turma.id %}"
-      class="turma-box-link no-text-decoration"
-  >
-    {% elif user.is_aluno %}
-    <a
-    href="{% url 'usuarios:aluno-turma' turma.id %}"
-    class="turma-box-link no-text-decoration"
-  >
-  {% endif %}
-      <div class="turma-box-header">
-        <h2><i class="bi bi-pass"></i>{{ turma.nome }}</h2>
+    {% for turma in turmas %}
+      <div class="turma-box">
+        {% if user.is_professor %}
+        <a
+          href="{% url 'usuarios:professor-turma' turma.id %}"
+          class="turma-box-link no-text-decoration"
+      >
+        {% elif user.is_aluno %}
+        <a
+        href="{% url 'usuarios:aluno-turma' turma.id %}"
+        class="turma-box-link no-text-decoration"
+      >
+      {% endif %}
+          <div class="turma-box-header">
+            <h2><i class="bi bi-pass"></i>{{ turma.nome }}</h2>
+          </div>
+          <div class="turma-body">
+            <h5>{{ turma.get_qtd_alunos }} Alunos</h5>
+          </div>
+        </a>
       </div>
-      <div class="turma-body">
-        <h5>{{ turma.get_qtd_alunos }} Alunos</h5>
-      </div>
-    </a>
-  </div>
-  {% endfor %}
+    {% endfor %}
   {% endif %}
 </div>
 {% endblock %}

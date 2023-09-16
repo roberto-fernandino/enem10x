@@ -76,15 +76,15 @@
       <div class="menu-bar">
         <ul class="menu-links">
           <li class="nav-link">
-            <a href="">
-              <i class='bx bx-user-pin'></i>
-              <span class="text nav-text">{{user.nome}}</span>
-            </a>
-          </li>
-          <li class="nav-link">
             <a href="{% url 'home:home' %}">
               <i class="bx bx-home-alt"></i>
               <span class="text nav-text">Home</span>
+            </a>
+          </li>
+          <li class="nav-link">
+            <a href="{% url 'usuarios:user-profile' %}">
+              <i class='bx bx-user-pin'></i>
+              <span class="text nav-text">{{user.nome}}</span>
             </a>
           </li>
           {% if user.is_aluno %}
@@ -101,18 +101,12 @@
             </a>
           </li>
           <li class="nav-link">
-            <a href="">
-              <i class="bx bx-book-content"></i>
-              <span class="text nav-text">Simulados</span>
-            </a>
-          </li>
-          <li class="nav-link">
             <a href="{% url 'usuarios:aluno-turmas' %}">
               <i class='bx bx-library'></i>
-              <span class="text nav-text">Salas</span>
+              <span class="text nav-text">Turmas</span>
             </a>
           </li>
-          {% endif %} {% if user.is_professor %}
+          {% elif user.is_professor %}
           <li class="nav-link">
             <a href="{% url 'usuarios:professor-turmas' %}">
               <i class="bi bi-people"></i>
@@ -126,18 +120,14 @@
             </a>
           </li>
           {% endif %}
-          <li class="nav-link">
-            <a href="">
-              <i class="bx bx-cog"></i>
-              <span class="text nav-text">Settings</span>
-            </a>
-          </li>
+          {% if request.user.is_admin %}
           <li class="nav-link">
             <a href="{% url 'admin:index' %}">
               <i class='bx bxl-git'></i>
               <span class="text nav-text">Admin</span>
             </a>
           </li>
+          {% endif %}
           <li class="nav-link logout">
             <a href="{%  url 'usuarios:logout' %}">
               <i class="bx bx-log-out-circle"></i>
@@ -147,7 +137,9 @@
         </ul>
       </div>
     </nav>
-    <div class="content">{% block content %} {% endblock %}</div>
-    <script src="{% static 'usuarios/js/sidebar.js' %}" defer></script>
+    <div class="content">
+      {% block content %} {% endblock %}
+    </div>
+    <script src="{% static 'usuarios/js/sidebar.js' %}" defer ></script>
   </body>
 </html>
