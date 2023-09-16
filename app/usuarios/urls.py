@@ -6,7 +6,7 @@ from usuarios.views import (
     logout_view,
     login_view,
     filter_graph_time,
-    user_view,
+    platform_view,
     professor_turmas_view,
     criar_turma_view,
     professor_turma_view,
@@ -17,6 +17,7 @@ from usuarios.views import (
     remover_aluno,
     sair_turma_aluno,
     aluno_provas_feitas,
+    user_profile,
 
 )
 
@@ -24,8 +25,9 @@ from usuarios.views import (
 app_name = "usuarios"
 
 urlpatterns = [
-    path("plataforma/", user_view, name="user"),
-    path("plataforma/graph", notas_graph, name="graficos"),
+    path("plataforma/", platform_view, name="plataforma"),
+    path("plataforma/perfil", user_profile, name="user-profile"),
+    path("plataforma/grafico-notas", notas_graph, name="graficos"),
     path("plataforma/filter-graph-time/", filter_graph_time, name="graph-filter"),
     path(
         "plataforma/professor/turmas/", professor_turmas_view, name="professor-turmas"
