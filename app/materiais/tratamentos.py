@@ -171,7 +171,7 @@ class tratamento_geral_pra_extracao:
                 match.group(1),
                 match.group(2),
             )
-            if len(conteudo) < 50 and len(sub_conteudo) < 50:
+            if len(conteudo) < 80 and len(sub_conteudo) < 80:
                 replace = f"Conteudo: {conteudo} / {sub_conteudo};\n"
                 texto_modificado = texto_modificado.replace(whole, replace, 1)
         return texto_modificado
