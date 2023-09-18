@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #dfe7f1;
+}
+
+* {
+  font-family: "Poppins", "sans-serif ";
+  margin: 0;
+  padding: 0;
+}
+
+FASE EHE .no-text-decoration {
+  text-decoration: none;
+  color: #1B263B;
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: #7F00FF;
+  --bs-tooltip-color: var(--bs-white);
+}
+
+.blur-text {
+  filter: blur(6px);
+}
+
+/* ==== turma style ==== */
+.body .aluno-list {
+  display: inline-block;
+  padding: 0;
+}
+.body .aluno-list li {
+  list-style-type: none;
+  background-color: #fbfdff;
+  font-weight: 400;
+  font-size: 20px;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.message {
+  display: inline-block;
+}
+
+.codigo-container {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.codigo-container .codigo-text .blur-text #uuidLink {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}
+.codigo-container .codigo-reveal {
+  margin-left: 5px;
+}
+.codigo-container .codigo-reveal .reveal-button {
+  background-color: transparent;
+  font-size: 20px;
+  color: #0D1B2A;
+  border: none;
+  padding: 5px;
+  border-radius: 70px;
+  transition: 0.5s;
+}
+.codigo-container .reveal-button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transform: translateY(-2px);
+}
+
+.footer .info-text {
+  font-size: 10px;
+}
+
+/*# sourceMappingURL=turma.css.map */

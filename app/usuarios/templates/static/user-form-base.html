@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     />
     {% load static %}
+    <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
     <link
       rel="shortcut icon"
       href="{% static 'home/favicon/favicon.ico' %}"
@@ -49,17 +50,16 @@
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
               <li class="navbar-item">
-                <a class="nav-link"href="{% url 'home:home' %}">
-                voltar
-              </a>
+                <button onclick="window.history.back()" class="btn btn-light">
+                  Voltar
+                </button>
               </li>
             </ul>
           </div>
         </div>
       </nav>
     </header>
-    {% block javascripts %} {% endblock %}
-    {% block content %} {% endblock %}
+    {% block javascripts %} {% endblock %} {% block content %} {% endblock %}
     <script defer src="{% static 'usuarios/js/form-check.js' %}"></script>
   </body>
 </html>

@@ -1,43 +1,83 @@
-version: '3.9'
+version: "3.9"
+
 services:
   redis:
     image: redis:alpine
     container_name: redis
-
-  db:
-    image: postgres
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    container_name: postgres_db  
-    env_file:
-      - .env
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+  db-master:
+    image: postgres
+    ports:
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_PASSWORD: Dulce2014
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: roberto
+    volumes:
+      - ./master:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_master
+
+  db-replication-1:
+    image: postgres
+    ports:
+      - target: 5432
+        published: 5434
+        protocol: tcp
+        mode: host
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: repuser
+      POSTGRES_PASSWORD: repuser
+      POSTGRES_HOST: db-replication-1
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./replication:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+
+    container_name: postgres_db_replication_1
+
   app:
     build: .
     volumes:
       - ./app:/app
       - ./scripts/:/scripts
+      - ./data/web/media/questoes:/data/media/questoes
     ports:
       - 8000:8000
     image: app:django
     container_name: django_app
     depends_on:
-      - db
+      - db-master
     env_file:
       - .env
+
+
   celery:
-    restart: always
+    #restart: always
     container_name: celery1
     build:
       context: .
-      # DEBUG ONLY FOR DEVELOPMENT
-    command: celery -A enem10x worker -l DEBUG
+      # DEBUG ONLY FOR DEV
+    command: celery -A enem10x worker -l info
     volumes:
       - ./app:/app
     depends_on:
-      - db
+      - db-master
       - redis
       - app
-
-volumes:
-  postgres_data:
-
+      - db-replication-1

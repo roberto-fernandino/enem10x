@@ -1,4 +1,4 @@
-{% extends 'static/user-form-base.html' %} {% block title %} Signup {% endblock %} 
+{% extends 'static/user-form-base.html' %} {% block title %} Signup {%endblock%}
 {% load static %} {% block content %}
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <div class="account-form">
@@ -20,14 +20,24 @@
       <div class="input">{{ form.password2 }}</div>
       <div class="input">{{ form.data_nascimento }}</div>
       <div class="input">{{ form.cpf }}</div>
-      <div class="input">
-        <label for="termos" >Voce concorda com os <a class="no-text-decoration" href="">Termos termos de uso</a>e política de privacidade?</label>
-        <input type="checkbox" name="termos" required>
-      </div>
-      <div class="form-button">
-        <button value="Cadastrar" type="submit" class="btn btn-primary">
-          Cadastrar
-        </button>
+      <div class="centered-input">
+        <div class="check-input">
+          <label for="is_newsletter">Deseja receber newsletter?</label>
+          {{ form.is_newsletter }}
+        </div>
+        <div class="input">
+          <label for="termos"
+            >Voce concorda com os
+            <a class="no-text-decoration" href="">Termos termos de uso</a> e
+            política de privacidade?</label
+          >
+          <input type="checkbox" name="termos" required />
+        </div>
+        <div class="form-button">
+          <button value="Cadastrar" type="submit" class="btn btn-primary">
+            Cadastrar
+          </button>
+        </div>
       </div>
     </div>
   </form>

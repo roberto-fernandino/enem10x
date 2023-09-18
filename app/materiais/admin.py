@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado, OpcaoImagem
 # Register your models here.
 
 
@@ -55,23 +55,49 @@ class ConteudoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['nome']
 
-class QuestoesAdmin(admin.ModelAdmin):
+class QuestaoAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        "identificador_unico",
         'nivel',
         'Materia',
+        'Submateria',
+        'Conteudo',
     ]
     fieldsets = (
-       (None, {"fields": ['enunciado', 'imagem', 'opcoes', 'opcao_correta', 'conteudo',  'nivel' ]}),
+       (None, {"fields": [
+           'enunciado',
+            'imagem_enunciado',
+            'identificador_unico',
+            'opcoes',
+            'opcao_correta',
+            'conteudo',
+            'nivel',
+            ]}),
     )
     ordering = ['id']
     list_filter = ['conteudo']
+    list_display_links = ['identificador_unico']
     
 
     def Materia(self, obj):
-        return ' - '.join([str(conteudo.sub_materia) for conteudo in obj.conteudo.all()])
-    
-    
+        return [str(conteudo.sub_materia.materia) for conteudo in obj.conteudo.all()]
+    def Conteudo(self, obj):
+        return [str(conteudo) for conteudo in obj.conteudo.all()]
+    def Submateria(self, obj):
+        return [str(conteudo.sub_materia) for conteudo in obj.conteudo.all()]
+
+@admin.register(OpcaoImagem)
+class QuestoesImagemAdmin(admin.ModelAdmin):
+    list_display = [
+        'questao',
+        'id',
+        ]
+    ordering = ['id']
+    list_display_links = ['questao']
+    fieldsets = (
+        (None, {"fields": ['questao', 'imagem_a',  'imagem_b', 'imagem_c', 'imagem_d', 'imagem_e']}),
+    )
 '''class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
@@ -108,13 +134,13 @@ class TipoAdmin(admin.ModelAdmin):
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'usuario',
+        'aluno',
         'nota',
         'acertos',
         'data_feita',
         ]
     fieldsets = (
-        ('Informacao do Estudante', {"fields": ['usuario']}),
+        ('Informacao do Estudante', {"fields": ['aluno']}),
         ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'acerto_dificuldade']}),
         ('Acertos e Erros', {"fields": ['acertos', 'erros']})
 
@@ -123,7 +149,7 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
 
 @admin.register(QuestaoRespondida)
 class QuestoesRespondidasAdmin(admin.ModelAdmin):
-    list_display = ['usuario', 'questao']
+    list_display = ['aluno', 'questao']
 
 @admin.register(Simulado)
 class SimuladoAdmin(admin.ModelAdmin):
@@ -137,4 +163,4 @@ admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
 admin.site.register(Materia, MateriaAdmin)
 admin.site.register(SubMateria, SubMateriaAdmin)
-admin.site.register(Questao, QuestoesAdmin)
+admin.site.register(Questao, QuestaoAdmin)

@@ -182,9 +182,6 @@ def NotaFilteredChart(usuario, months:int | None = None):
     )
 
 
-def filtra_questoes_feitas(usuario, questao):
-    return QuestaoRespondida.objects.filter(usuario=usuario, questao=questao)
-
 def MediaQuery(usuario):
     '''
     Retorna media do usuario em matematica, natureza, linguagens, humanas nessa ordem'''

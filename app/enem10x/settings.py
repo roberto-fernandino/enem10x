@@ -14,16 +14,16 @@ from pathlib import Path
 from os import path, getenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR.parent / 'data' / 'web'
+DATA_DIR = BASE_DIR.parent / 'data' 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key usqed in production secret!
 SECRET_KEY = str(getenv("SECRET_KEY", "django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(getenv("DEBUG", 0)))
+DEBUG = bool(int(getenv("DEBUG", default=1)))
 
 ALLOWED_HOSTS = [
     h.strip() for h in getenv("ALLOWED_HOSTS",  "").split(',') if h.strip()
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #onw
+    #'debug_toolbar',
     'materiais',
     'provas',
     'usuarios',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -94,9 +96,18 @@ DATABASES = {
         'PASSWORD': getenv('POSTGRES_PASSWORD', 'dulce20145'),
         'HOST': getenv('POSTGRES_HOST', 'localhost'),
         'PORT': getenv('POSTGRES_PORT', '5432'),
+    },
+    'replica':{
+        'ENGINE': getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': getenv('POSTGRES_DB', 'enem'),
+        'USER': getenv('POSTGRES_REPLICATION_USER', 'roberto'),
+        'PASSWORD': getenv('POSTGRES_REPLICATION_PASSWORD', 'dulce20145'),
+        'HOST': getenv('POSTGRES_HOST_REPLICATION_1', 'localhost'),
+        'PORT': getenv('POSTGRES_PORT', '5432'),
     }
 }
 
+DATABASE_ROUTERS = ['enem10x.routers.Router']
 
 #sqlite3
 '''
@@ -106,8 +117,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
 
     }
-}'''
-
+}
+'''
 
 
 # Password validation
@@ -168,7 +179,7 @@ SESSION_COOKIE_AGE = 604800  # 1 semana
 
 # Define local para armezanemto de medias
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/data/media/'
 MEDIA_ROOT = DATA_DIR / 'media'
 
 # admin panel plugin settings
@@ -181,11 +192,43 @@ JAZZMIN_SETTINGS = {
     "site_logo":"home/enem10xlogo.png",
     "welcome_sign": "Enem 10x admin",
     "copyright": "Enem 10x",
-    "changeform_format": "collapsible",
+    "changeform_format": "vertical_tabs",
+    
 }
 
+JAZZMIN_UI_TWEAKS = {
+    "theme": "sandstone",
+    "dark_mode_theme": "darkly",
+}
 # CELERY -> REDIS
 
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+
+'''CACHES = {
+    "default":{
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": CELERY_BROKER_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS":"django_redis.client.DefaultClient",
+        }
+    }
+}'''
+
+#The Debug Toolbar is shown only if your IP address is listed in Django’s INTERNAL_IPS setting. 
+# This means that for local development, you must add "127.0.0.1" to 
+# INTERNAL_IPS. You’ll need to create this setting if it doesn’t already exist in your settings module:
+# Internal ips
+
+if DEBUG:
+    import socket  # only if you haven't already imported this
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]

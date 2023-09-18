@@ -35,7 +35,7 @@
 
 
 <div id='provaForm' class="prova-customizavel" style="display: none;">
-    <form action="{% url 'provas:prova' %}" method="post">
+    <form action="{% url 'provas:prova-choose' %}" method="post">
         {% csrf_token %}
         <div>
             <label for="num_questoes">Numero de questões</label> <br>
@@ -51,8 +51,9 @@
 </div>
 
 <div id="simuladoForm" class="simulado-customizavel" style="display: block;">
-    <form action="{% url 'provas:prova' %}" method="post">
+    <form action="{% url 'provas:prova-choose' %}" method="post">
         {% csrf_token %}
+ 
         <div>
             <label for="num_questoes">Numero de questões</label> <br>
             {{ choose_prova.num_questoes }}
