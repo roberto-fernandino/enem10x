@@ -1,27 +1,36 @@
-{% extends 'static/prova-base.html'%} {% block title %} Relatorio Prova 
-{% endblock %} {% block content %}
-<button onclick="window.history.back()">Voltar</button>
-<h1>Prova</h1>
-<h1>Ranking Conteudos mais errados</h1>
-<ol>
-  {% for conteudo, erros in ranking_piores.items %}
-  <li>Conteudo: {{conteudo}} --- Erros: {{erros}}</li>
-  {% endfor %}
-</ol>
-<h1>Ranking Conteudos mais acertados</h1>
-<ol>
-  {% for conteudo, acertos in ranking_melhores.items %}
-  <li>Conteudo: {{conteudo}} --- Acertos: {{acertos}}</li>
-  {% endfor %}
-</ol>
-<h1>Acertos por dificuldade</h1>
-<ul>
-  {% for nivel, acerto in acerto_dificuldade.items %}
-  <li>Nivel: {{nivel}} Acertos:{{acerto}}</li>
-  {% endfor %}
-</ul>
-<h1>Data Prova</h1>
-{{data}}
-<h1>Acertos/Erros</h1>
-<p>Acertos: {{acertos}} Erros: {{erros}}</p>
+{% extends 'static/prova-base.html'%}
+
+
+{% block title %}
+   Relatorio Prova
+{% endblock %}
+
+
+{% block content %}
+<a href="{% url 'usuarios:aluno-provas-feitas' %}">
+    <button> Voltar </button>
+</a>
+    <h1>Prova </h1>
+    <h1>Ranking Conteudos mais errados</h1>
+    <ol>
+        {% for conteudo, erros  in ranking_piores.items %}
+            <li>Conteudo: {{conteudo}} --- Erros: {{erros}}</li>
+        {% endfor %}
+    </ol>
+    <h1>Ranking Conteudos mais acertados</h1>
+    <ol>
+        {% for conteudo, acertos  in ranking_melhores.items %}
+            <li>Conteudo: {{conteudo}} --- Acertos: {{acertos}}</li>
+        {% endfor %}
+    </ol>
+    <h1>Acertos por dificuldade</h1>
+    <ul>
+        {% for nivel, acerto in acerto_dificuldade.items %}
+        <li>Nivel: {{nivel}} Acertos:{{acerto}}</li>
+        {% endfor %}
+    </ul>
+    <h1>Data Prova</h1>
+    {{data}}
+    <h1>Acertos/Erros</h1>
+    <p> Acertos: {{acertos}} Erros: {{erros}}</p>
 {% endblock %}
