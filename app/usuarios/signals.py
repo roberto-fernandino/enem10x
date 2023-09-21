@@ -1,17 +1,42 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from usuarios.models import Account
+from usuarios.models import Account, MediaGeral
+from materiais.models import ProvaCompleta
+from celery import shared_task
+from materiais.funcs import organiza_provas_por_tipo, atualiza_ranking_por_tipo
+from usuarios.decorators import time_check
 
+@shared_task(soft_time_limit=300, time_limit=420)
+@receiver(post_save, sender=ProvaCompleta)
+@time_check
+def atualiza_ranking_aluno_erradas(sender, instance, **kwargs):
+    from usuarios.models import RankingConteudosErrados, Aluno
+    aluno = Aluno.objects.get(usuario=instance.aluno.usuario)
+    simulados_tipo = organiza_provas_por_tipo(sender, aluno)
+    for tipo, provas_list in simulados_tipo.items():
+        atualiza_ranking_por_tipo(aluno, tipo,provas_list)
+    
+
+
+@shared_task
 @receiver(post_save, sender=Account)
-def manage_aluno_professor(sender, instance, **kwargs):
+def manage_aluno_professor(sender: Account, instance, **kwargs):
+    '''
+    Signal ativado quando uma compra foi confirmada e o usario recebeu tag de aluno ou professor.
+    Cria no banco de dados um Aluno ou um Professor dependendo da compra do usuario.
+    '''
     from usuarios.models import Aluno, Professor
     try:
         aluno = Aluno.objects.get(usuario=instance)
         if not instance.is_aluno:
-            aluno.delete()
+            pass
+            # Enviar email de conta assinatura expirada / conta cancelada.
+        
     except Aluno.DoesNotExist:
         if instance.is_aluno:
-            Aluno.objects.create(usuario=instance)
+            aluno = Aluno.objects.create(usuario=instance)
+            media_geral, created = MediaGeral.objects.get_or_create(aluno=aluno)
+            # Enviar email de ativacao de conta de aluno quando concluido.
     try:
         professor = Professor.objects.get(usuario=instance)
         if not instance.is_professor:
@@ -19,3 +44,5 @@ def manage_aluno_professor(sender, instance, **kwargs):
     except Professor.DoesNotExist:
         if instance.is_professor:
             Professor.objects.create(usuario=instance)
+            # Enviar email de ativacao de conta de professor quando concluido.
+    
