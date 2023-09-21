@@ -5,7 +5,7 @@ $shadowcolor: #E0E1DD;
 $background-color: #778da9;
 $details: #0D1B2A;
 $font-color: white;
-
+$second-font-color: #7b7786;
 
 * {
     margin: 0;
@@ -15,10 +15,20 @@ $font-color: white;
 body{
     background-color: $background-color;
 }
-
+.hidden{
+    visibility: hidden;
+    transition: ease-in;
+}
 /* inicio da parte superior */
+
 header{
     .navbar{
+        background-color: transparent;
+        -webkit-transition: all 0.6s ease-out;
+        -moz-transition: all 0.6s ease-out;
+        -o-transition: all 0.6s ease-out;
+        -ms-transition: all 0.6s ease-out;
+        transition: all 0.6s ease-out;
         .container{
             font-size: 20px;
            font-family: 'futura';
@@ -52,7 +62,6 @@ header{
         .brand-img{
             border-radius: 3px;
         }
-        background-color: $primarycolor;
         .navbar-brand{
             color: $font-color;
         }
@@ -64,6 +73,11 @@ header{
         }
     }
 }
+.navbar.visible{
+    opacity: 0.9;
+    background-color: $primarycolor;
+    transform: translateY(0);
+}
 
         
 
@@ -73,6 +87,7 @@ body {
         width: 100%;
         height: auto;
         filter: brightness(38%);
+        margin-top: 0;
     }
     .subtitulos{
             color: $primarycolor;
@@ -112,6 +127,7 @@ body {
                     margin-top: 42px ;
                     flex: 1;
                     color: $font-color;
+                    list-style: none;
                     }
                 }
             }
@@ -125,65 +141,87 @@ body {
 .pedosite {
     position: relative;
     bottom: 0;
-    display: grid;
-    justify-content: center;
     width: 100%;
     background-color: $primarycolor;
     color: $font-color;
-    .author {
-        .emailcontainer {
-            color: $secondarycolor;
-            margin: 0;
-            padding: 0;
-            margin-top: 10px;
-            span {
-                font-size: 19px;
-                background-color: transparent;
-                color: $secondarycolor;
-                border: none;
-                border-radius: 4px;
-                padding: 4px 8px;
-            }
-            i {
-                color: $secondarycolor;
-            }
-            button {
-                background-color: transparent;
-                font-size: 20px;
-                border-radius: 5px;
-                cursor: pointer;
-                position: relative;
-                i {
-                    padding: 5px;
-                    color: $secondarycolor;
-                    transition: 0.5s;
-                }
-                i:hover {
-                    color: grey;
-                    transform: translateY(-4px);
+    padding: 150px;
+    .container {
+        max-width: 1170px;
+        margin: auto;
+            .row{
+                display: flex;
+                flex-wrap: wrap;
+                .footer-col {
+                    width: 25%;
+                    padding: 0 15px;
+                    h4{
+                        font-size: 18px;
+                        color: #ffffff;
+                        text-transform: capitalize;
+                        margin-bottom: 35px;
+                        font-weight: 500;
+                        position: relative;
+                    }
+                    h4:before {
+                        content: '';
+                        position: absolute;
+                        left:0;
+                        bottom: -10px;
+                        background-color: $background-color;
+                        height: 2px;
+                        box-sizing: border-box;
+                        width: 50px;
+                    }
+                    .social-links{
+                        a{
+                            display: inline-block;
+                            height: 40px;
+                            width: 40px;
+                            background-color: rgba(255,255,255,0.2);
+                            margin:0 10px 10px 0;
+                            text-align: center;
+                            line-height: 40px;
+                            border-radius: 50%;
+                            color: #ffffff;
+                            transition: all 0.5s ease;
+
+                        }
+                        a:hover{
+                            color: #24262b;
+	                        background-color: #ffffff;
+                        }
+                    }
+                    
+                    ul {
+                        list-style-type: none;
+                        li {
+                            img{
+                                border-radius: 8px;
+                            }
+                            a {
+                                font-size: 16px;
+                                text-transform: capitalize;
+                                color: #ffffff;
+                                text-decoration: none;
+                                font-weight: 300;
+                                color: #bbbbbb;
+                                display: block;
+                                transition: all 0.3s ease;
+                                }
+                                a:hover {
+                                    color: #ffffff;
+	                                padding-left: 8px;
+                                }
+                            }
+                        li:not(:last-child){
+                            margin-bottom: 10px;
+                        }
+                        }
+                    }
+                
                 }
             }
         }
-    }
-    div {
-        margin: 20px;
-        button {
-            background-color: transparent;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            i {
-                color: $secondarycolor;
-                transition: 0.3s;
-            }
-            i:hover {
-                color: grey;
-                transform: translateY(-4px);
-            }
-        }
-    }
-}
 /*Fim Pé do Site*/
 
 

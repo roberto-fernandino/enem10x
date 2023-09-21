@@ -8,9 +8,19 @@ body {
   background-color: #778da9;
 }
 
+.hidden {
+  visibility: hidden;
+  transition: ease-in;
+}
+
 /* inicio da parte superior */
 header .navbar {
-  background-color: #1B263B;
+  background-color: transparent;
+  -webkit-transition: all 0.6s ease-out;
+  -moz-transition: all 0.6s ease-out;
+  -o-transition: all 0.6s ease-out;
+  -ms-transition: all 0.6s ease-out;
+  transition: all 0.6s ease-out;
 }
 header .navbar .container {
   font-size: 20px;
@@ -51,21 +61,25 @@ header .navbar .navbar-toggler .navbar-toggler-icon {
   color: white;
 }
 
-body {
-  background-color: rgb(99, 99, 99);
+.navbar.visible {
+  opacity: 0.9;
+  background-color: #1B263B;
+  transform: translateY(0);
 }
+
 body .carousel-inner {
   margin-top: 30px;
   width: 100%;
   height: auto;
   filter: brightness(38%);
+  margin-top: 0;
 }
 body .subtitulos {
   color: #1B263B;
   text-align: center;
   padding-top: 50px;
   font-size: 22px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 body main {
   margin-bottom: 200px;
@@ -99,68 +113,86 @@ body main .container .card .card-body .container-text {
   margin-top: 42px;
   flex: 1;
   color: white;
+  list-style: none;
 }
 
 /* Começo Pé do site */
 .pedosite {
   position: relative;
   bottom: 0;
-  display: grid;
-  justify-content: center;
   width: 100%;
   background-color: #1B263B;
   color: white;
+  padding: 150px;
 }
-.pedosite .author .emailcontainer {
-  color: #415A77;
-  margin: 0;
-  padding: 0;
-  margin-top: 10px;
+.pedosite .container {
+  max-width: 1170px;
+  margin: auto;
 }
-.pedosite .author .emailcontainer span {
-  font-size: 19px;
-  background-color: transparent;
-  color: #415A77;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
+.pedosite .container .row {
+  display: flex;
+  flex-wrap: wrap;
 }
-.pedosite .author .emailcontainer i {
-  color: #415A77;
+.pedosite .container .row .footer-col {
+  width: 25%;
+  padding: 0 15px;
 }
-.pedosite .author .emailcontainer button {
-  background-color: transparent;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
+.pedosite .container .row .footer-col h4 {
+  font-size: 18px;
+  color: #ffffff;
+  text-transform: capitalize;
+  margin-bottom: 35px;
+  font-weight: 500;
   position: relative;
 }
-.pedosite .author .emailcontainer button i {
-  padding: 5px;
-  color: #415A77;
-  transition: 0.5s;
+.pedosite .container .row .footer-col h4:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  background-color: #778da9;
+  height: 2px;
+  box-sizing: border-box;
+  width: 50px;
 }
-.pedosite .author .emailcontainer button i:hover {
-  color: grey;
-  transform: translateY(-4px);
+.pedosite .container .row .footer-col .social-links a {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px 10px 0;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.5s ease;
 }
-.pedosite div {
-  margin: 20px;
+.pedosite .container .row .footer-col .social-links a:hover {
+  color: #24262b;
+  background-color: #ffffff;
 }
-.pedosite div button {
-  background-color: transparent;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-  position: relative;
+.pedosite .container .row .footer-col ul {
+  list-style-type: none;
 }
-.pedosite div button i {
-  color: #415A77;
-  transition: 0.3s;
+.pedosite .container .row .footer-col ul li img {
+  border-radius: 8px;
 }
-.pedosite div button i:hover {
-  color: grey;
-  transform: translateY(-4px);
+.pedosite .container .row .footer-col ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 300;
+  color: #bbbbbb;
+  display: block;
+  transition: all 0.3s ease;
+}
+.pedosite .container .row .footer-col ul li a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+.pedosite .container .row .footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 /*Fim Pé do Site*/
