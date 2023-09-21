@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('enunciado', models.TextField(default=None, null=True)),
-                ('imagem', models.ImageField(blank=True, default=None, null=True, upload_to=materiais.funcs.define_image_path)),
+                ('imagem', models.ImageField(blank=True, default=None, null=True, upload_to=materiais.image.define_image_path_questoes)),
                 ('opcoes', models.JSONField(null=True)),
                 ('opcao_correta', models.IntegerField(blank=True, default=None, null=True)),
                 ('tipo', models.CharField(blank=True, choices=[('linguagens', 'Linguagens e suas Tecnologias'), ('matematica', 'Matemática e suas Tecnologias'), ('natureza', 'Ciências da Natureza'), ('humanas', 'Ciências Humanas')], default=None, max_length=50, null=True)),

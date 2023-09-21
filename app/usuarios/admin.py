@@ -1,5 +1,5 @@
 from django.contrib import admin
-from usuarios.models import Account, Notas, MediaGeral, Turma, Professor, Aluno
+from usuarios.models import Account, Notas, MediaGeral, Turma, Professor, Aluno, RankingConteudosErrados
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from usuarios.forms import AccountCreationForm, AccountChangeForm
@@ -123,7 +123,7 @@ class NotasAdmin(admin.ModelAdmin):
 
 class MediaGeralAdmin(admin.ModelAdmin):
     list_display = [
-        "usuario",
+        "aluno",
         "data_atualizada",
         "media_matematica",
         "media_ciencias_natureza",
@@ -136,7 +136,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
             None,
             {
                 "fields": [
-                    "usuario",
+                    "aluno",
                     "media_matematica",
                     "media_ciencias_natureza",
                     "media_ciencias_humanas",
@@ -151,7 +151,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
             {
                 "classes": ["wide"],
                 "fields": [
-                    "usuario",
+                    "aluno",
                     "media_matematica",
                     "media_ciencias_natureza",
                     "media_ciencias_humanas",
@@ -160,7 +160,7 @@ class MediaGeralAdmin(admin.ModelAdmin):
             },
         )
     ]
-    search_fields = ["usuario"]
+    search_fields = ["aluno"]
     list_per_page = 50
     list_filter = ["data_atualizada"]
     date_hierarchy = "data_atualizada"
@@ -181,9 +181,28 @@ class AlunoAdmin(admin.ModelAdmin):
 
 class ProfessorAdmin(admin.ModelAdmin):
     list_display = ["usuario", "alunos", "total_alunos"]
-    fieldssets = (("Professor", {"fields": ["usuario", "alunos", "total_alunos"]}),)
+    fieldsets = (("Professor", {"fields": ["usuario", "alunos", "total_alunos"]}),)
 
 
+
+class RankingGeralConteudoAdmin(admin.ModelAdmin):
+    list_display = [
+        'aluno',
+        'tipo_simulado'
+        ]
+    fieldsets = (
+        ("Informação", {"fields": ["aluno", "tipo_simulado"]}),
+        ("Conteudos", {"fields": [
+            "conteudo_1",
+            "conteudo_2",
+            "conteudo_3",
+            "conteudo_4",
+            "conteudo_5",
+            ]})
+    )
+
+
+admin.site.register(RankingConteudosErrados, RankingGeralConteudoAdmin)
 admin.site.register(Aluno, AlunoAdmin)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Turma, TurmaAdmin)

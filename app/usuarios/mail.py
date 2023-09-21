@@ -31,7 +31,6 @@ def procura_email_template() -> str:
 def EnviarEmail(email_template, subject: str, destinatario:str) -> None:
     """Envia email"""
     emails = procura_email_template()
-    print(emails)
 
     with smtp.SMTP("in-v3.mailjet.com", 587) as server:
         server.starttls()

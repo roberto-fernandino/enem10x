@@ -5,8 +5,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from datetime import datetime
-from materiais.models import ProvaCompleta
+from datetime import datetime, date
 from django.utils import timezone
 import uuid
 
@@ -121,7 +120,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return True
 
     def esconde_cpf(self):
-        return "*" * 7 + self.cpf[-5:-2] + "-" + self.cpf[-2] + self.cpf[-1]
+        return "*" * 3 + '.' + "*" * 3 + self.cpf[-6:-2]  + self.cpf[-2] + self.cpf[-1]
+
+    def retorna_idade(self):
+        return date.today().year - self.data_nascimento.year - ((date.today().month, date.today().day) < (self.data_nascimento.month,  self.data_nascimento.day))
 
 
 class Notas(models.Model):
@@ -137,7 +139,7 @@ class Notas(models.Model):
 
 
 class MediaGeral(models.Model):
-    usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
+    aluno = models.OneToOneField("usuarios.Aluno", on_delete=models.CASCADE) 
     data_atualizada = models.DateTimeField(auto_now=True)
     media_matematica = models.FloatField(default=0, null=True, blank=True)
     media_ciencias_natureza = models.FloatField(default=0, null=True, blank=True)
@@ -168,15 +170,14 @@ class Aluno(models.Model):
     def __str__(self) -> str:
         return f"{self.usuario}"
     
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        MediaGeral.objects.get_or_create(usuario=self.usuario)
+   
 
-class Prova_pra_Turma(models.Model):
+class ProvaTurma(models.Model):
     prova = models.ForeignKey(
         "materiais.ProvaCriadaProfessor",
         on_delete=models.CASCADE,
         related_name='prova_pra_turma')
+    alunos = models.ManyToManyField("usuarios.Aluno", related_name="prova_turma", )
 
 
 class Turma(models.Model):
@@ -192,3 +193,16 @@ class Turma(models.Model):
 
     def get_qtd_alunos(self):
         return self.alunos.all().count()
+    
+class RankingConteudosErrados(models.Model):
+    aluno = models.OneToOneField("usuarios.Aluno", on_delete=models.CASCADE)
+    tipo_simulado = models.OneToOneField("materiais.Simulado", on_delete=models.DO_NOTHING, default=None, null=True)
+    conteudo_1 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_1")
+    conteudo_2 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_2")
+    conteudo_3 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_3")
+    conteudo_4 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_4")
+    conteudo_5 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_5")
+
+
+
+

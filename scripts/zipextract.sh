@@ -14,15 +14,21 @@ cd leitores/
 
 mv "$1.docx" "$1.zip"
 unzip -o "$1.zip" -d "./$1"
+mv "$1.zip" "$1.docx"
 cd "$1/word/media"
 
+
+
+if ls *.png 1> /dev/null 2>&1; then
+    mv *.png ../../../../media/questoes
+fi
 
 if ls *.wmf 1> /dev/null 2>&1; then
     mogrify -format png *.wmf 
     mv *.png ../../../../media/questoes
 fi
 
-cd ../../..
 
+cd ../../..
 rm -r "$1"
-mv "$1.zip" "$1.docx"
+

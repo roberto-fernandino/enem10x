@@ -139,7 +139,7 @@ body {
 
 /* Começo Pé do site */
 .pedosite {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: $primarycolor;

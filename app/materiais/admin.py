@@ -119,15 +119,6 @@ class QuestoesImagemAdmin(admin.ModelAdmin):
     list_display_links = ['questao']'''
     
 
-class TipoAdmin(admin.ModelAdmin):
-    list_display = ["nome"]
-    fieldsets = (
-        (
-            None,
-            {"fields": ["nome"]},
-        ),
-    )
-    list_display_links = ['conteudo']
 
 
     
@@ -135,14 +126,14 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'aluno',
-        'nota',
-        'acertos',
         'data_feita',
+        'nota',
+        'simulado',
         ]
     fieldsets = (
         ('Informacao do Estudante', {"fields": ['aluno']}),
-        ('Informacao da Prova', {"fields": ['nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', 'acerto_dificuldade']}),
-        ('Acertos e Erros', {"fields": ['acertos', 'erros']})
+        ('Informacao da Prova', {"fields": ['simulado','nota', 'ranking_piores_conteudos', 'ranking_melhores_conteudos', ]}),
+        ('Acertos e Erros', {"fields": ['acertos', 'erros', 'porcentagem_acerto', 'acerto_dificuldade']})
 
     )
     date_hierarchy = 'data_feita'

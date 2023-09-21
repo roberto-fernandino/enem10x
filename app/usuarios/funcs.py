@@ -6,9 +6,9 @@ from django.utils import timezone
 from django.db.models.functions import ExtractMonth
 
 
-def calcular_media(user):
+def calcular_media(aluno):
     """Calcula medias e adciona em medias medias do usuario ao longo do tempo"""
-    provas_completas = ProvaCompleta.objects.filter(usuario=user)
+    provas_completas = ProvaCompleta.objects.filter(aluno=aluno)
 
     # start counter
     total_notas = {
@@ -51,7 +51,7 @@ def calcular_media(user):
     # Cria model com media geral do usuario
 
     MediaGeral.objects.create(
-        usuario=user,
+        aluno=aluno,
         media_matematica=medias["matematica"],
         media_ciencias_natureza=medias["ciencias_natureza"],
         media_linguagens=medias["linguagens"],
@@ -182,10 +182,10 @@ def NotaFilteredChart(usuario, months:int | None = None):
     )
 
 
-def MediaQuery(usuario):
+def MediaQuery(aluno):
     '''
     Retorna media do usuario em matematica, natureza, linguagens, humanas nessa ordem'''
-    medias = MediaGeral.objects.get(usuario=usuario)
+    medias = MediaGeral.objects.get(aluno=aluno)
     media_mat = medias.media_matematica
     media_nat = medias.media_ciencias_natureza
     media_lin = medias.media_linguagens
