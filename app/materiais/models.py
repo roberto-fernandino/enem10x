@@ -1,15 +1,9 @@
-from materiais.funcs import define_image_path_questoes, define_ranking_conteudo_prova
+from typing import Any
+from materiais.image import define_image_path_questoes
 from django.db import models
 
 
 # Create your models here.
-
-
-class Tipo(models.Model):
-    nome = models.CharField(max_length=80)
-
-    def __str__(self) -> str:
-        return f"{self.nome}"
 
 
 class Nivel(models.Model):
@@ -193,7 +187,7 @@ class ProvaRespondida(models.Model):
             self.delete()
             return
 
-        if self.questao.opcao_correta == self.resposta:
+        if self.questao.opcao_correta.lower() == self.resposta.lower():
             self.acerto = True
         else:
             self.acerto = False
@@ -202,16 +196,17 @@ class ProvaRespondida(models.Model):
 
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
-
+    
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
-    nota = models.FloatField(default=0, null=True)
+    nota = models.FloatField(default=0, null=True, blank=True)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
     ranking_melhores_conteudos = models.JSONField(default=None, blank=True, null=True)
     data_feita = models.DateTimeField(auto_now_add=True)
-    acerto_dificuldade = models.JSONField(null=True)
-    porcentagem_acerto = models.IntegerField(default=0, null=True, blank=True)
+    acerto_dificuldade = models.JSONField(default=None, null=True, blank=True)
+    porcentagem_acerto = models.IntegerField(default=None, null=True, blank=True)
+    simulado = models.ForeignKey(Simulado, on_delete=models.DO_NOTHING, null=True, default=None, blank=True)
 
     def gera_relatorio(self):
         """
@@ -233,20 +228,13 @@ class ProvaCompleta(models.Model):
             else:
                 erros += 1
                 conteudos_errados.extend(conteudos)
-                print(conteudos_errados)
 
         qtd_questoes = acertos + erros
-
-        """{
-            1: qtd_facil,
-            2: qtd_medias,
-            3: qtd dificil
-        }"""
-
+        
         (
             self.ranking_piores_conteudos,
             self.ranking_melhores_conteudos,
-        ) = define_ranking_conteudo_prova(
+        ) = self.define_ranking_conteudo_prova(
             conteudos_acertados=conteudos_acertados, conteudos_errados=conteudos_errados
         )
 
@@ -261,5 +249,36 @@ class ProvaCompleta(models.Model):
         # Deleta todas as "ProvaRespondida" do aluno em ProvaRespondida pra maior otimizacao, limpeza de coisas inuteis no banco de dados.
         self.respostas.filter(aluno=self.aluno).delete()
 
+    def define_ranking_conteudo_prova(self, conteudos_errados: list, conteudos_acertados: list):
+        """
+        Gera um ranking de conteudos mais errados, acertados respectivamente de uma prova feita por um usario e os retorna no formato:\n
+        \t - tuple(dict(ranking errados), dict(ranking acertados))"""
+
+        ranking_piores = {}
+
+        for conteudo in conteudos_errados:
+            ranking_piores[conteudo.id] = ranking_piores.get(conteudo.id, 0) + 1
+
+        ranking_piores = dict(
+            sorted(ranking_piores.items(), key=lambda item: item[1], reverse=True)
+        )
+
+        ranking_melhores = {}
+
+        for conteudo in conteudos_acertados:
+            ranking_melhores[conteudo.id] = ranking_melhores.get(conteudo.id, 0) + 1
+
+        ranking_melhores = dict(
+            sorted(ranking_melhores.items(), key=lambda item: item[1], reverse=True)
+        )
+        return (
+            ranking_piores,
+            ranking_melhores,
+        )
+
     def __str__(self):
         return f"{self.aluno} - {self.data_feita}"
+    
+
+
+
