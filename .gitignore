@@ -142,6 +142,9 @@ style.css.map
 # mkdocs documentation
 /site
 
+#custom vscode settings
+.vscode/
+
 # mypy
 .mypy_cache/
 .dmypy.json
