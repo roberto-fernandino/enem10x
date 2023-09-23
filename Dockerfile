@@ -36,7 +36,6 @@ ENV PYTHONUNBUFFERED=1
 
 COPY app /app
 COPY scripts /scripts
-COPY /usr/bin/mogrify /mogrify
 WORKDIR /app
 
 # A porta 8000 estará disponível para conexões externas ao container
