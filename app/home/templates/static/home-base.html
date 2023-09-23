@@ -32,7 +32,7 @@
     ></script>
   </head>
   <header>
-    <nav class="navbar fixed-top navbar-dark navbar-expand-sm">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-sm" id="navbar">
       <div class="container">
         <a href="{% url 'home:home' %}" class="navbar-brand mb-0 h1">
           <img
@@ -86,37 +86,75 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="{% url 'usuarios:plataforma' %}" class="nav-link"
-                >Plataforma</a
-              >
-            </li>
+          </ul>
+          <div class="ms-auto">
+            <ul class="navbar-nav">
+              <li class="nav-item" id="account"><a href="{% url 'usuarios:user' %}" class="nav-link">Sign In</a></li>
+              <li class="nav-item" id="account"><a href="{% url 'usuarios:signup' %}" class="nav-link">Sign Up</a></li>
+            </ul>
+          </div>
+
             {% if request.user.is_admin %}
             <li class="nav-item">
               <a href="{% url 'admin:index' %}" class="nav-link"> <i class="bx bxl-git"></i> admin</a>
             </li>
             {% endif %}
-          </ul>
         </div>
       </div>
     </nav>
+    <script>
+              document.addEventListener("scroll", function() {
+          const navbar = document.getElementById("navbar");
+          const y = window.scrollY;
+
+          if (y > 600) {
+            navbar.classList.add("visible");
+          } else {
+            navbar.classList.remove("visible");
+          }
+        });
+    </script>
   </header>
   <body>
     <main>{% block content %} {% endblock %}</main>
   </body>
   <footer class="pedosite">
     <!-- Conteúdo do rodapé -->
-    <div>
-      <address>
-        R., 333 - Savassi <br />
-        Belo Horizonte - MG, 3333333-333
-      </address>
-      <p>(31)-999999-9999</p>
-      <div class="emailcontainer">
-        <i class="fa-solid fa-envelope"></i>
-        <span>enem10xnoreyply@enemtenx.com</span>
-        <button><i class="fa-regular fa-copy"></i></button>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col">
+            <h4>Empresa</h4>
+            <ul>
+              <li><a href="#">Sobre nós</a></li>
+              <li><a href="#">Termos e Condições</a></li>
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Devs</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Ajuda</h4>
+            <ul>
+              <li><a href="#">Fale conosco</a></li>
+
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Opções de pagamento</h4>
+            <ul>
+              <li><img src="{% static 'home/pix.jpg' %}" alt=""></li>
+              <li><a href="#">Visa</a></li>
+              <li><a href="#">MasterCard</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Siga-nos</h4>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
   </footer>
 </html>
