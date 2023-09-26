@@ -15,7 +15,7 @@ services:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
 
   db-master:
-    image: postgres
+    image: postgres:15
     ports:
       - target: 5432
         published: 5433
@@ -34,7 +34,7 @@ services:
     container_name: postgres_db_master
 
   db-replication-1:
-    image: postgres
+    image: postgres:15
     ports:
       - target: 5432
         published: 5434

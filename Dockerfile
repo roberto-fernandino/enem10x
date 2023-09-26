@@ -21,7 +21,7 @@ RUN wget "https://www.imagemagick.org/download/ImageMagick.tar.gz" &&\
 
 
 # Compilando e voltando pro diretorio raiz.
-RUN cd /ImageMagick-7.1.1-15 &&\
+RUN cd /ImageMagick-?.?.?-* &&\
     ./configure --with-wmf &&\
     make && \
     make install && \ 
@@ -68,6 +68,6 @@ ENV PATH="/scripts:/venv/bin:$PATH"
 
 USER admin
 
-CMD tail -f /dev/null
+CMD ["commands.sh"]
 
 
