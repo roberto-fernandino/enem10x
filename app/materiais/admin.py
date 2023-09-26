@@ -3,8 +3,10 @@ from django.contrib import admin
 from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
-from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado, OpcaoImagem
+from .forms import GrupoConteudoForm
+from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado, OpcaoImagem, GrupoConteudo
 # Register your models here.
+
 
 
 class NivelAdmin(admin.ModelAdmin):
@@ -82,8 +84,12 @@ class QuestaoAdmin(admin.ModelAdmin):
 
     def Materia(self, obj):
         return [str(conteudo.sub_materia.materia) for conteudo in obj.conteudo.all()]
+    
+
     def Conteudo(self, obj):
         return [str(conteudo) for conteudo in obj.conteudo.all()]
+    
+
     def Submateria(self, obj):
         return [str(conteudo.sub_materia) for conteudo in obj.conteudo.all()]
 
@@ -98,6 +104,8 @@ class QuestoesImagemAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ['questao', 'imagem_a',  'imagem_b', 'imagem_c', 'imagem_d', 'imagem_e']}),
     )
+
+
 '''class ProvaRespondidaAdmin(admin.ModelAdmin):
     list_display = [
         'id',
@@ -118,9 +126,6 @@ class QuestoesImagemAdmin(admin.ModelAdmin):
     get_tipo.admin_short_description = 'Tipo'
     list_display_links = ['questao']'''
     
-
-
-
     
 class ProvaCompletaAdmin(admin.ModelAdmin):
     list_display = [
@@ -149,6 +154,18 @@ class SimuladoAdmin(admin.ModelAdmin):
         (None, {"fields": ['tipo', 'materia']}),
     ]
 
+@admin.register(GrupoConteudo)
+class GrupoConteudoAdmin(admin.ModelAdmin):
+    form = GrupoConteudoForm
+    filter_horizontal = ['conteudos']
+    list_display = ['materia', 'conteudo', 'proporcao']
+    fieldsets = (
+        (None, {"fields": ["materia", "proporcao", "conteudos"]}),
+    )
+
+    def conteudo(self,obj):
+        return [conteudo for conteudo in obj.conteudos.all()]
+        
 admin.site.register(ProvaCompleta, ProvaCompletaAdmin)
 admin.site.register(Conteudo, ConteudoAdmin)
 admin.site.register(Nivel, NivelAdmin)
