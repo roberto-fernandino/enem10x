@@ -196,9 +196,7 @@ JAZZMIN_SETTINGS = {
     
 }
 
-JAZZMIN_UI_TWEAKS = {
-    "theme": "darkly",
-}
+
 # CELERY -> REDIS
 
 
