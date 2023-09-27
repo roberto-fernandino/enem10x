@@ -158,7 +158,7 @@ class SimuladoAdmin(admin.ModelAdmin):
 class GrupoConteudoAdmin(admin.ModelAdmin):
     form = GrupoConteudoForm
     filter_horizontal = ['conteudos']
-    list_display = ['materia', 'conteudo', 'proporcao']
+    list_display = ['id','materia', 'conteudo', 'proporcao']
     fieldsets = (
         (None, {"fields": ["materia", "proporcao", "conteudos"]}),
     )
