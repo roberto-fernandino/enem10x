@@ -55,10 +55,12 @@ class GrupoConteudo(models.Model):
         blank=True
     )
     conteudos = models.ManyToManyField( 
-        "materiais.Conteudo", blank=True, null=True
+        "materiais.Conteudo", blank=True
         )
 
-
+    def __str__(self):
+        return f"|{self.materia}|{self.proporcao}|"
+        
 class Conteudo(models.Model):
     nome = models.CharField(max_length=255)
     sub_materia = models.ForeignKey(
