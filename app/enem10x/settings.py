@@ -104,6 +104,9 @@ DATABASES = {
         'PASSWORD': getenv('POSTGRES_REPLICATION_PASSWORD', 'dulce20145'),
         'HOST': getenv('POSTGRES_HOST_REPLICATION_1', 'localhost'),
         'PORT': getenv('POSTGRES_PORT', '5432'),
+        'TEST' : {
+            'MIRROR': 'default'
+        }
     }
 }
 
