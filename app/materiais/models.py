@@ -44,7 +44,7 @@ class SubMateria(models.Model):
 
 
 class GrupoConteudo(models.Model):
-    materia = models.ForeignKey("materiais.Materia", on_delete=models.CASCADE)
+    materia = models.ForeignKey("materiais.Materia", on_delete=models.CASCADE, related_name='grupo')
     proporcao = models.DecimalField(
         max_digits=4,
         decimal_places=2,
@@ -55,7 +55,9 @@ class GrupoConteudo(models.Model):
         blank=True
     )
     conteudos = models.ManyToManyField( 
-        "materiais.Conteudo", blank=True
+        "materiais.Conteudo", 
+        blank=True,
+        related_name='grupo'
         )
 
     def __str__(self):

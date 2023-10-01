@@ -40,6 +40,7 @@ services:
         published: 5434
         protocol: tcp
         mode: host
+   
     environment:
       POSTGRES_DB: enem
       POSTGRES_USER: repuser
