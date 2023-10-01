@@ -204,5 +204,5 @@ class RankingConteudosErrados(models.Model):
     conteudo_5 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_5")
 
 
-
-
+    class Meta:
+        verbose_name_plural = "Ranking Conteudo Errados"

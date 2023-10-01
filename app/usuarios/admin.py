@@ -202,6 +202,8 @@ class RankingGeralConteudoAdmin(admin.ModelAdmin):
     )
 
 
+
+
 admin.site.register(RankingConteudosErrados, RankingGeralConteudoAdmin)
 admin.site.register(Aluno, AlunoAdmin)
 admin.site.register(Professor, ProfessorAdmin)

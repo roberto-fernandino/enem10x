@@ -23,42 +23,24 @@ from django.views.decorators.cache import cache_page
 from usuarios.decorators import user_has_tag
 from django.http import HttpResponse
 from usuarios.models import Aluno
+from .funcs_geracao_prova import geracao_simulado, geracao_prova
 
 # Create your views here.
 @login_required
 def prova_choose(request):
     if request.method == "POST":
         choose_prova = ProvaChoose(request.POST)
+
         if choose_prova.is_valid():
             tipo_prova = choose_prova.cleaned_data["tipo_prova"]
-            num_questoes = int(choose_prova.cleaned_data["num_questoes"])
             request.session["tipo_prova"] = tipo_prova
             aluno = request.user.aluno
-            if tipo_prova == "materia_escolhida":
-                # Recebe id de materias e simulados
-                materia_id_list = choose_prova.cleaned_data["materias"]
-                # Filtra materias pelo id e guarda numa lista de materias
-                materias = Materia.objects.filter(pk__in=materia_id_list)
-                questoes = []
-                questoes_unicas = set()
-                # Pega o n de questoes escolhido de cada materia escolhida
-                for materia in materias:
-                    sub_materias_da_materia = SubMateria.objects.filter(materia=materia)
-                    conteudos = Conteudo.objects.filter(         
 
-                        sub_materia__in=sub_materias_da_materia
-                    )# Funcao para retornar conteudos que o usuario mais precisa fazer aqui
-                    questoes_da_materia = Questao.objects.filter(
-                        conteudo__in=conteudos
-                    ).order_by("?")
-                    questoes_selecionadas = 0
-                    for questao in questoes_da_materia:
-                        if questoes_selecionadas >= num_questoes:
-                            break
-                        if questao.id not in questoes_unicas:
-                            questoes_unicas.add(questao.id)
-                            questoes.append(questao)
-                            questoes_selecionadas += 1
+            if tipo_prova == "materia_escolhida":
+                num_questoes = int(choose_prova.cleaned_data["num_questoes_prova"])
+                materia_id_list = choose_prova.cleaned_data["materias"]
+                questoes, materias = geracao_prova(materia_id_list, num_questoes)
+
                 context = {
                     "questoes": questoes,
                     "materias": materias,
@@ -67,45 +49,17 @@ def prova_choose(request):
 
             if tipo_prova == "simulado":
                 simulado_id_list = choose_prova.cleaned_data["simulados"]
+                num_questoes = int(choose_prova.cleaned_data["num_questoes_simulado"])
                 request.session["simulado_id_list"] = simulado_id_list
-                simulados = Simulado.objects.filter(pk__in=simulado_id_list).prefetch_related('materia')
-                questoes = []
-                questoes_unicas = set()
-                for simulado in simulados:
-                    # Materia de cada simulado
-                    materia_in_simulado = simulado.materia.all()
-                    # Se um simulado for de matematica a quantidade de questoes do simulado sera 100% matematica como no enem
-                    if (
-                        len(materia_in_simulado) == 1
-                        and materia_in_simulado[0].nome == "Matemática"
-                    ):
-                        questoes.extend(filtra_questoes_simulado_matematica(
-                            num_questoes,
-                            materia_in_simulado,
-                            questoes_unicas,
-                            aluno,
-                        ))
-                    # Se um dos simulados for de ciencias da natureza
-                    elif len(materia_in_simulado) == 3:
-                        questoes.extend(filtra_questoes_simulado_natureza(
-                            num_questoes,
-                            materia_in_simulado,
-                            questoes_unicas,
-                            aluno,
-                        ))
-                    # Se um dos simulados for de Linguagens
-                    elif len(materia_in_simulado) == 5:
-                        questoes.extend(filtra_questoes_simulado_linguagens(
-                            num_questoes,
-                            materia_in_simulado,
-                            questoes_unicas,
-                            aluno,
-                        ))
+                
+                questoes, simulados = geracao_simulado(simulado_id_list, num_questoes, aluno)
+                
                 context = {
                     "questoes": questoes,
                     "simulados": simulados,
                 }
                 return render(request, "provas/prova.html", context)
+            
     choose_prova = ProvaChoose()
     context = {
         "choose_prova": choose_prova,

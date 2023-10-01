@@ -15,13 +15,14 @@ RUN apk add --no-cache \
     freetype-dev \
     libwmf-dev
 
-# Baixando e descompactando ImageMagick
-RUN wget "https://www.imagemagick.org/download/ImageMagick.tar.gz" &&\
-    tar xvzf ImageMagick.tar.gz 
+# Define PYTHONUNBUFFERED como 1/True para que os outputs do Python sejam enviados diretamente para o terminal,
+# em vez de serem armazenados em um buffer para envio posterior ao terminal.
+ENV PYTHONUNBUFFERED=1
 
 
+COPY ImageMagick-7.1.1-18 /ImageMagick
 # Compilando e voltando pro diretorio raiz.
-RUN cd /ImageMagick-7.1.1-15 &&\
+RUN cd /ImageMagick &&\
     ./configure --with-wmf &&\
     make && \
     make install && \ 
@@ -30,13 +31,9 @@ RUN cd /ImageMagick-7.1.1-15 &&\
     apk del build-base libtool wget 
 
 
-# Define PYTHONUNBUFFERED como 1/True para que os outputs do Python sejam enviados diretamente para o terminal,
-# em vez de serem armazenados em um buffer para envio posterior ao terminal.
-ENV PYTHONUNBUFFERED=1
-
 COPY app /app
 COPY scripts /scripts
-COPY /usr/bin/mogrify /mogrify
+
 WORKDIR /app
 
 # A porta 8000 estará disponível para conexões externas ao container
@@ -57,7 +54,7 @@ RUN ls -la /app &&  \
     /venv/bin/pip install --upgrade pip &&\
     /venv/bin/pip install -r requirements.txt &&\
     adduser --disabled-password --no-create-home admin &&\
-    mkdir -p /data/static /data/media /data/media/questoes && \
+    mkdir -p /data/static /data/media /data/media/questoes media/questoes && \
     chown -R admin:admin /data/static /data/media /venv /scripts /app && \
     chmod -R 755 /data/media/questoes /data/static /data/media /app && \
     chmod +x /scripts/commands.sh &&\
@@ -69,6 +66,6 @@ ENV PATH="/scripts:/venv/bin:$PATH"
 
 USER admin
 
-CMD tail -f /dev/null
+CMD ["commands.sh"]
 
 

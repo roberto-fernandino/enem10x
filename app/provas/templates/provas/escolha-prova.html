@@ -39,7 +39,7 @@
         {% csrf_token %}
         <div>
             <label for="num_questoes">Numero de questões</label> <br>
-            {{ choose_prova.num_questoes }}
+            {{ choose_prova.num_questoes_prova }}
         </div>
         <div>
             <label for="materias">Materias</label>
@@ -55,8 +55,8 @@
         {% csrf_token %}
  
         <div>
-            <label for="num_questoes">Numero de questões</label> <br>
-            {{ choose_prova.num_questoes }}
+            <label for="num_questoes_simulado">Numero de questões</label> <br>
+            {{ choose_prova.num_questoes_simulado }}
         </div>
         <div>
             <label for="simulados">Simulado</label>
