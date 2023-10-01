@@ -335,3 +335,44 @@ def filtra_questoes_simulado_humanas(
     questoes_unicas.update(questao.id for questao in todas_questoes_obj)
 
     return todas_questoes_obj
+
+
+def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_questoes:int):
+    '''
+    ## Retorna as questões com diferentes níveis de dificuldade.
+
+    `lista_conteudo_questao`: Lista de conteúdos de questão disponíveis.\n
+    `num_questoes`: Número total de questões desejadas.\n
+    `max_tentativas`: Número máximo de tentativas para encontrar uma questão de um nível específico.\n
+    ### Return: Lista de questões selecionadas.\n
+
+    ```python
+    >>> [questaoX, questaoY, questaoZ, ..., questaoN]
+    ```
+    '''
+    questoes_selecionadas = []
+    tentativas = 0
+
+    while len(questoes_selecionadas) < num_questoes and tentativas:
+        niveis = sample(range(1, 46), len(lista_conteudo_questao))
+        for nivel in niveis:
+            questao_encontrada = False
+            tentativa_nivel = 0
+            while not questao_encontrada and tentativa_nivel < len(lista_conteudo_questao):
+                try:
+                    conteudo = choice(lista_conteudo_questao)
+                    questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).order_by("?").first()
+                    if questao:
+                        questoes_selecionadas.append(questao)
+                        lista_conteudo_questao.remove(conteudo)
+                        questao_encontrada = True
+
+                except Questao.DoesNotExist:
+                    tentativa_nivel += 1
+                    continue
+
+            if len(questoes_selecionadas) >= num_questoes:
+                break
+        tentativas += 1
+
+    return questoes_selecionadas
