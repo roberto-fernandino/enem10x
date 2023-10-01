@@ -1,8 +1,7 @@
 from math import floor
 from materiais.models import Conteudo, Questao, SubMateria, Materia, QuestaoRespondida, GrupoConteudo
 from usuarios.models import Aluno
-import os
-from random import sample, randint, choice
+from random import sample, randint, choice, shuffle
 
 def retorna_questoes_unicas(aluno: Aluno) -> list:
     """
@@ -305,13 +304,6 @@ def filtra_questoes_simulado_humanas(
     >>>    filtra_questoes_simulado_humanas(num_questoes, materia_in_simulado, questoes_unicas, aluno)
     >>>  [<Questao: Questao1>, <Questao: Questao2>, ...]```
     """
-
-
-def filtra_questoes_simulado_humanas(
-    num_questoes: int, materia_in_simulado, questoes_unicas: set, aluno: Aluno
-) -> list:
-    ...
-
     questoes_por_materia = {
         "Filosofia": num_questoes * 0.20,
         "Sociologia": num_questoes * 0.20,
@@ -323,7 +315,7 @@ def filtra_questoes_simulado_humanas(
     if discrepancia:
         questoes_por_materia["História"] += discrepancia
 
-    questoes_unicas.update(retorna_questoes_unicas())
+    questoes_unicas.update(retorna_questoes_unicas(aluno))
 
     todas_questoes_obj = []
     for materia in materia_in_simulado:
@@ -343,36 +335,109 @@ def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_ques
 
     `lista_conteudo_questao`: Lista de conteúdos de questão disponíveis.\n
     `num_questoes`: Número total de questões desejadas.\n
-    `max_tentativas`: Número máximo de tentativas para encontrar uma questão de um nível específico.\n
     ### Return: Lista de questões selecionadas.\n
 
     ```python
     >>> [questaoX, questaoY, questaoZ, ..., questaoN]
     ```
+
+    ### Como Funciona:
+    1. Inicializa uma lista vazia para armazenar as questões selecionadas.
+    2. Gera uma lista de todos os níveis possíveis e a embaralha.
+    3. Itera sobre cada conteúdo da `lista_conteudo_questao`.
+    4. Tenta encontrar uma questão que corresponda ao conteúdo e nível.
+    5. Se encontrada, adiciona à lista de questões selecionadas.
+    6. Se não, tenta encontrar uma questão com o mesmo conteúdo e um nível adjacente.
+    7. Se ainda não encontrada, tenta encontrar uma questão em um conteúdo diferente do mesmo grupo.
+    8. Retorna a lista de questões selecionadas quando o número desejado de questões é alcançado.
     '''
     questoes_selecionadas = []
-    tentativas = 0
+    todos_niveis = list(range(1,46))
+    shuffle(todos_niveis)
+    niveis_utilizados = []
+    for conteudo in lista_conteudo_questao: 
+        nivel = choice(todos_niveis)
+        questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).first() # Tenta uma questao com os parametros inciais.
 
-    while len(questoes_selecionadas) < num_questoes and tentativas:
-        niveis = sample(range(1, 46), len(lista_conteudo_questao))
-        for nivel in niveis:
-            questao_encontrada = False
-            tentativa_nivel = 0
-            while not questao_encontrada and tentativa_nivel < len(lista_conteudo_questao):
-                try:
-                    conteudo = choice(lista_conteudo_questao)
-                    questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).order_by("?").first()
-                    if questao:
-                        questoes_selecionadas.append(questao)
-                        lista_conteudo_questao.remove(conteudo)
-                        questao_encontrada = True
+        
+        if questao: # Se achar 
+            questoes_selecionadas.append(questao) # Adicina na lista.
+            todos_niveis.remove(nivel) # Remove nivel da lista de niveis disponives.
+            niveis_utilizados.append(nivel)
+            continue # Pula pro proximo conteudo
 
-                except Questao.DoesNotExist:
-                    tentativa_nivel += 1
-                    continue
+        questao = tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(
+            conteudo_do_grupo,
+            nivel,
+            niveis_utilizados
+        ) 
+        
+        if questao is not None:
+            questoes_selecionadas.append(questao)
+            continue
 
-            if len(questoes_selecionadas) >= num_questoes:
-                break
-        tentativas += 1
+        if len(questoes_selecionadas) >= num_questoes:
+            return questoes_selecionadas
 
+        if questao is None and len(questoes_selecionadas) < num_questoes: # Se nao achar nenhuma questão ainda
+            grupo_conteudo = conteudo.grupo # Pega o grupo do conteudo
+
+            for conteudo_do_grupo in grupo_conteudo.conteudos.all(): # Itera por todos conteudos do grupo
+                questao = Questao.objects.filter(conteudo=conteudo_do_grupo, nivel=nivel).first() # Tenta achar uma questao com o nivel e com o conteudo (do mesmo grupo)
+
+                if questao: # Se achar
+                    questoes_selecionadas.append(questao) # Adiciona na lista.
+                    todos_niveis.remove(nivel) # Remove nivel da lista de niveis disponives.
+                    if len(questoes_selecionadas) >= num_questoes: # Confere se já pegou todas as questões.
+                        return questoes_selecionadas # Caso sim retorna.
+                    break # Sai do for de conteudos proximos e volta ao for dos conteudos originais.
+                
+                questao = tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(
+                    conteudo_do_grupo,
+                    nivel,
+                    niveis_utilizados
+                ) 
+                # Se achou questao com outro nivel
+                if questao is not None:
+                    questoes_selecionadas.append(questao)
+                    break
+
+                if len(questoes_selecionadas) >= num_questoes: # Confere mais uma vez se ja escolheu todas questões.
+                    return questoes_selecionadas
+                    
     return questoes_selecionadas
+
+
+def tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(conteudo, nivel, niveis_utilizados:list):
+    '''
+    ## Tenta encontrar questões com o mesmo conteúdo e níveis adjacentes.
+
+    `conteudo`: O conteúdo da questão desejada.\n
+    `nivel`: O nível da questão desejada.\n
+    `niveis_utilizados`: Lista de níveis já utilizados.\n
+    ### Return: A questão encontrada ou None.\n
+
+    ```python
+    >>> questao or None
+    ```
+
+    ### Como Funciona:
+    1. Gera uma lista de números de -3 a 3 e a embaralha.
+    2. Itera sobre cada número da lista.
+    3. Calcula um nível adjacente somando o número ao `nivel`.
+    4. Verifica se o `nivel_adjacente` não está na lista `niveis_utilizados`.
+    5. Se não está, tenta encontrar uma questão que corresponda ao `conteudo` e `nivel_adjacente`.
+    6. Se encontrada, retorna a questão.
+    7. Se não encontrada após iterar sobre todos os números, retorna None.
+    '''
+    range_list = list(range(-3, 4))
+    shuffle(range_list)
+    
+    for i in range_list: 
+        nivel_adjacente = min(max(1, nivel + i), 45) # Tenta achar com o mesmo conteudo porem 6 niveis de discrepancia.
+        if nivel_adjacente not in niveis_utilizados:
+            questao = Questao.objects.filter(conteudo=conteudo, nivel=nivel_adjacente).first()
+            if questao:
+                return questao 
+
+    return 
