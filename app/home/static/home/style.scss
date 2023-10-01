@@ -47,8 +47,8 @@ header{
                             visibility: hidden;
                             -webkit-transform: scaleX(0);
                             transform: scaleX(0);
-                            -webkit-transition: all 0.3s ease-in-out 0s;
-                            transition: all 0.3s ease-in-out 0s;
+                            -webkit-transition: all 0.45s ease-in-out 0s;
+                            transition: all 0.45s ease-in-out 0s;
                         }
                         .nav-link:hover:before {
                             visibility: visible;
@@ -74,8 +74,7 @@ header{
     }
 }
 .navbar.visible{
-    opacity: 0.9;
-    background-color: $primarycolor;
+    background-color: $details;
     transform: translateY(0);
 }
 
@@ -139,7 +138,7 @@ body {
 
 /* Começo Pé do site */
 .pedosite {
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     background-color: $primarycolor;
@@ -223,6 +222,15 @@ body {
             }
         }
 /*Fim Pé do Site*/
-
+@media (max-width: 915px) {
+    .pedosite {
+        padding: 50px; /* Ajuste o padding conforme necessário */
+        .container .row .footer-col {
+            width: 100%; /* Faz cada coluna ocupar a largura total da tela */
+            padding: 0 15px;
+            margin-bottom: 20px; /* Adiciona uma margem abaixo de cada coluna para espaçamento */
+        }
+    }
+}
 
 

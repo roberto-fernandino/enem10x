@@ -40,8 +40,8 @@ header .navbar .container .collapse .navbar-nav .nav-item .nav-link:before {
   visibility: hidden;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
-  -webkit-transition: all 0.3s ease-in-out 0s;
-  transition: all 0.3s ease-in-out 0s;
+  -webkit-transition: all 0.45s ease-in-out 0s;
+  transition: all 0.45s ease-in-out 0s;
 }
 header .navbar .container .collapse .navbar-nav .nav-item .nav-link:hover:before {
   visibility: visible;
@@ -62,8 +62,7 @@ header .navbar .navbar-toggler .navbar-toggler-icon {
 }
 
 .navbar.visible {
-  opacity: 0.9;
-  background-color: #1B263B;
+  background-color: #0D1B2A;
   transform: translateY(0);
 }
 
@@ -118,7 +117,7 @@ body main .container .card .card-body .container-text {
 
 /* Começo Pé do site */
 .pedosite {
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   background-color: #1B263B;
@@ -196,5 +195,15 @@ body main .container .card .card-body .container-text {
 }
 
 /*Fim Pé do Site*/
+@media (max-width: 915px) {
+  .pedosite {
+    padding: 50px; /* Ajuste o padding conforme necessário */
+  }
+  .pedosite .container .row .footer-col {
+    width: 100%; /* Faz cada coluna ocupar a largura total da tela */
+    padding: 0 15px;
+    margin-bottom: 20px; /* Adiciona uma margem abaixo de cada coluna para espaçamento */
+  }
+}
 
 /*# sourceMappingURL=style.css.map */
