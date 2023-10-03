@@ -22,6 +22,7 @@ var/
 wheels/
 master/
 replication/
+*.css.map
 *.png
 share/python-wheels/
 *.egg-info/
