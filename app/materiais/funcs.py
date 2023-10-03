@@ -158,7 +158,6 @@ def retorna_ranking_de_conteudos_geral(provas:list) -> dict:
 
     Retorna:
     --------
-    dict
         Um dicionário contendo os top 5 conteúdos com a maior diferença entre erros e acertos. 
         As chaves são os nomes dos conteúdos e os valores são a diferença calculada.
 
@@ -192,6 +191,26 @@ def retorna_ranking_de_conteudos_geral(provas:list) -> dict:
 
     
 def organiza_provas_por_tipo(sender, aluno) -> dict:
+    '''
+    ### Função pra retornar dentre as ultimas 15 provas realizadas do usuario os ultimos simulados ali dentro.
+    --------
+    ### Objetivo:
+        - Recuperar os conteudos mais errados dos simulados do usuarios nos últimos tempos.
+        - Usar esses dados então pra criação de provas pro usuario estudar e focar nos conteúdos que ele mais precisa.
+    --------
+    ## Retorna:
+    
+    ```python
+    {
+        "Matemática": 'num_provas',
+        "Ciencias Humanas": 'num_provas',
+        "Ciencias Natureza": 'num_provas',
+        "Linguagens": 'num_provas',
+
+    }
+    ```
+
+    '''
     simulados_tipo = {}
     provas_do_usuario = sender.objects.filter(aluno=aluno).order_by("-data_feita")[:15]
     for prova in provas_do_usuario:
@@ -203,6 +222,41 @@ def organiza_provas_por_tipo(sender, aluno) -> dict:
     return simulados_tipo
 
 def atualiza_ranking_por_tipo(aluno, tipo, provas_list:list):
+    '''
+        ### Atualiza o ranking do usuario de acordo com seu top 5 conteudos errados calculados por `retorna_ranking_de_conteudos_geral`
+        --------
+        
+        --------
+        ## Retorna:
+            
+            ```python
+            None
+            ```        
+        --------
+
+        # Exemplo:
+        --------
+        ## Ranking_antigo = {
+            1:Conteudo_X,
+            2:Conteudo_Y,
+            3:Conteudo_Z,
+            4:Conteudo_W,            
+            5:Conteudo_A,
+        }\n
+
+        ## Rankgin_novo = {
+            1:Conteudo_Y,
+            2:Conteudo_X,
+            3:Conteudo_Z,
+            4:Conteudo_A,            
+            5:Conteudo_G,
+        }
+        --------
+
+
+
+
+    '''
     from materiais.models import Conteudo
     ranking_do_tipo = retorna_ranking_de_conteudos_geral(provas_list)
     ranking_conteudos_errados, _ = RankingConteudosErrados.objects.get_or_create(aluno=aluno, tipo_simulado=tipo)
