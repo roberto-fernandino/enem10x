@@ -87,7 +87,7 @@ def filter_graph_time(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("usuarios:user")
+        return redirect("usuarios:plataforma")
     elif request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
