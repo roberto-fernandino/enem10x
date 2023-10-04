@@ -9,8 +9,7 @@ from django.core.exceptions import ValidationError
 
 
 class Nivel(models.Model):
-    nivel = models.CharField(max_length=10)
-    peso = models.FloatField()
+    nivel = models.IntegerField()
 
     def __str__(self) -> str:
         return f"{self.nivel}"
