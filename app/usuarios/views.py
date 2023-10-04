@@ -6,7 +6,7 @@ from usuarios.forms import AccountCreationForm, CriarTurmaForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
-from usuarios.models import MediaGeral, Turma, Professor, Aluno
+from usuarios.models import Turma, Professor, Aluno
 from usuarios.decorators import user_has_tag
 from uuid import uuid4
 from django.shortcuts import get_object_or_404
@@ -60,7 +60,7 @@ def notas_graph(request):
 
 @login_required
 def platform_view(request):
-    return render(request, "static/user-base.html")
+    return render(request, "static/platform-base.html")
 
 
 @login_required
