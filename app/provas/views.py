@@ -1,30 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from materiais.models import (
     Questao,
     Materia,
-    SubMateria,
     Conteudo,
     ProvaCompleta,
     ProvaRespondida,
     Simulado,
     QuestaoRespondida,
 )
+from django.contrib import messages
 from provas.forms import ProvaChoose
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from math import floor
-from provas.funcs import (
-    filtra_questoes_simulado_linguagens,
-    filtra_questoes_simulado_natureza,
-    filtra_questoes_simulado_matematica,
-)
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from usuarios.decorators import user_has_tag
 from django.http import HttpResponse
 from usuarios.models import Aluno
 from .funcs_geracao_prova import geracao_simulado, geracao_prova
-
+from django.urls import reverse
 # Create your views here.
 @login_required
 def prova_choose(request):
@@ -39,6 +33,9 @@ def prova_choose(request):
             if tipo_prova == "materia_escolhida":
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_prova"])
                 materia_id_list = choose_prova.cleaned_data["materias"]
+                if materia_id_list is None:
+                    messages.add_message(request, messages.ERROR, f"{request.user.nome} Por favor escolha uma materia!")
+                    return redirect(reverse("provas:prova-choose"))
                 questoes, materias = geracao_prova(materia_id_list, num_questoes)
 
                 context = {
@@ -51,7 +48,11 @@ def prova_choose(request):
                 simulado_id_list = choose_prova.cleaned_data["simulados"]
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_simulado"])
                 request.session["simulado_id_list"] = simulado_id_list
-                
+                print(f"simulado_id_list: {simulado_id_list}")
+                if len(simulado_id_list) == 0:
+                    messages.add_message(request, messages.ERROR, f"{request.user.nome}, por favor escolha uma matéria!")
+                    return redirect(reverse("provas:prova-choose"))
+
                 questoes, simulados = geracao_simulado(simulado_id_list, num_questoes, aluno)
                 
                 context = {

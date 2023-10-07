@@ -55,12 +55,15 @@ def define_proporcao_conteudos_provas(materia_in_simulado:list, num_questoes:int
         ```python
         {'2': 5, '7':10, '8':6,...}
         ``` 
-        ### Onde: `id_conteudo`: num_questoes_por_conteudo
+        ### Onde:
+        {`id_conteudo`:num_questoes_por_conteudo}
     '''
+    print(f'Entrou em define_proporcao_conteudos_prova')
     conteudo_questoes_dict = {}
     soma_total_questoes_grupo = 0
     total_proporcao = (sum(grupo.proporcao for materia in materia_in_simulado for grupo in GrupoConteudo.objects.filter(materia=materia)))
     grupo_menor_qtd_questoes_id_qtd = [None, 45]
+    
     for materia in materia_in_simulado:
         grupos_de_conteudos = GrupoConteudo.objects.filter(materia=materia).prefetch_related('conteudos')
                 
@@ -84,7 +87,6 @@ def define_proporcao_conteudos_provas(materia_in_simulado:list, num_questoes:int
                     conteudos_escolhidos = sample(list(conteudos), num_conteudos_por_grupo)
                     questoes_por_contuedo = total_questoes_grupo // num_conteudos_por_grupo
                     discrepancia = total_questoes_grupo - (len(conteudos_escolhidos) * questoes_por_contuedo)
-                    print(f"Discrepancia no grupo: {discrepancia} Total questoes Grupo : {total_questoes_grupo}")
                     for conteudo in conteudos_escolhidos:
                         conteudo_questoes_dict[f"{conteudo.id}"] = questoes_por_contuedo
                         for _ in range(discrepancia):
@@ -94,13 +96,12 @@ def define_proporcao_conteudos_provas(materia_in_simulado:list, num_questoes:int
                                     conteudo_questoes_dict[f'{conteudo.id}'] = 0
                                 conteudo_questoes_dict[f'{conteudo.id}'] += 1
                                 discrepancia -= 1
-                        print(conteudo_questoes_dict)
             else:   
                 print(f"o grupo {grupo.id}: {grupo} resultou em 0 questoes. Total_questoes_grupo {total_questoes_grupo} ")
+    
     soma_real_questoes = sum(conteudo_questoes_dict.values())
     discrepancia = num_questoes - soma_real_questoes
-    print(f'Soma real questoes: {soma_real_questoes}')
-    print(f'Discrepancia final: {discrepancia}')
+    
     if discrepancia:
         grupo = GrupoConteudo.objects.filter(id=grupo_menor_qtd_questoes_id_qtd[0]).prefetch_related('conteudos').first()
         conteudos = list(grupo.conteudos.all())
@@ -112,7 +113,7 @@ def define_proporcao_conteudos_provas(materia_in_simulado:list, num_questoes:int
             if f'{conteudo.id}' not in conteudo_questoes_dict:
                 conteudo_questoes_dict[f"{conteudo.id}"] = 0
             conteudo_questoes_dict[f"{conteudo.id}"] += 1
-    print(f'Questoes finais: {sum(conteudo_questoes_dict.values())}')
+    
     return conteudo_questoes_dict
 
 
@@ -259,9 +260,10 @@ def filtra_questoes_simulado_matematica(
 
     # Atualiza QUESTOES unicas
     questoes_unicas.update(retorna_questoes_unicas(aluno))
-
-    print(define_proporcao_conteudos_provas(materia_in_simulado, num_questoes))
-    # Recupera questoes excluindo questoes Unicas.
+    conteudo_questoes_dict = define_proporcao_conteudos_provas(materia_in_simulado, num_questoes)
+    lista_conteudo_questao = cria_lista_de_conteudos_apos_proporcao_definida(conteudo_questoes_dict)
+    questoes_list = retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao, num_questoes)
+    '''# Recupera questoes excluindo questoes Unicas.
     questoes_ids = (
         Questao.objects.filter(conteudo__sub_materia__materia=materia_in_simulado[0])
         .exclude(id__in=questoes_unicas)
@@ -269,9 +271,10 @@ def filtra_questoes_simulado_matematica(
         .order_by("?")[:num_questoes]
     )
     todos_questoes_objs = list(Questao.objects.filter(id__in=questoes_ids))
-    questoes_unicas.update(questao.id for questao in todos_questoes_objs)
+    '''
+    questoes_unicas.update(questao.id for questao in questoes_list)
 
-    return todos_questoes_objs
+    return questoes_list
 
 
 def filtra_questoes_simulado_humanas(
@@ -329,7 +332,7 @@ def filtra_questoes_simulado_humanas(
     return todas_questoes_obj
 
 
-def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_questoes:int):
+def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:dict, num_questoes:int) -> list:
     '''
     ## Retorna as questões com diferentes níveis de dificuldade.
 
@@ -354,11 +357,13 @@ def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_ques
     questoes_selecionadas = []
     todos_niveis = list(range(1,46))
     shuffle(todos_niveis)
+    print(f"todos_niveis: {todos_niveis}")
     niveis_utilizados = []
+    print(f"lista_conteudo_questao: {lista_conteudo_questao}")
     for conteudo in lista_conteudo_questao: 
+        print(f"questoes_selecionadas: {questoes_selecionadas}")
         nivel = choice(todos_niveis)
-        questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).first() # Tenta uma questao com os parametros inciais.
-
+        questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).exclude(id__in=[q.id for q in questoes_selecionadas]).first() # Tenta uma questao com os parametros inciais.
         
         if questao: # Se achar 
             questoes_selecionadas.append(questao) # Adicina na lista.
@@ -366,10 +371,11 @@ def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_ques
             niveis_utilizados.append(nivel)
             continue # Pula pro proximo conteudo
 
-        questao = tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(
-            conteudo_do_grupo,
+        questao = tenta_achar_questao_com_mesmo_conteudo_com_niveis_diferentes(
+            conteudo,
             nivel,
-            niveis_utilizados
+            niveis_utilizados,
+            questoes_selecionadas
         ) 
         
         if questao is not None:
@@ -378,24 +384,28 @@ def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_ques
 
         if len(questoes_selecionadas) >= num_questoes:
             return questoes_selecionadas
-
+        
+        # Se nao achar com outro niveis nesse conteudo pega de outro conteudo do mesmo grupo.
         if questao is None and len(questoes_selecionadas) < num_questoes: # Se nao achar nenhuma questão ainda
-            grupo_conteudo = conteudo.grupo # Pega o grupo do conteudo
-
+            
+            grupo_conteudo = GrupoConteudo.objects.filter(conteudos__id=conteudo).first() # Pega o grupo do conteudo
             for conteudo_do_grupo in grupo_conteudo.conteudos.all(): # Itera por todos conteudos do grupo
                 questao = Questao.objects.filter(conteudo=conteudo_do_grupo, nivel=nivel).first() # Tenta achar uma questao com o nivel e com o conteudo (do mesmo grupo)
 
                 if questao: # Se achar
                     questoes_selecionadas.append(questao) # Adiciona na lista.
                     todos_niveis.remove(nivel) # Remove nivel da lista de niveis disponives.
+
                     if len(questoes_selecionadas) >= num_questoes: # Confere se já pegou todas as questões.
                         return questoes_selecionadas # Caso sim retorna.
                     break # Sai do for de conteudos proximos e volta ao for dos conteudos originais.
                 
-                questao = tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(
+                questao = tenta_achar_questao_com_mesmo_conteudo_com_niveis_diferentes(
                     conteudo_do_grupo,
                     nivel,
-                    niveis_utilizados
+                    niveis_utilizados,
+                    questoes_selecionadas
+
                 ) 
                 # Se achou questao com outro nivel
                 if questao is not None:
@@ -408,7 +418,7 @@ def retorna_questoes_com_proporcoes_niveis(lista_conteudo_questao:list, num_ques
     return questoes_selecionadas
 
 
-def tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(conteudo, nivel, niveis_utilizados:list):
+def tenta_achar_questao_com_mesmo_conteudo_com_niveis_diferentes(conteudo, nivel, niveis_utilizados:list, questoes_selecionadas:list) -> None | Questao :
     '''
     ## Tenta encontrar questões com o mesmo conteúdo e níveis adjacentes.
 
@@ -435,9 +445,24 @@ def tenta_achar_questoes_com_mesmo_conteudo_com_niveis_diferentes(conteudo, nive
     
     for i in range_list: 
         nivel_adjacente = min(max(1, nivel + i), 45) # Tenta achar com o mesmo conteudo porem 6 niveis de discrepancia.
+
         if nivel_adjacente not in niveis_utilizados:
-            questao = Questao.objects.filter(conteudo=conteudo, nivel=nivel_adjacente).first()
+            questao = Questao.objects.filter(nivel=nivel, conteudo=conteudo).exclude(id__in=[q.id for q in questoes_selecionadas]).first()# Tenta uma questao com os parametros inciais.
+
             if questao:
                 return questao 
-
     return 
+
+
+def cria_lista_de_conteudos_apos_proporcao_definida(conteudo_questoes_dict:dict):
+    '''
+    
+    Retorna uma lista de conteudos'''
+    lista_conteudo_questao = []
+    
+    for conteudo, qtd_questoes in conteudo_questoes_dict.items():
+    
+        for i in range(0, qtd_questoes):
+            lista_conteudo_questao.append(conteudo)
+
+    return lista_conteudo_questao

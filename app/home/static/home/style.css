@@ -1,17 +1,14 @@
 @charset "UTF-8";
 * {
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 body {
-  background-color: #778da9;
-}
+  background-color: #778da9; }
 
 .hidden {
   visibility: hidden;
-  transition: ease-in;
-}
+  transition: ease-in; }
 
 /* inicio da parte superior */
 header .navbar {
@@ -20,181 +17,157 @@ header .navbar {
   -moz-transition: all 0.6s ease-out;
   -o-transition: all 0.6s ease-out;
   -ms-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out;
-}
-header .navbar .container {
-  font-size: 20px;
-  font-family: "futura";
-}
-header .navbar .container .collapse .navbar-nav .nav-item {
-  position: relative;
-}
-header .navbar .container .collapse .navbar-nav .nav-item .nav-link:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2.5px;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  visibility: hidden;
-  -webkit-transform: scaleX(0);
-  transform: scaleX(0);
-  -webkit-transition: all 0.3s ease-in-out 0s;
-  transition: all 0.3s ease-in-out 0s;
-}
-header .navbar .container .collapse .navbar-nav .nav-item .nav-link:hover:before {
-  visibility: visible;
-  -webkit-transform: scaleX(1);
-  transform: scaleX(1);
-}
-header .navbar .brand-img {
-  border-radius: 3px;
-}
-header .navbar .navbar-brand {
-  color: white;
-}
-header .navbar .navbar-toggler {
-  border: none;
-}
-header .navbar .navbar-toggler .navbar-toggler-icon {
-  color: white;
-}
+  transition: all 0.6s ease-out; }
+  header .navbar .container {
+    font-size: 20px;
+    font-family: 'futura'; }
+    header .navbar .container .collapse .navbar-nav .nav-item {
+      position: relative; }
+      header .navbar .container .collapse .navbar-nav .nav-item .nav-link:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2.5px;
+        bottom: 0;
+        left: 0;
+        background-color: #ffffff;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.45s ease-in-out 0s;
+        transition: all 0.45s ease-in-out 0s; }
+      header .navbar .container .collapse .navbar-nav .nav-item .nav-link:hover:before {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1); }
+  header .navbar .brand-img {
+    border-radius: 3px; }
+  header .navbar .navbar-brand {
+    color: white; }
+  header .navbar .navbar-toggler {
+    border: none; }
+    header .navbar .navbar-toggler .navbar-toggler-icon {
+      color: white; }
 
 .navbar.visible {
-  opacity: 0.9;
-  background-color: #1B263B;
-  transform: translateY(0);
-}
+  background-color: #0D1B2A;
+  transform: translateY(0); }
 
 body .carousel-inner {
-  margin-top: 30px;
   width: 100%;
   height: auto;
   filter: brightness(38%);
-  margin-top: 0;
-}
+  margin-top: 0; }
 body .subtitulos {
   color: #1B263B;
   text-align: center;
   padding-top: 50px;
   font-size: 22px;
-  margin-top: 30px;
-}
+  margin-top: 30px; }
 body main {
-  margin-bottom: 200px;
-}
-body main .container {
-  display: flex;
-  align-items: start;
-  background-color: #0D1B2A;
-  box-shadow: 4px 2px 4px 2px #E0E1DD;
-  border-radius: 35px;
-}
-body main .container .list-group-item {
-  border-radius: 10px;
-}
-body main .container .card {
-  background-color: #0D1B2A;
-  margin: 20px;
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-body main .container .card a {
-  text-decoration: none;
-  color: white;
-}
-body main .container .card .card-title {
-  color: white;
-}
-body main .container .card .card-body .container-text {
-  margin-top: 42px;
-  flex: 1;
-  color: white;
-  list-style: none;
-}
+  margin-bottom: 200px; }
+  body main .container {
+    display: flex;
+    align-items: start;
+    background-color: #0D1B2A;
+    box-shadow: 4px 2px 4px 2px #E0E1DD;
+    border-radius: 35px; }
+    body main .container .list-group-item {
+      border-radius: 10px; }
+    body main .container .card {
+      background-color: #0D1B2A;
+      margin: 20px;
+      padding-right: 15px;
+      padding-left: 15px;
+      padding-top: 60px;
+      padding-bottom: 60px; }
+      body main .container .card a {
+        text-decoration: none;
+        color: white; }
+      body main .container .card .card-title {
+        color: white; }
+      body main .container .card .card-body .container-text {
+        margin-top: 42px;
+        flex: 1;
+        color: white;
+        list-style: none; }
 
 /* Começo Pé do site */
 .pedosite {
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   background-color: #1B263B;
   color: white;
-  padding: 150px;
-}
-.pedosite .container {
-  max-width: 1170px;
-  margin: auto;
-}
-.pedosite .container .row {
-  display: flex;
-  flex-wrap: wrap;
-}
-.pedosite .container .row .footer-col {
-  width: 25%;
-  padding: 0 15px;
-}
-.pedosite .container .row .footer-col h4 {
-  font-size: 18px;
-  color: #ffffff;
-  text-transform: capitalize;
-  margin-bottom: 35px;
-  font-weight: 500;
-  position: relative;
-}
-.pedosite .container .row .footer-col h4:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -10px;
-  background-color: #778da9;
-  height: 2px;
-  box-sizing: border-box;
-  width: 50px;
-}
-.pedosite .container .row .footer-col .social-links a {
-  display: inline-block;
-  height: 40px;
-  width: 40px;
-  background-color: rgba(255, 255, 255, 0.2);
-  margin: 0 10px 10px 0;
-  text-align: center;
-  line-height: 40px;
-  border-radius: 50%;
-  color: #ffffff;
-  transition: all 0.5s ease;
-}
-.pedosite .container .row .footer-col .social-links a:hover {
-  color: #24262b;
-  background-color: #ffffff;
-}
-.pedosite .container .row .footer-col ul {
-  list-style-type: none;
-}
-.pedosite .container .row .footer-col ul li img {
-  border-radius: 8px;
-}
-.pedosite .container .row .footer-col ul li a {
-  font-size: 16px;
-  text-transform: capitalize;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 300;
-  color: #bbbbbb;
-  display: block;
-  transition: all 0.3s ease;
-}
-.pedosite .container .row .footer-col ul li a:hover {
-  color: #ffffff;
-  padding-left: 8px;
-}
-.pedosite .container .row .footer-col ul li:not(:last-child) {
-  margin-bottom: 10px;
-}
+  padding: 150px; }
+  .pedosite .container {
+    max-width: 1170px;
+    margin: auto; }
+    .pedosite .container .row {
+      display: flex;
+      flex-wrap: wrap; }
+      .pedosite .container .row .footer-col {
+        width: 25%;
+        padding: 0 15px; }
+        .pedosite .container .row .footer-col h4 {
+          font-size: 18px;
+          color: #ffffff;
+          text-transform: capitalize;
+          margin-bottom: 35px;
+          font-weight: 500;
+          position: relative; }
+        .pedosite .container .row .footer-col h4:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -10px;
+          background-color: #778da9;
+          height: 2px;
+          box-sizing: border-box;
+          width: 50px; }
+        .pedosite .container .row .footer-col .social-links a {
+          display: inline-block;
+          height: 40px;
+          width: 40px;
+          background-color: rgba(255, 255, 255, 0.2);
+          margin: 0 10px 10px 0;
+          text-align: center;
+          line-height: 40px;
+          border-radius: 50%;
+          color: #ffffff;
+          transition: all 0.5s ease; }
+        .pedosite .container .row .footer-col .social-links a:hover {
+          color: #24262b;
+          background-color: #ffffff; }
+        .pedosite .container .row .footer-col ul {
+          list-style-type: none; }
+          .pedosite .container .row .footer-col ul li img {
+            border-radius: 8px; }
+          .pedosite .container .row .footer-col ul li a {
+            font-size: 16px;
+            text-transform: capitalize;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 300;
+            color: #bbbbbb;
+            display: block;
+            transition: all 0.3s ease; }
+          .pedosite .container .row .footer-col ul li a:hover {
+            color: #ffffff;
+            padding-left: 8px; }
+          .pedosite .container .row .footer-col ul li:not(:last-child) {
+            margin-bottom: 10px; }
 
 /*Fim Pé do Site*/
+@media (max-width: 915px) {
+  .pedosite {
+    padding: 50px;
+    /* Ajuste o padding conforme necessário */ }
+    .pedosite .container .row .footer-col {
+      width: 100%;
+      /* Faz cada coluna ocupar a largura total da tela */
+      padding: 0 15px;
+      margin-bottom: 20px;
+      /* Adiciona uma margem abaixo de cada coluna para espaçamento */ } }
 
 /*# sourceMappingURL=style.css.map */

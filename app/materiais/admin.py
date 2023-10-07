@@ -5,6 +5,7 @@ from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
 from .forms import GrupoConteudoForm
 from materiais.models import Materia, Nivel, SubMateria, Conteudo, Questao, ProvaCompleta, ProvaRespondida, QuestaoRespondida, Simulado, OpcaoImagem, GrupoConteudo
+from random import choice
 # Register your models here.
 
 
@@ -13,9 +14,8 @@ class NivelAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         "nivel",
-        "peso",
     ]
-    fieldsets = (("Nivel", {"fields": ["nivel", "peso"]}),)
+    fieldsets = (("Nivel", {"fields": ["nivel"]}),)
     search_fields = ['nivel']
     list_display_links = ['nivel']
     ordering = ['id']
@@ -57,7 +57,17 @@ class ConteudoAdmin(admin.ModelAdmin):
     )
     list_display_links = ['nome']
 
+
+@admin.action(description='Adiciona niveis aleatorios pra questoes selecionadas.')
+def adiciona_niveis_aleatorios(modeladmin, request, queryset):
+    questoes_list = list(queryset.values_list('id', flat=True))
+    niveis_list = [nivel for nivel in Nivel.objects.all()]
+    for questao_id in questoes_list:
+        Questao.objects.filter(id=questao_id).update(nivel=choice(niveis_list))
+
+
 class QuestaoAdmin(admin.ModelAdmin):
+    actions = [adiciona_niveis_aleatorios]
     list_display = [
         'id',
         "identificador_unico",
@@ -78,7 +88,7 @@ class QuestaoAdmin(admin.ModelAdmin):
             ]}),
     )
     ordering = ['id']
-    list_filter = ['conteudo']
+    list_filter = ['conteudo', 'conteudo__sub_materia__materia']
     list_display_links = ['identificador_unico']
     
 

@@ -9,7 +9,11 @@
 <div id="carouselExampleIndicators" class="carousel slide">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{% static 'home/imagem_fundo_enem10x.jpg' %}" class="d-block w-100" alt="...">
+      <img 
+      id="bg-main"
+      src="{% static 'home/imagem_fundo_enem10x.jpg' %}"
+      class="d-block w-100"
+       alt="Imagem de fundo principal.">
     </div>
   </div>
 </div>
@@ -24,7 +28,7 @@
       <div class="card" style="width: 18rem;">
         <a href="">
           <div class="card-body">
-            <img src="..." class="card-img-top" alt="...">
+            <img src="{% static 'home/aluno.png' %}" class="card-img-top" alt="...">
             <hr>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><b>R$99,99</b></li>

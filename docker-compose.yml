@@ -70,7 +70,6 @@ services:
       - .env
 
   celery:
-    restart: always
     container_name: celery1
     build:
       context: .
