@@ -23,6 +23,7 @@ wheels/
 master/
 replication/
 ImageMagick-7.1.1-18
+.sass-cache/
 *.png
 share/python-wheels/
 *.egg-info/
