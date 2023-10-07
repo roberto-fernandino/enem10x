@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from usuarios.decorators import user_has_tag
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from usuarios.models import Aluno
 from .funcs_geracao_prova import geracao_simulado, geracao_prova
 from django.urls import reverse
@@ -190,6 +190,7 @@ def criar_prova_professor(request):
             }
             for conteudo in sub_materia.conteudo.all():
                 conteudo_dict = {
+                    'id': conteudo.id,
                     "nome": conteudo.nome,
                     "questoes": set(conteudo.questoes.all()),
                 }
@@ -203,3 +204,21 @@ def criar_prova_professor(request):
     response = render(request, "provas/criacao-prova-professor.html", context)
     cache.set(cache_key, response.content, 60 * 10)
     return response
+
+@login_required
+@user_has_tag('is_professor')
+def get_provas_by_conteudo_id(request, conteudo_id):
+    '''
+    Retorna um Json com os dados de cada questao do conteudo.
+    '''
+    conteudo = Conteudo.objects.get(id=conteudo_id)
+    questoes_list = Questao.objects.filter(conteudo=conteudo)
+    data = [
+            {
+            "id": q.id,
+            "enunciado": q.enunciado,
+            "identificador":q.identificador_unico,
+            "nivel": "facil" if q.nivel.nivel <= 15 else "medio" if q.nivel.nivel < 30 else "difícil"    
+        } for q in questoes_list
+    ]
+    return JsonResponse(data, safe=False)

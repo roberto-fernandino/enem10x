@@ -17,15 +17,11 @@
                         {{ sub_materia.nome }}
                         <ul>
                             {% for conteudo in sub_materia.conteudos %}
-                            <li> {{ conteudo.nome }} </li>
-                            <ul>
-                                {% for questao in conteudo.questoes %}
-                                ------------------------------------------- <br>
-                                Questao ({{ questao.identificador_unico }}) <br>
-                                {{ questao.enunciado|truncatechars:50}} <br>
-                                
-                                {% endfor %}
-                            </ul>
+                            <li>
+                                <a href="{% url 'provas:get_provas_by_conteudo_id' conteudo.id %}"> 
+                                    {{ conteudo.nome }}
+                                </a>
+                             </li>
                             {% endfor %}
                         </ul>
                     </li>
