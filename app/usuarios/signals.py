@@ -4,13 +4,11 @@ from usuarios.models import Account, MediaGeral
 from materiais.models import ProvaCompleta
 from celery import shared_task
 from materiais.funcs import organiza_provas_por_tipo, atualiza_ranking_por_tipo
-from usuarios.decorators import time_check
 
 @shared_task(soft_time_limit=300, time_limit=420)
 @receiver(post_save, sender=ProvaCompleta)
-@time_check
 def atualiza_ranking_aluno_erradas(sender, instance, **kwargs):
-    from usuarios.models import RankingConteudosErrados, Aluno
+    from usuarios.models import Aluno
     aluno = Aluno.objects.get(usuario=instance.aluno.usuario)
     simulados_tipo = organiza_provas_por_tipo(sender, aluno)
     for tipo, provas_list in simulados_tipo.items():
@@ -22,8 +20,8 @@ def atualiza_ranking_aluno_erradas(sender, instance, **kwargs):
 @receiver(post_save, sender=Account)
 def manage_aluno_professor(sender: Account, instance, **kwargs):
     '''
-    Signal ativado quando uma compra foi confirmada e o usario recebeu tag de aluno ou professor.
-    Cria no banco de dados um Aluno ou um Professor dependendo da compra do usuario.
+    ## Signal ativado quando uma compra foi confirmada e o usario recebeu tag de aluno ou professor.
+    `Cria no banco de dados um Aluno ou um Professor apontando pro usuario.`
     '''
     from usuarios.models import Aluno, Professor
     try:

@@ -13,7 +13,6 @@ class ProvaChoose(forms.Form):
         super(ProvaChoose, self).__init__(*args, **kwargs)
         self.fields['materias'].choices = [(materia.id, str(materia)) for materia in (Materia.objects.all())]
         self.fields['simulados'].choices = [(simulado.id, str(simulado)) for simulado in (Simulado.objects.all())]
-
     num_questoes_prova = forms.ChoiceField(
         choices=PROVA_QUESTOES_CHOICE,
         label='Quantas questoes voce quer de cada materia??',

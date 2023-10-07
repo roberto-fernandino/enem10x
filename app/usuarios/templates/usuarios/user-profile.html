@@ -1,14 +1,14 @@
-{% extends 'static/user-base.html' %} {% block title %} Perfil {% endblock %}
+{% extends 'static/platform-base.html' %} {% block title %} Perfil {% endblock %}
 
 
 
 {% block content %}
 
-{{data_criacao_conta}} <br>
-{{idade}} <br>
-{{nome}} <br> 
-{{email}} <br>
-{{cpf_escondido}} <br>
-{{telefone}} <br>
+Na plataforma desde: {{data_criacao_conta}} <br>
+Idade: {{idade}} <br>
+Nome: {{nome}} <br> 
+Email: {{email}} <br>
+cpf: {{cpf_escondido}} <br>
+telefone: {{telefone}} <br>
 
 {% endblock %}

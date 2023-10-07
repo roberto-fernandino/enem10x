@@ -1,4 +1,4 @@
-{% extends 'static/prova-base.html'%}
+{% extends 'static/platform-base.html'%}
 
 
 {% block title %}
@@ -27,12 +27,20 @@
         });
     });
 </script>
+<div class="prova-form-container">
+
+{% if messages %}
+<div class="message">
+  <div class="alert alert-danger">
+    {% for message in messages %}{{ message }} <br />{% endfor %}
+  </div>
+</div>
+{% endif %} 
 
 <select id="tipoProvaSelect">
     <option value="simulado">Simulado</option>
     <option value="materia_escolhida">Prova customizável</option>
 </select>
-
 
 <div id='provaForm' class="prova-customizavel" style="display: none;">
     <form action="{% url 'provas:prova-choose' %}" method="post">
@@ -66,4 +74,6 @@
         <button type="submit">Realizar prova</button>
     </form>
 </div>
+</div>
+
 {% endblock %}
