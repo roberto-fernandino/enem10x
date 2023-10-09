@@ -50,9 +50,12 @@
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
               <li class="navbar-item">
-                <button onclick="window.history.back()" class="btn btn-light">
-                  Voltar
-                </button>
+                  <a href="{% url 'home:home' %}">
+                    <button class="btn btn-light">
+                      Home
+                    </button>
+                  </button>
+                  </a>
               </li>
             </ul>
           </div>

@@ -111,7 +111,6 @@ def signup(request, *args, **kwargs):
             # Cria conta com Account Form
             form.save()
             email = form.cleaned_data["email"]
-            nome = form.cleaned_data["nome"]
             password = form.cleaned_data["password2"]
             auth_user = authenticate(request, email=email, password=password)
             if auth_user is not None:
