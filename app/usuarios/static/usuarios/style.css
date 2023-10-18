@@ -159,7 +159,7 @@ body {
       align-items: center; }
     body .account-form .login-container {
       background-color: #dfe7f1;
-      border: 1px solid #eee;
+      border: 1px solid #ddd;
       display: flex;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
@@ -305,6 +305,39 @@ button:hover {
 .codigo-container {
   margin-top: 200px; }
 
+/* ==== Create turma ==== */
+.create-turma-container {
+  background-color: #96acc4; }
+  .create-turma-container button {
+    margin-top: 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 19px;
+    padding: 4px;
+    margin-left: 15px; }
+  .create-turma-container .create-turma .form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    margin-top: 15%; }
+    .create-turma-container .create-turma .form .header h1 {
+      color: #1B263B;
+      margin-bottom: 30px; }
+    .create-turma-container .create-turma .form input {
+      font-size: 19px;
+      border-radius: 4px 4px 4px 4px;
+      color: #415A77; }
+    .create-turma-container .create-turma .form label {
+      font-size: 19px;
+      color: #1B263B; }
+    .create-turma-container .create-turma .form button {
+      margin-top: 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 19px;
+      padding: 4px; }
+
 /* ==== provas ==== */
 .prova-create-container {
   max-width: 400px;
@@ -369,5 +402,32 @@ button:hover {
 /* Container de escolha de prova */
 .prova-form-container .message {
   width: 50%; }
+
+/* Perfil de Usuario */
+.main {
+  margin-top: 150px;
+  margin-left: 15%;
+  font-size: 28px;
+  padding: 0 10px;
+  width: 60%; }
+  .main h2 {
+    color: #333;
+    font-family: 'Poppins', 'sans-serif ';
+    font-size: 24px;
+    margin-bottom: 10px; }
+  .main .card {
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 20px 0 20px 50px; }
+    .main .card table {
+      border: none;
+      font-size: 16px;
+      height: 270px;
+      width: 80%; }
+      .main .card table td {
+        margin-left: 150px; }
 
 /*# sourceMappingURL=style.css.map */

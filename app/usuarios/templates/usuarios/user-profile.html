@@ -1,14 +1,59 @@
 {% extends 'static/platform-base.html' %} {% block title %} Perfil {% endblock %}
 
 
-
-{% block content %}
-
-Na plataforma desde: {{data_criacao_conta}} <br>
-Idade: {{idade}} <br>
-Nome: {{nome}} <br> 
-Email: {{email}} <br>
-cpf: {{cpf_escondido}} <br>
-telefone: {{telefone}} <br>
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile Page</title>
+    <link rel="stylesheet" href="{ static 'usuarios/style.css'}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+</head>
+<body>
+    <div class="main">
+        <h2>Perfil de Usuário</h2>
+        <div class="card">
+            <div class="card-body">
+                <table>
+                    <tbody class="table-body">
+                        <tr>
+                            <td>Na plataforma desde</td>
+                            <td>:</td>
+                            <td class="data">{{data_criacao_conta}}</td>
+                        </tr>
+                        <tr>
+                            <td>Nome</td>
+                            <td>:</td>
+                            <td class="data">{{nome}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td class="data">{{email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Idade</td>
+                            <td>:</td>
+                            <td class="data">{{idade}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cpf</td>
+                            <td>:</td>
+                            <td class="data">{{cpf_escondido}}</td>
+                        </tr>
+                        <tr>
+                            <td>Telefone</td>
+                            <td>:</td>
+                            <td class="data">{{telefone}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
 
 {% endblock %}
