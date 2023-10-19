@@ -144,66 +144,102 @@ h1 {
   /* Espaçamento entre as letras */ }
 
 /* ==== Form ====*/
-.account-form .form-message {
-  padding-top: 5vh;
-  display: grid;
-  align-items: center; }
-.account-form form {
-  display: grid;
-  justify-content: center;
-  margin-top: 250px;
-  color: #1B263B; }
-  .account-form form .form-container {
-    display: grid;
-    justify-items: center;
-    background-color: #fff;
-    padding-top: 80px;
-    padding-left: 80px;
-    padding-right: 80px;
-    padding-bottom: 80px;
-    justify-items: center2;
-    top: 50%;
-    left: 50%;
-    border-radius: 8px; }
-    .account-form form .form-container .centered-input {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      width: 250px; }
-    .account-form form .form-container .form-title {
-      font-family: 'Poppins';
-      display: grid;
-      justify-content: center;
-      align-items: center;
-      color: #1B263B; }
-    .account-form form .form-container input {
-      width: 250px; }
-    .account-form form .form-container .check-input {
-      display: flex;
-      justify-content: start;
-      align-items: flex-start; }
-      .account-form form .form-container .check-input input {
-        width: 12px; }
-      .account-form form .form-container .check-input label {
-        margin-right: 5px; }
-    .account-form form .form-container .col-auto span {
-      color: #0D1B2A; }
-    .account-form form .form-container .form-button {
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0; }
+  body .account-form {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0; }
+    body .account-form .form-message {
+      padding-top: 5vh;
       display: grid;
       align-items: center; }
-      .account-form form .form-container .form-button .btn {
-        color: white;
-        background-color: #1B263B;
-        width: 250px; }
-      .account-form form .form-container .form-button p .fa-solid {
-        margin-left: 5px;
-        color: #1B263B;
-        margin-top: 10px;
-        transition: 0.4s; }
-  .account-form form .fa-solid:hover {
-    transform: translateY(-2px);
-    opacity: 0.6; }
+    body .account-form .login-container {
+      background-color: #dfe7f1;
+      border: 1px solid #ddd;
+      display: flex;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 100%; }
+      body .account-form .login-container .form-container {
+        height: 100%; }
+        body .account-form .login-container .form-container .login-main {
+          display: grid;
+          justify-content: center;
+          align-content: center; }
+    body .account-form .image-container {
+      width: 80%; }
+      body .account-form .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; }
+    body .account-form form {
+      display: grid;
+      justify-content: center;
+      align-items: start;
+      color: #1B263B; }
+      body .account-form form .form-container {
+        opacity: 88%;
+        display: grid;
+        justify-items: center;
+        background-color: #c5bc9f;
+        justify-items: center2;
+        border-radius: 8px;
+        width: 30%;
+        height: 100%;
+        box-sizing: border-box; }
+        body .account-form form .form-container .centered-input {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start; }
+        body .account-form form .form-container .form-title {
+          font-family: 'Poppins';
+          display: grid;
+          justify-content: center;
+          align-items: center;
+          color: #1B263B; }
+        body .account-form form .form-container .check-input {
+          display: flex;
+          justify-content: start;
+          align-items: flex-start; }
+          body .account-form form .form-container .check-input label {
+            margin-right: 5px; }
+        body .account-form form .form-container .col-auto span {
+          color: #0D1B2A; }
+        body .account-form form .form-container .form-button {
+          display: grid;
+          align-items: center; }
+          body .account-form form .form-container .form-button .btn {
+            color: white;
+            background-color: #1B263B;
+            width: 250px; }
+          body .account-form form .form-container .form-button p .fa-solid {
+            margin-left: 5px;
+            color: #1B263B;
+            margin-top: 10px;
+            transition: 0.4s; }
+      body .account-form form .fa-solid:hover {
+        transform: translateY(-2px);
+        opacity: 0.6; }
 
+/* Responsividade */
+@media only screen and (max-width: 768px) {
+  .account-form {
+    width: 100%; }
+    .account-form .login-container {
+      flex-direction: column; }
+      .account-form .login-container .form-container {
+        width: 100%;
+        height: 100%; }
+    .account-form img {
+      display: none; }
+    .account-form form {
+      margin-top: 20px; }
+      .account-form form .form-container {
+        padding: 40px; } }
 /* ==== turmas ==== */
 .turma-create-container {
   max-width: 400px;
@@ -269,6 +305,39 @@ button:hover {
 .codigo-container {
   margin-top: 200px; }
 
+/* ==== Create turma ==== */
+.create-turma-container {
+  background-color: #96acc4; }
+  .create-turma-container button {
+    margin-top: 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 19px;
+    padding: 4px;
+    margin-left: 15px; }
+  .create-turma-container .create-turma .form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    margin-top: 15%; }
+    .create-turma-container .create-turma .form .header h1 {
+      color: #1B263B;
+      margin-bottom: 30px; }
+    .create-turma-container .create-turma .form input {
+      font-size: 19px;
+      border-radius: 4px 4px 4px 4px;
+      color: #415A77; }
+    .create-turma-container .create-turma .form label {
+      font-size: 19px;
+      color: #1B263B; }
+    .create-turma-container .create-turma .form button {
+      margin-top: 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 19px;
+      padding: 4px; }
+
 /* ==== provas ==== */
 .prova-create-container {
   max-width: 400px;
@@ -333,5 +402,32 @@ button:hover {
 /* Container de escolha de prova */
 .prova-form-container .message {
   width: 50%; }
+
+/* Perfil de Usuario */
+.main {
+  margin-top: 150px;
+  margin-left: 15%;
+  font-size: 28px;
+  padding: 0 10px;
+  width: 60%; }
+  .main h2 {
+    color: #333;
+    font-family: 'Poppins', 'sans-serif ';
+    font-size: 24px;
+    margin-bottom: 10px; }
+  .main .card {
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 20px 0 20px 50px; }
+    .main .card table {
+      border: none;
+      font-size: 16px;
+      height: 270px;
+      width: 80%; }
+      .main .card table td {
+        margin-left: 150px; }
 
 /*# sourceMappingURL=style.css.map */

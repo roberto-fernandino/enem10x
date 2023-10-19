@@ -12,6 +12,7 @@ class AccountCreationForm(forms.ModelForm):
         label="Email",
         widget=forms.EmailInput(
             attrs={
+                "id": "email",
                 "class": "form-control mb-3",
                 "size": "40",
                 "name": "email",
@@ -51,6 +52,7 @@ class AccountCreationForm(forms.ModelForm):
         label="Senha",
         widget=forms.PasswordInput(
             attrs={
+                "id": "password1",
                 "class": "form-control mb-3",
                 "placeholder": "password*",
                 "required": True,
@@ -61,6 +63,7 @@ class AccountCreationForm(forms.ModelForm):
         label="Confirme Senha",
         widget=forms.PasswordInput(
             attrs={
+                "id": "password2",
                 "class": "form-control mb-3",
                 "placeholder": "confirm password*",
                 "required": True,

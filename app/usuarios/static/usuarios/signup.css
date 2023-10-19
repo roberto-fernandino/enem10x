@@ -1,0 +1,103 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  background-color: #dfe7f1; }
+
+/* ==== Form ====*/
+body {
+  height: 100%;
+  width: 100%;
+  margin-top: 15%; }
+  body .account-form {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0; }
+    body .account-form .form-message {
+      padding-top: 5vh;
+      display: grid;
+      align-items: center; }
+    body .account-form form {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      color: #1B263B; }
+      body .account-form form .form-container {
+        opacity: 0.88;
+        /* A opacidade deve ser um número entre 0 e 1, então 88% seria 0.88 */
+        display: flex;
+        flex-direction: column;
+        /* Adiciona itens em uma coluna (um abaixo do outro) */
+        align-items: center;
+        /* Alinha itens horizontalmente ao centro */
+        background-color: #c5bc9f;
+        border-radius: 8px;
+        width: 30%;
+        height: auto;
+        box-sizing: border-box;
+        padding: 45px;
+        justify-content: flex-start;
+        /* Alinha itens para o início do container. Você pode ajustar isso conforme necessário */ }
+        body .account-form form .form-container .form-step {
+          display: flex;
+          flex-direction: column;
+          margin-top: 15px; }
+        body .account-form form .form-container .centered-input {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start; }
+        body .account-form form .form-container .form-title {
+          font-family: 'Poppins';
+          display: grid;
+          justify-content: center;
+          align-items: center;
+          color: #1B263B; }
+        body .account-form form .form-container .check-input {
+          display: flex;
+          justify-content: start;
+          align-items: flex-start; }
+          body .account-form form .form-container .check-input label {
+            margin-right: 5px; }
+        body .account-form form .form-container .col-auto span {
+          color: #0D1B2A; }
+        body .account-form form .form-container .form-button {
+          display: grid;
+          justify-content: center; }
+          body .account-form form .form-container .form-button .btn {
+            color: white;
+            background-color: #1B263B;
+            width: 250px; }
+          body .account-form form .form-container .form-button p .fa-solid {
+            margin-left: 5px;
+            color: #1B263B;
+            margin-top: 10px;
+            transition: 0.4s; }
+      body .account-form form .fa-solid:hover {
+        transform: translateY(-2px);
+        opacity: 0.6; }
+
+#checkbox {
+  margin-left: 5px; }
+
+/* Responsividade */
+@media only screen and (max-width: 768px) {
+  body .account-form {
+    width: 100%; }
+    body .account-form .login-container {
+      flex-direction: column; }
+      body .account-form .login-container .form-container {
+        width: 100%;
+        height: 100%; }
+    body .account-form img {
+      display: none; }
+    body .account-form form {
+      margin-top: 20px; }
+      body .account-form form .form-container {
+        width: 100%;
+        height: auto; } }
+
+/*# sourceMappingURL=signup.css.map */

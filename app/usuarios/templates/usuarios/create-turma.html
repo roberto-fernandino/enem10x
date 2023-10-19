@@ -1,24 +1,29 @@
+{% block title %} {% endblock %} 
+{% load static %} {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Turma</title>
+    <link rel="stylesheet" href="{% static 'usuarios/style.css' %}">
 </head>
-<body>
-    <button onclick="window.history.back()">Voltar</button>
-    <form action="{% url 'usuarios:criar-turma' %}" method="post">
-        {% csrf_token %}
-        <div class="form">
-            <div class="header">
-                <h1>Nome da turma</h1>
-            </div>
-            <div class="input">
-                {{ form.as_p }}
-            </div>
-            <button type="submit">Criar</button>
-    </div>
-        
-    </form>
-</body>
+    <body class="create-turma-container">
+        <button onclick="window.history.back()">Voltar</button>
+        <div class="create-turma">
+            <form action="{% url 'usuarios:criar-turma' %}" method="post">
+                {% csrf_token %}
+                <div class="form">
+                    <div class="header">
+                        <h1>Nome da turma</h1>
+                    </div>
+                    <div class="input">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit">Criar</button>
+                </div>
+            </form>
+        </div>
+    </body>
 </html>
+{% endblock %}

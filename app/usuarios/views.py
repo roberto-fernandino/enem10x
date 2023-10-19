@@ -60,7 +60,10 @@ def notas_graph(request):
 
 @login_required
 def platform_view(request):
-    return render(request, "static/platform-base.html")
+    if request.user.is_authenticated:
+        return render(request, "static/platform-base.html")
+    else:
+        return redirect('usuarios:login')
 
 
 @login_required
@@ -94,7 +97,7 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect("home:home")
+            return redirect("usuarios:plataforma")
         return render(
             request, "usuarios/login.html", {"message": "Email ou senha inválidos"}
         )
@@ -108,7 +111,6 @@ def signup(request, *args, **kwargs):
             # Cria conta com Account Form
             form.save()
             email = form.cleaned_data["email"]
-            nome = form.cleaned_data["nome"]
             password = form.cleaned_data["password2"]
             auth_user = authenticate(request, email=email, password=password)
             if auth_user is not None:

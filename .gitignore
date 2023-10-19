@@ -22,6 +22,7 @@ var/
 wheels/
 master/
 replication/
+ImageMagick-7.1.1-18
 *.css.map
 .sass-cache/
 *.png

@@ -7,6 +7,7 @@ $shadowcolor: #E0E1DD;
 $background-color: #778da9;
 $details: #0D1B2A;
 $font-color: white;
+$medium-light-bg: #96acc4;
 $light-bg: #dfe7f1;
 $very-light-bg: #fbfdff;
 $chart-color: rgb(163, 236, 118);
@@ -223,82 +224,103 @@ h1 {
 
 
 /* ==== Form ====*/
-.account-form {
-    .form-message {
-        padding-top: 5vh;
-        display: grid;
-        align-items: center;
-    }
-
-    form {
-        display: grid;
-        justify-content: center;
-        margin-top: 250px;
-        color: $primarycolor;
-
-        .form-container {
+body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    .account-form {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        .form-message {
+            padding-top: 5vh;
             display: grid;
-            justify-items: center;
-            background-color: #fff;
-            padding-top: 80px;
-            padding-left: 80px;
-            padding-right: 80px;
-            padding-bottom: 80px;
-            justify-items: center2;
-            top: 50%;
-            left: 50%;
-            border-radius: 8px;
-
-            .centered-input {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                width: 250px;
+            align-items: center;
+        }
+        .login-container{
+            background-color: $light-bg;
+            border: 1px solid #ddd;
+            display: flex;
+            box-shadow: 0 0 10px rgba(0, 0, 0, $alpha: 0.1);
+            width: 100%;
+            height: 100%;
+            .form-container{
+                height: 100%;
+                .login-main{
+                    display: grid;
+                    justify-content: center;
+                    align-content: center;
+                }
             }
-
-            .form-title {
-                font-family: 'Poppins';
+        }
+        
+        .image-container{
+            width: 80%;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        
+        form {
+            display: grid;
+            justify-content: center;
+            align-items: start;
+            color: $primarycolor;
+            
+            .form-container {
+                opacity: 88%;
                 display: grid;
-                justify-content: center;
-                align-items: center;
-                color: $primarycolor;
-            }
-
-            input {
-                width: 250px;
-
-            }
-
-            .check-input {
-                display: flex;
-                justify-content: start;
-                align-items: flex-start;
-
-                input {
-                    width: 12px;
+                justify-items: center;
+                background-color: #c5bc9f;
+                justify-items: center2;
+                border-radius: 8px;
+                width: 30%;
+                height: 100%;
+                box-sizing: border-box;
+                
+                .centered-input {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
                 }
-
-                label {
-                    margin-right: 5px;
+                
+                .form-title {
+                    font-family: 'Poppins';
+                    display: grid;
+                    justify-content: center;
+                    align-items: center;
+                    color: $primarycolor;
                 }
-            }
-
-            .col-auto {
+                
+                .check-input {
+                    display: flex;
+                    justify-content: start;
+                    align-items: flex-start;
+                    
+                    label {
+                        margin-right: 5px;
+                    }
+                }
+                
+                .col-auto {
                 span {
                     color: $details;
                 }
             }
-
+            
             .form-button {
                 display: grid;
                 align-items: center;
-
+                
                 .btn {
                     color: $font-color;
                     background-color: $primarycolor;
                     width: 250px;
                 }
-
+                
                 p {
                     .fa-solid {
                         margin-left: 5px;
@@ -306,15 +328,42 @@ h1 {
                         margin-top: 10px;
                         transition: 0.4s;
                     }
-
+                    
                 }
             }
         }
-
-
+        
+        
         .fa-solid:hover {
             transform: translateY(-2px);
             opacity: 0.6;
+        }
+    }
+}
+}
+/* Responsividade */
+@media only screen and (max-width: 768px) {
+    .account-form {
+        width: 100%;
+        .login-container {
+            flex-direction: column;
+            
+            
+            .form-container {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        img {
+            display: none;
+        }
+        
+        form {
+            margin-top: 20px;
+            
+            .form-container {
+                padding: 40px;
+            }
         }
     }
 }
@@ -322,7 +371,6 @@ h1 {
 /* ==== turmas ==== */
 .turma-create-container{
     max-width: 400px;
-
     margin-top: 15px;
     background-color: $very-light-bg;
     border-radius: 8px;
@@ -400,7 +448,49 @@ h1 {
 .codigo-container{
     margin-top: 200px;
 }
-
+/* ==== Create turma ==== */
+.create-turma-container{
+    background-color: $medium-light-bg;
+    button {
+        margin-top: 15px;
+        border: none;
+        border-radius: 4px;
+        font-size: 19px;
+        padding: 4px;
+        margin-left: 15px;
+    }
+    .create-turma{
+        .form{
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            align-items: center;
+            margin-top: 15%;
+            .header {
+                h1{
+                    color: $primarycolor;
+                    margin-bottom: 30px;
+                }
+            }
+            input{
+                font-size: 19px;
+                border-radius: 4px 4px 4px 4px;
+                color: $secondarycolor;
+            }
+            label{
+                font-size: 19px;
+                color: $primarycolor;
+            }
+            button {
+                margin-top: 15px;
+                border: none;
+                border-radius: 4px;
+                font-size: 19px;
+                padding: 4px;
+            }
+        }
+    }
+}
 
 
 /* ==== provas ==== */
@@ -485,3 +575,39 @@ h1 {
         width: 50%;
     }
 }
+
+
+
+/* Perfil de Usuario */
+
+.main {
+    margin-top: 150px;
+    margin-left: 15%;
+    font-size: 28px;
+    padding: 0 10px;
+    width: 60%;
+    h2 {
+        color: #333;
+        font-family: 'Poppins', 'sans-serif ';
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 18px;
+        box-shadow: 1px 1px 8px 0 grey;
+        height: auto;
+        margin-bottom: 20px;
+        padding: 20px 0 20px 50px;
+        table {
+            border: none;
+            font-size: 16px;
+            height: 270px;
+            width: 80%;
+            td {
+                margin-left: 150px;
+            }
+        }
+    }
+}
+

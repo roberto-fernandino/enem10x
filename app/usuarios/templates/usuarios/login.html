@@ -1,8 +1,11 @@
 {% extends 'static/user-form-base.html' %} {% block title %} Login {% endblock %} 
-{% block content %} {% load static %}
+{% block javascripts %} {% endblock %}
+{% load static %}
+{% block content %} 
+<script defer src="{% static 'usuarios/js/form-check.js' %}"></script>
 <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
 <div class="account-form">   
-    <form action="{% url 'usuarios:login' %}" method="post">
+    <form action="{% url 'usuarios:login' %}" method="post" >
         {% if message %}
         <div class="form-message">
             <div class="alert alert-danger rounded-3 py-2" role="alert">
@@ -10,32 +13,34 @@
             </div>
         </div>    
         {% endif %}
-        {% csrf_token %}
-        <div class="form-container" >
-            <h1 class="form-title">Login</h1>
-            <div class="input">
-                <input type="email" name="email" maxlength="150"  class="form-control mb-3" placeholder="name@gmail.com" required/>
+        <div class="login-container">
+            <div class="image-container">
+                <img src="{% static 'usuarios/biblioteca_backjpg.jpg' %}" alt="Image de fundo, Login">
             </div>
-            <div class="input">
-                <input 
-                type="password"
-                name="password"
-                maxlength="50"
-                minlength="8"
-                required
-                class="form-control"
-                aria-describedby="password-help"
-                placeholder="password"
-                />
-            </div>
-            <div class="col-auto">
-                <span id="passwordHelpInline" class="form-text">
-                Deve ter de 8-128 caracteres
-                </span>
-            </div>
-            <div class="form-button mt-3">
-                <button type="submit" class="btn mt-3">Login</button>
-                <p>Dont have account?<a href="{% url 'usuarios:signup' %}" class="add-account"><i class="fa-solid fa-user-plus"></i></a></p>
+            {% csrf_token %}
+            <div class="form-container" >
+                <div class="login-main">
+                    <h1 class="form-title">Login</h1>
+                    <div class="input">
+                        <input type="email" name="email" maxlength="150"  class="form-control mb-3" placeholder="name@gmail.com" required/>
+                    </div>
+                    <div class="input">
+                        <input 
+                        type="password"
+                        name="password"
+                        maxlength="50"
+                        minlength="8"
+                        required
+                        class="form-control"
+                        aria-describedby="password-help"
+                        placeholder="password"
+                        />
+                    </div>
+                    <div class="form-button mt-3">
+                        <button type="submit" class="btn mt-3">Login</button>
+                        <p>Dont have account?<a href="{% url 'usuarios:signup' %}" class="add-account"><i class="fa-solid fa-user-plus"></i></a></p>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

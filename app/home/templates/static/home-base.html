@@ -92,17 +92,18 @@
               
               <li class="nav-item" id="account"><a href="{% url 'usuarios:plataforma' %}" class="nav-link">Plataforma</a></li>
               {% if not user.is_authenticated %}
-                <li class="nav-item" id="account"><a href="{% url 'usuarios:signup' %}" class="nav-link">Sign Up</a></li>
-                <li class="nav-item" id="account"><a href="{% url 'usuarios:login' %}" class="nav-link">Sign In</a></li>
+                <li class="nav-item" id="account">
+                  <a href="{% url 'usuarios:signup' %}" class="nav-link">Sign Up
+                 </a>
+                </li>
+              {% endif %}
+              {% if request.user.is_admin %}
+              <li class="nav-item">
+                <a href="{% url 'admin:index' %}" class="nav-link"> <i class="bx bxl-git"></i> admin</a>
+              </li>
               {% endif %}
             </ul>
           </div>
-
-            {% if request.user.is_admin %}
-            <li class="nav-item">
-              <a href="{% url 'admin:index' %}" class="nav-link"> <i class="bx bxl-git"></i> admin</a>
-            </li>
-            {% endif %}
         </div>
       </div>
     </nav>
