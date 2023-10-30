@@ -1,0 +1,14 @@
+FROM alpine:latest
+
+LABEL mantainer="romfernandino@gmail.com"
+
+COPY scripts/backup /scripts/backup
+
+RUN apk update && apk add --no-cache postgresql-client && \
+    chmod +x /scripts/backup && \
+    mkdir /backups && \
+    echo "0 4 * * * /scripts/backup" | crontab -
+
+ENV PATH="$PATH:/scripts"
+
+CMD ["tail", "-f", "/dev/null"]
