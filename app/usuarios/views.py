@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.urls import reverse
+
 # Create your views here.
 
 
@@ -63,7 +64,7 @@ def platform_view(request):
     if request.user.is_authenticated:
         return render(request, "static/platform-base.html")
     else:
-        return redirect('usuarios:login')
+        return redirect("usuarios:login")
 
 
 @login_required
@@ -176,7 +177,11 @@ def criar_turma_view(request):
             turma.codigo = uuid4()
             turma.criador = professor_criador
             turma.save()
-            messages.add_message(request, messages.SUCCESS, f'{professor_criador.usuario.nome} meus parabens "{turma.nome}" criada com sucesso! ')
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                f'{professor_criador.usuario.nome} meus parabens "{turma.nome}" criada com sucesso! ',
+            )
             cache.delete(f"professor_turmas_view_{professor_criador.id}")
             return redirect(reverse("usuarios:professor-turmas"))
     form = CriarTurmaForm(professor_criador)
@@ -189,10 +194,13 @@ def criar_turma_view(request):
 def professor_turma_view(request, turma_id):
     professor = Professor.objects.get(usuario=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
-    
-    if not turma.professores.filter(id=professor.id).exists() and turma.criador != professor:
-        return HttpResponseForbidden('403 Forbidden')
-    
+
+    if (
+        not turma.professores.filter(id=professor.id).exists()
+        and turma.criador != professor
+    ):
+        return HttpResponseForbidden("403 Forbidden")
+
     context = {
         "turma": turma,
         "professor": professor,
@@ -274,7 +282,11 @@ def entra_turma(request):
 @login_required
 def delete_turma(request, turma_id):
     turma = Turma.objects.get(id=turma_id)
-    messages.add_message(request, messages.SUCCESS, f"{request.user.nome} você apagou a turma {turma.nome} com suceso!")
+    messages.add_message(
+        request,
+        messages.SUCCESS,
+        f"{request.user.nome} você apagou a turma {turma.nome} com suceso!",
+    )
     turma.delete()
     return redirect("usuarios:professor-turmas")
 
@@ -282,9 +294,9 @@ def delete_turma(request, turma_id):
 @login_required
 @user_has_tag("is_professor")
 def remover_aluno(request, turma_id, aluno_id):
-    '''
+    """
     View, usada como botao para remover um aluno de uma uma turma como um professor.
-    '''
+    """
     usuario = request.user
     turma = get_object_or_404(Turma, id=turma_id)
     criador = turma.criador
@@ -302,9 +314,9 @@ def remover_aluno(request, turma_id, aluno_id):
 @login_required
 @user_has_tag("is_aluno")
 def sair_turma_aluno(request, turma_id, aluno_id):
-    '''
+    """
     View, usada como botao para sair de uma turma como um aluno.
-    '''
+    """
     aluno = Aluno.objects.get(id=aluno_id)
     turma = Turma.objects.get(id=turma_id)
     turma.alunos.remove(aluno)
@@ -319,9 +331,9 @@ def sair_turma_aluno(request, turma_id, aluno_id):
 @login_required
 @user_has_tag("is_aluno")
 def aluno_provas_feitas(request):
-    '''
-        Tela com todas as provas feitas para o aluno e a opcao de realizar novas provas.
-    '''
+    """
+    Tela com todas as provas feitas para o aluno e a opcao de realizar novas provas.
+    """
     aluno = request.user.aluno
     cache_key = f"aluno_provas_feitas_{aluno.id}"
     cached_page = cache.get(cache_key)
@@ -331,15 +343,15 @@ def aluno_provas_feitas(request):
     provas_feitas_do_usuario = ProvaCompleta.objects.filter(aluno=aluno)
     context = {"provas_feita_do_usuario": provas_feitas_do_usuario}
     response = render(request, "usuarios/provas-feitas.html", context)
-    cache.set(cache_key, response.content, 60*10)
+    cache.set(cache_key, response.content, 60 * 10)
     return response
 
 
 @login_required
 def user_profile(request):
-    '''
+    """
     Tela de Perfil do usuario.
-    '''
+    """
 
     # Dados do usuario
     email = request.user.email
@@ -353,16 +365,15 @@ def user_profile(request):
     cached_page = cache.get(cache_key)
     if cached_page:
         return HttpResponse(cached_page)
-    
 
     context = {
-        'data_criacao_conta': data_criacao_conta,
-        'idade': request.user.retorna_idade(),
-        'nome': nome,
-        'email':email,
-        'cpf_escondido': cpf_escondido,
-        'telefone': telefone,
+        "data_criacao_conta": data_criacao_conta,
+        "idade": request.user.retorna_idade(),
+        "nome": nome,
+        "email": email,
+        "cpf_escondido": cpf_escondido,
+        "telefone": telefone,
     }
     response = render(request, "usuarios/user-profile.html", context)
-    cache.set(cache_key, response.content, 60*5)
+    cache.set(cache_key, response.content, 60 * 5)
     return response
