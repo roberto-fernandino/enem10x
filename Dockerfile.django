@@ -19,8 +19,13 @@ RUN apk add --no-cache \
 # em vez de serem armazenados em um buffer para envio posterior ao terminal.
 ENV PYTHONUNBUFFERED=1
 
+# Copiando o ImageMagick comprimido
+COPY ImageMagick-7.1.1-18.tar.xz /ImageMagick-7.1.1-18.tar.xz
 
-COPY ImageMagick-7.1.1-18 /ImageMagick
+RUN tar xf ImageMagick-7.1.1-18.tar.xz && \
+    mv ImageMagick-7.1.1-18 ImageMagick
+
+
 # Compilando e voltando pro diretorio raiz.
 RUN cd /ImageMagick &&\
     ./configure --with-wmf &&\
