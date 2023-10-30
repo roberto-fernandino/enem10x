@@ -1,35 +1,32 @@
-{% extends 'static/platform-base.html' %}
-{% block title %} Criar prova {% endblock %}
-
-
-{% block content %}
-
-{% if materias_data %}
+<!-- prettier-ignore -->
+{% extends 'static/platform-base.html' %} {% block title %} Criar prova {% endblock %}
+{% block content %} {% if materias_data %}
 
 <div class="materias">
-    {% for materia in materias_data %}
-    <div class="materia">
-        {{ materia.nome }}
-        <div class="conteudo hidden">
-            <ul>
-                {% for sub_materia in materia.sub_materias %}
-                    <li>
-                        {{ sub_materia.nome }}
-                        <ul>
-                            {% for conteudo in sub_materia.conteudos %}
-                            <li>
-                                <a href="{% url 'provas:get_provas_by_conteudo_id' conteudo.id %}"> 
-                                    {{ conteudo.nome }}
-                                </a>
-                             </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+  {% for materia in materias_data %}
+  <div class="materia">
+    {{ materia.nome }}
+    <div class="conteudo hidden">
+      <ul>
+        {% for sub_materia in materia.sub_materias %}
+        <li>
+          {{ sub_materia.nome }}
+          <ul>
+            {% for conteudo in sub_materia.conteudos %}
+            <li>
+              <a
+                href="{% url 'provas:get_questoes_by_conteudo_id' conteudo.id %}"
+              >
+                {{ conteudo.nome }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
-{% endif %}
-{% endblock %}
+{% endif %} {% endblock %}
