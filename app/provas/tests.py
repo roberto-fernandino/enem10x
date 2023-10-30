@@ -5,7 +5,8 @@ from .funcs import define_proporcao_conteudos_provas
 
 # Create your tests here.
 class DefineProporcaoConteudosProvasTeste(TestCase):
-    databases = {'default', 'replica'}
+    databases = {"default", "replica"}
+
     def test_define_proporcao_conteudos_provas(self):
         materia = Materia.objects.get(id=1)
         num_questoes = 10
