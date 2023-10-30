@@ -19,6 +19,8 @@ from django.http import HttpResponse, JsonResponse
 from usuarios.models import Aluno
 from .funcs_geracao_prova import geracao_simulado, geracao_prova
 from django.urls import reverse
+
+
 # Create your views here.
 @login_required
 def prova_choose(request):
@@ -34,7 +36,11 @@ def prova_choose(request):
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_prova"])
                 materia_id_list = choose_prova.cleaned_data["materias"]
                 if materia_id_list is None:
-                    messages.add_message(request, messages.ERROR, f"{request.user.nome} Por favor escolha uma materia!")
+                    messages.add_message(
+                        request,
+                        messages.ERROR,
+                        f"{request.user.nome} Por favor escolha uma materia!",
+                    )
                     return redirect(reverse("provas:prova-choose"))
                 questoes, materias = geracao_prova(materia_id_list, num_questoes)
 
@@ -50,17 +56,23 @@ def prova_choose(request):
                 request.session["simulado_id_list"] = simulado_id_list
                 print(f"simulado_id_list: {simulado_id_list}")
                 if len(simulado_id_list) == 0:
-                    messages.add_message(request, messages.ERROR, f"{request.user.nome}, por favor escolha uma matéria!")
+                    messages.add_message(
+                        request,
+                        messages.ERROR,
+                        f"{request.user.nome}, por favor escolha uma matéria!",
+                    )
                     return redirect(reverse("provas:prova-choose"))
 
-                questoes, simulados = geracao_simulado(simulado_id_list, num_questoes, aluno)
-                
+                questoes, simulados = geracao_simulado(
+                    simulado_id_list, num_questoes, aluno
+                )
+
                 context = {
                     "questoes": questoes,
                     "simulados": simulados,
                 }
                 return render(request, "provas/prova.html", context)
-            
+
     choose_prova = ProvaChoose()
     context = {
         "choose_prova": choose_prova,
@@ -71,8 +83,7 @@ def prova_choose(request):
 @login_required
 @user_has_tag("is_aluno")
 def prova_respondida(request):
-    if request.method == "POST":        
-
+    if request.method == "POST":
         tipo_prova = request.session.get("tipo_prova")
         aluno = Aluno.objects.get(usuario=request.user)
 
@@ -102,13 +113,14 @@ def prova_respondida(request):
             cache.delete(f"aluno_provas_feitas_{aluno.id}")
             cache.delete(f"turmas_graph_{aluno.id}")
             return render(request, "provas/prova-respondida.html", context)
-        
 
         if tipo_prova == "simulado":
             simulado_id_list = request.session.get("simulado_id_list")
             simulados = Simulado.objects.filter(pk__in=simulado_id_list)
             for simulado in simulados:
-                prova_completa = ProvaCompleta.objects.create(aluno=aluno, simulado=simulado)
+                prova_completa = ProvaCompleta.objects.create(
+                    aluno=aluno, simulado=simulado
+                )
                 for questao_id, resposta in request.POST.items():
                     if "questao_id-" in questao_id:
                         real_questao_id = questao_id.split("-")[1]
@@ -125,8 +137,8 @@ def prova_respondida(request):
                 prova_completa.simulado = prova_respondida_obj.simulado
 
                 # Deactivated QuestaoRespondida for DEV
-                #questao_respondida = QuestaoRespondida()
-                #questao_respondida.set_questoes_ja_respondidas(aluno)
+                # questao_respondida = QuestaoRespondida()
+                # questao_respondida.set_questoes_ja_respondidas(aluno)
                 prova_completa.gera_relatorio()
                 prova_completa.deleta_respostas()
                 prova_completa_url = reverse(
@@ -175,7 +187,7 @@ def prova_completa(request, prova_id):
 def criar_prova_professor(request):
     cache_key = f"criar_prova_professor"
     cached_page = cache.get(cache_key)
-    
+
     if cached_page:
         return HttpResponse(cached_page)
 
@@ -190,7 +202,7 @@ def criar_prova_professor(request):
             }
             for conteudo in sub_materia.conteudo.all():
                 conteudo_dict = {
-                    'id': conteudo.id,
+                    "id": conteudo.id,
                     "nome": conteudo.nome,
                     "questoes": set(conteudo.questoes.all()),
                 }
@@ -205,20 +217,26 @@ def criar_prova_professor(request):
     cache.set(cache_key, response.content, 60 * 10)
     return response
 
+
 @login_required
-@user_has_tag('is_professor')
-def get_provas_by_conteudo_id(request, conteudo_id):
-    '''
+@user_has_tag("is_professor")
+def get_questoes_by_conteudo_id(request, conteudo_id):
+    """
     Retorna um Json com os dados de cada questao do conteudo.
-    '''
+    """
     conteudo = Conteudo.objects.get(id=conteudo_id)
     questoes_list = Questao.objects.filter(conteudo=conteudo)
     data = [
-            {
+        {
             "id": q.id,
             "enunciado": q.enunciado,
-            "identificador":q.identificador_unico,
-            "nivel": "facil" if q.nivel.nivel <= 15 else "medio" if q.nivel.nivel < 30 else "difícil"    
-        } for q in questoes_list
+            "identificador": q.identificador_unico,
+            "nivel": "facil"
+            if q.nivel.nivel <= 15
+            else "medio"
+            if q.nivel.nivel < 30
+            else "difícil",
+        }
+        for q in questoes_list
     ]
     return JsonResponse(data, safe=False)
