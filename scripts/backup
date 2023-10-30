@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e 
+set -o pipefail
+
+# Vai pra pasta de backups
+cd /backups 
+
+# Caso passe de 00:00 Current date não mudara isso torna o script mais dinamico possivel
+CURRENT_DATE=$(date +%F)
+
+# Realizando backup
+PGPASSWORD=$POSTGRES_PASSWORD pg_dump -h db-master -p 5432 -U $POSTGRES_USER  -F c $POSTGRES_DB > ${CURRENT_DATE}_database_backup.backup
+
+# Comprimindo o arquivo
+tar -czf ${CURRENT_DATE}_database_backup.backup.tar.gz ${CURRENT_DATE}_database_backup.backup
+rm ${CURRENT_DATE}_database_backup.backup
