@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.dispatch import receiver
 from django.db.models.signals import m2m_changed
 from django.core.exceptions import ValidationError
+
 # Create your models here.
 
 
@@ -43,7 +44,9 @@ class SubMateria(models.Model):
 
 
 class GrupoConteudo(models.Model):
-    materia = models.ForeignKey("materiais.Materia", on_delete=models.CASCADE, related_name='grupo')
+    materia = models.ForeignKey(
+        "materiais.Materia", on_delete=models.CASCADE, related_name="grupo"
+    )
     proporcao = models.DecimalField(
         max_digits=4,
         decimal_places=2,
@@ -51,17 +54,18 @@ class GrupoConteudo(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
         help_text="Propocao pré-definida para este contéudo para provas.",
         null=True,
-        blank=True
-    )
-    conteudos = models.ManyToManyField( 
-        "materiais.Conteudo", 
         blank=True,
-        related_name='grupo'
-        )
+    )
+    conteudos = models.ManyToManyField(
+        "materiais.Conteudo",
+        blank=True,
+        related_name="grupo",
+    )
 
     def __str__(self):
         return f"|{self.materia}|{self.proporcao}|"
-        
+
+
 class Conteudo(models.Model):
     nome = models.CharField(max_length=255)
     sub_materia = models.ForeignKey(
@@ -71,7 +75,6 @@ class Conteudo(models.Model):
         blank=True,
         related_name="conteudo",
     )
-   
 
     def __str__(self) -> str:
         return f"{self.nome}"
@@ -85,7 +88,7 @@ class Questao(models.Model):
     conteudo = models.ManyToManyField(
         Conteudo, default=None, blank=True, related_name="questoes"
     )
-    opcoes = models.JSONField(null=True) 
+    opcoes = models.JSONField(null=True)
     opcao_correta = models.CharField(
         null=False, blank=False, default=None, max_length=1
     )
@@ -143,8 +146,6 @@ class OpcaoImagem(models.Model):
 
 class ProvaCriadaProfessor(models.Model):
     questao = models.ManyToManyField(Questao)
-
-
 
 
 class Simulado(models.Model):
@@ -218,7 +219,7 @@ class ProvaRespondida(models.Model):
 
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
-    
+
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
     nota = models.FloatField(default=0, null=True, blank=True)
     acertos = models.IntegerField(default=0)
@@ -228,7 +229,9 @@ class ProvaCompleta(models.Model):
     data_feita = models.DateTimeField(auto_now_add=True)
     acerto_dificuldade = models.JSONField(default=None, null=True, blank=True)
     porcentagem_acerto = models.IntegerField(default=None, null=True, blank=True)
-    simulado = models.ForeignKey(Simulado, on_delete=models.DO_NOTHING, null=True, default=None, blank=True)
+    simulado = models.ForeignKey(
+        Simulado, on_delete=models.DO_NOTHING, null=True, default=None, blank=True
+    )
 
     def gera_relatorio(self):
         """
@@ -238,21 +241,25 @@ class ProvaCompleta(models.Model):
         conteudos_acertados = []
         acertos = 0
         erros = 0
-        
+
         # Por cada resposta checa se foi acertada e confere o nivel da questao caso tenha sido acertada
-        respostas = self.respostas.filter(aluno=self.aluno).select_related("questao__nivel")
+        respostas = self.respostas.filter(aluno=self.aluno).select_related(
+            "questao__nivel"
+        )
         for resposta in respostas:
-            conteudos = list(resposta.questao.conteudo.all()) # Todos conteudos da questao atual no loop
+            conteudos = list(
+                resposta.questao.conteudo.all()
+            )  # Todos conteudos da questao atual no loop
             if resposta.acerto:
                 acertos += 1
                 conteudos_acertados.extend(conteudos)
-               
+
             else:
                 erros += 1
                 conteudos_errados.extend(conteudos)
 
         qtd_questoes = acertos + erros
-        
+
         (
             self.ranking_piores_conteudos,
             self.ranking_melhores_conteudos,
@@ -271,7 +278,9 @@ class ProvaCompleta(models.Model):
         # Deleta todas as "ProvaRespondida" do aluno em ProvaRespondida pra maior otimizacao, limpeza de coisas inuteis no banco de dados.
         self.respostas.filter(aluno=self.aluno).delete()
 
-    def define_ranking_conteudo_prova(self, conteudos_errados: list, conteudos_acertados: list):
+    def define_ranking_conteudo_prova(
+        self, conteudos_errados: list, conteudos_acertados: list
+    ):
         """
         Gera um ranking de conteudos mais errados, acertados respectivamente de uma prova feita por um usario e os retorna no formato:\n
         \t - tuple(dict(ranking errados), dict(ranking acertados))"""
@@ -300,7 +309,3 @@ class ProvaCompleta(models.Model):
 
     def __str__(self):
         return f"{self.aluno} - {self.data_feita}"
-    
-
-
-
