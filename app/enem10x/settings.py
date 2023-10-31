@@ -100,7 +100,7 @@ DATABASES = {
         "PASSWORD": getenv("POSTGRES_PASSWORD"),
         "HOST": getenv("POSTGRES_HOST"),
         "PORT": getenv("POSTGRES_PORT"),
-        "TEST": {"NAME": "POSTGRES_DB"},
+        "TEST": {"NAME": "test"},
     },
     "replica": {
         "ENGINE": getenv("DB_ENGINE"),
