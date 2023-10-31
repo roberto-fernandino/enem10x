@@ -1,5 +1,10 @@
+from django.conf import settings
+
+
 class Router:
     def db_for_read(self, model, **hints):
+        if "test" in settings.DATABASES["default"]["NAME"]:
+            return "default"
         return "replica"
 
     def db_for_write(self, model, **hints):
@@ -14,6 +19,6 @@ class Router:
         if obj1._state.db in db_set and obj2._state.db in db_set:
             return True
         return None
-    
+
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        return db == 'default'
+        return db == "default"
