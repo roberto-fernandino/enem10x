@@ -102,3 +102,6 @@ class QuestaoTestCase(TestCase):
 
     def test_identificador_unico(self):
         self.assertIsInstance(self.questao_aleatoria.identificador_unico, str)
+
+
+#
