@@ -90,3 +90,15 @@ class QuestaoTestCase(TestCase):
         conteudos = self.questao_aleatoria.conteudo.all()
         for conteudo in conteudos:
             self.assertIsInstance(conteudo, Conteudo)
+
+    def test_opcoes(self):
+        opcoes = self.questao_aleatoria.opcoes
+        opcao_correta = self.questao_aleatoria.opcao_correta
+        self.assertIsInstance(opcoes, list)
+        self.assertIsInstance(opcao_correta, str)
+        for opcao in opcoes:
+            self.assertIsInstance(opcao, str)
+        self.assertIn(opcao_correta, ["A", "B", "C", "D", "E"])
+
+    def test_identificador_unico(self):
+        self.assertIsInstance(self.questao_aleatoria.identificador_unico, str)
