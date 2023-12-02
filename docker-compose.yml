@@ -41,27 +41,25 @@ services:
       - db-master
       - redis
     container_name: cron-service
-
   db-replication-1:
-    image: postgres:15
-    ports:
-      - target: 5432
-        published: 5434
-        protocol: tcp
-        mode: host
-    environment:
-      POSTGRES_DB: enem
-      POSTGRES_USER: repuser
-      POSTGRES_PASSWORD: repuser
-      POSTGRES_HOST: db-replication-1
-      PGDATA: /var/lib/postgresql/data
-    volumes:
-      - ./replication:/var/lib/postgresql/data
-      - type: tmpfs
-        target: /dev/shm
+      image: postgres:15
+      ports:
+        - target: 5432
+          published: 5434
+          protocol: tcp
+          mode: host
+      environment:
+        POSTGRES_DB: enem
+        POSTGRES_USER: repuser
+        POSTGRES_PASSWORD: repuser
+        POSTGRES_HOST: db-replication-1
+        PGDATA: /tmp
+      volumes:
+        - ./replication:/var/lib/postgresql/data
+        - type: tmpfs
+          target: /dev/shm
 
-    container_name: postgres_db_replication_1
-
+      container_name: postgres_db_replication_1
   app:
     build:
       context: .

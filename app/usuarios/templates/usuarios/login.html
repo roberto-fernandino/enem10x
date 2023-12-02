@@ -12,48 +12,26 @@
     </div>
     {% endif %}
     <div class="login-container">
-      <div class="image-container">
-        <img
-          src="{% static 'usuarios/biblioteca_backjpg.jpg' %}"
-          alt="Image de fundo, Login"
-        />
-      </div>
-      {% csrf_token %}
-      <div class="form-container">
-        <div class="login-main">
-          <h1 class="form-title">Login</h1>
-          <div class="input">
-            <input
-              type="email"
-              name="email"
-              maxlength="150"
-              class="form-control mb-3"
-              placeholder="name@gmail.com"
-              required
-            />
-          </div>
-          <div class="input">
-            <input
-              type="password"
-              name="password"
-              maxlength="50"
-              minlength="5"
-              required
-              class="form-control"
-              aria-describedby="password-help"
-              placeholder="password"
-            />
-          </div>
-          <div class="form-button mt-3">
-            <button type="submit" class="btn mt-3">Login</button>
-            <p>
-              Dont have account?<a
-                href="{% url 'usuarios:signup' %}"
-                class="add-account"
-                ><i class="fa-solid fa-user-plus"></i
-              ></a>
-            </p>
-          </div>
+      <div class="container">
+        <div class="login-container">
+          <header>
+            {% csrf_token %}
+            <img src="" alt="Intellectus Logo">
+          </header>
+          <form id="login-form">
+            <div class="input-group">
+              <input type="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+              <input type="password" placeholder="Password" required>
+            </div>
+            <button type="submit">LOGIN</button>
+            <a href="#">Forgot Password? Click Here</a>
+          </form>
+        </div>
+        <div class="welcome-section">
+          <h1>Bem vindo ao Intellectus</h1>
+          <p><!--Texto Infomartivo do Site-->></p>
         </div>
       </div>
     </div>
