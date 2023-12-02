@@ -1,85 +1,88 @@
 {% extends 'static/user-form-base.html' %} {% block title %} Signup {%endblock%}
 {% load static %} {% block content %}
+
 <script>
-  function validadeEmail(email){
+  function validadeEmail(email) {
     var emailRegex = /[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+/i;
     return emailRegex.test(email);
   }
   function nextStep(stepNumber) {
     if (stepNumber === 1) {
-      var emailInput = document.getElementById('email');
-      var emailError = document.getElementById('email-error')
+      var emailInput = document.getElementById("email");
+      var emailError = document.getElementById("email-error");
       var formValid = true;
       if (!validadeEmail(emailInput.value)) {
-        emailError.style.display = 'flex';
-        formValid = false
+        emailError.style.display = "flex";
+        formValid = false;
         return;
       } else {
-        formValid = true
+        formValid = true;
       }
     }
-    if (stepNumber === 2){
-      var cpfInput = document.getElementById('cpf');
-      var telefoneInput = document.getElementById('telefone');
-      var cpfError = document.getElementById('cpf-error');
-      var telefoneError = document.getElementById('telefone-error');
-      if (cpfInput.value.length != 14){
-        cpfError.style.display = 'flex';
-        console.log(cpfInput.value.length)
-        console.log('Cpf tem que ter 14 caracteres.')
+    if (stepNumber === 2) {
+      var cpfInput = document.getElementById("cpf");
+      var telefoneInput = document.getElementById("telefone");
+      var cpfError = document.getElementById("cpf-error");
+      var telefoneError = document.getElementById("telefone-error");
+      if (cpfInput.value.length != 14) {
+        cpfError.style.display = "flex";
+        console.log(cpfInput.value.length);
+        console.log("Cpf tem que ter 14 caracteres.");
         formValid = false;
       } else {
-        cpfError.style.display = 'none';
-        formValid = true
+        cpfError.style.display = "none";
+        formValid = true;
       }
-      if (telefoneInput.value.length != 12){
-        telefoneError.style.display = 'flex';
-        console.log('Numero tem que ter 12 caracteres.')
+      if (telefoneInput.value.length != 12) {
+        telefoneError.style.display = "flex";
+        console.log("Numero tem que ter 12 caracteres.");
         formValid = false;
       } else {
-        if (!formValid){
-          formValid = false
-          telefoneError.style.display = 'none';
-        }
-        else {
-          formValid = true
+        if (!formValid) {
+          formValid = false;
+          telefoneError.style.display = "none";
+        } else {
+          formValid = true;
         }
       }
     }
-    if (stepNumber === 3){
-      var password1 = document.getElementById('password1');
-      var password2 = document.getElementById('password2');
-      var passwordNotConfereError = document.getElementById('password-not-confere-error');
-      var passwordNotParametersError = document.getElementById('password-not-in-parameters-error');
+    if (stepNumber === 3) {
+      var password1 = document.getElementById("password1");
+      var password2 = document.getElementById("password2");
+      var passwordNotConfereError = document.getElementById(
+        "password-not-confere-error"
+      );
+      var passwordNotParametersError = document.getElementById(
+        "password-not-in-parameters-error"
+      );
       var passwordConfere = false;
-      
-      if (password1.value === password2.value){
+
+      if (password1.value === password2.value) {
         passwordConfere = true;
         formValid = true;
-      }
-      else {
-        passwordNotConfereError.style.display = 'flex';
+      } else {
+        passwordNotConfereError.style.display = "flex";
         formValid = false;
         return;
       }
-      if (password2.value.length < 8 && passwordConfere){
-          console.log(password2.value.length)
-          passwordNotParametersError.style.display = 'flex';
-          formValid = false;
-          event.preventDefault();
-          return;
+      if (password2.value.length < 8 && passwordConfere) {
+        console.log(password2.value.length);
+        passwordNotParametersError.style.display = "flex";
+        formValid = false;
+        event.preventDefault();
+        return;
       } else {
-        passwordNotParametersError.style.display = 'none';
+        passwordNotParametersError.style.display = "none";
         formValid = true;
       }
-      } 
-    if (formValid) {
-    document.querySelectorAll('.form-step').forEach(function(step){
-      step.style.display = 'none';
-    });
-    if (stepNumber != 3){
-    document.getElementById('step' + stepNumber).style.display = 'flex';
     }
+    if (formValid) {
+      document.querySelectorAll(".form-step").forEach(function (step) {
+        step.style.display = "none";
+      });
+      if (stepNumber != 3) {
+        document.getElementById("step" + stepNumber).style.display = "flex";
+      }
     }
   }
 </script>
@@ -92,28 +95,45 @@
     {% endfor %}
   </div>
   {% endif %}
-  <form  action="{% url 'usuarios:signup' %}" method="post">
-      <div class="form-container">
-    {% csrf_token %}
+  <form action="{% url 'usuarios:signup' %}" method="post">
+    <div class="form-container">
+      {% csrf_token %}
       <h1 class="form-title">Cadastro</h1>
       <div class="form-step" id="step0">
-        <p id="email-error" class="account-form-error-message" style="display: none;">
+        <p
+          id="email-error"
+          class="account-form-error-message"
+          style="display: none"
+        >
           Por favor, informe um email válido.
         </p>
         <label for="email">Para começar, nos informe seu email.</label>
         <div class="input">{{ form.email }}</div>
         <div class="form-button">
-          <button value="Cadastrar" type="button" onclick="nextStep(1)" class="btn btn-primary">
+          <button
+            value="Cadastrar"
+            type="button"
+            onclick="nextStep(1)"
+            class="btn btn-primary"
+          >
             Próximo
           </button>
         </div>
       </div>
-      <div class="form-step" id="step1" style="display: none;">
+      <div class="form-step" id="step1" style="display: none">
         <div class="form-errors">
-          <p id="cpf-error" class="account-form-error-message" style="display: none;">
+          <p
+            id="cpf-error"
+            class="account-form-error-message"
+            style="display: none"
+          >
             Cpf inválido
           </p>
-          <p id="telefone-error" class="account-form-error-message" style="display: none">
+          <p
+            id="telefone-error"
+            class="account-form-error-message"
+            style="display: none"
+          >
             Telefone inválido
           </p>
         </div>
@@ -123,18 +143,31 @@
         <div class="input">{{ form.data_nascimento }}</div>
         <div class="input">{{ form.telefone }}</div>
         <div class="form-button">
-          <button value="Cadastrar" type="button" onclick="nextStep(2)" class="btn btn-primary">
+          <button
+            value="Cadastrar"
+            type="button"
+            onclick="nextStep(2)"
+            class="btn btn-primary"
+          >
             Próximo
           </button>
         </div>
       </div>
-      <div class="form-step" id="step2" style="display: none;">
+      <div class="form-step" id="step2" style="display: none">
         <p>Agora crie sua senha</p>
         <span>Lembre-se de criar uma senha segura.</span>
-        <p id="password-not-confere-error" class="account-form-error-message" style="display: none">
+        <p
+          id="password-not-confere-error"
+          class="account-form-error-message"
+          style="display: none"
+        >
           As senhas precisam ser iguais.
         </p>
-        <p id="password-not-in-parameters-error" class="account-form-error-message" style="display: none">
+        <p
+          id="password-not-in-parameters-error"
+          class="account-form-error-message"
+          style="display: none"
+        >
           Para sua segurança a senha deve ter mais de 8 caracteres.
         </p>
         <div class="input">{{ form.password1 }}</div>
@@ -148,16 +181,26 @@
             <label for="termos"
               >Voce concorda com os
               <a class="no-text-decoration" href="">Termos termos de uso</a> e
-              política de privacidade?<input class="form-check-input" type="checkbox" name="termos" id="checkbox" required />
+              política de privacidade?<input
+                class="form-check-input"
+                type="checkbox"
+                name="termos"
+                id="checkbox"
+                required
+              />
             </label>
           </div>
           <div class="form-button">
-            <button value="Cadastrar" type="submit" onclick="nextStep(3)"  class="btn btn-primary">
+            <button
+              value="Cadastrar"
+              type="submit"
+              onclick="nextStep(3)"
+              class="btn btn-primary"
+            >
               Cadastrar
             </button>
           </div>
         </div>
-  
       </div>
     </div>
   </form>
