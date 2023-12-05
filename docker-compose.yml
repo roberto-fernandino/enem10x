@@ -26,7 +26,6 @@ services:
       - ./master:/var/lib/postgresql/data
       - type: tmpfs
         target: /dev/shm
-
     container_name: postgres_db_master
 
   db-replication-1:
@@ -41,9 +40,9 @@ services:
       POSTGRES_USER: repuser
       POSTGRES_PASSWORD: repuser
       POSTGRES_HOST: db-replication-1
-      PGDATA: /var/lib/postgresql/ata
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./replication:/var/lib/postgresql/ata
+      - ./replication:/var/lib/postgresql/data
       - type: tmpfs
         target: /dev/shm
 
@@ -93,6 +92,7 @@ services:
       - db-master
       - redis
       - app
+      - db-replication-1
 
 volumes:
   questoes_data:
