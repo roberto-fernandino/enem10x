@@ -1,4 +1,5 @@
 {% extends 'static/home-base.html' %} {% load static %} {% block content %}
+
 <div id="navbar">
   <div id="leftside">
     <a href="{% url 'home:home' %}">
@@ -19,16 +20,65 @@
 
 <div id="starter-content">
   <div id="slogan">
-    <h1 id="slogan-main">
-      Construindo seu futuro.
-      <img id="book-svg" src="{% static 'home/book.svg' %}" alt="Icone livro" />
-    </h1>
+    <div id="insignia">
+      #1 Top Plataforma de Ensino Online
+      <img id="insigina-icon" src="{% static 'home/verified.svg' %}" alt="" />
+    </div>
+    <h1 id="slogan-main">Eleve seu estudo.</h1>
     <p id="slogan-secondary">
-      Estude com precisão de onde estiver, como quiser e acompanhe sua evolução
-      diante de seus olhos com
-      <img src="{% static 'home/logoinline.png' %}" alt="Logo" />
+      Aprimore seus conhecimentos de qualquer lugar, do seu jeito, e observe seu
+      progresso se desdobrar diante de você com a
+      <img id="logo" src="{% static 'home/logoinline.png' %}" alt="Logo" />
     </p>
   </div>
-  <img src="{% static 'home/leftimage.svg' %}" alt="Garoto segurando tablet" />
+  <img
+    id="homeimg"
+    src="{% static 'home/leftimage.svg' %}"
+    alt="Garoto segurando tablet"
+  />
 </div>
+
+<div class="feature">
+  <img
+    src="{% static 'home/relatorio.svg'%}"
+    alt="Imagem de computador com graficos"
+  />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Relatórios instantâneos</h1>
+    <p class="feature-text">
+      Gráficos e Rankings para você acompanhar seu desempenho nos conteúdos
+      específicos para direcionar o seu foco no necessário.
+    </p>
+  </div>
+</div>
+
+<div class="feature reversed">
+  <img src="{% static 'home/database.svg' %}" alt="Banco de dados icone" />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Banco de dados completo</h1>
+    <p class="feature-text">
+      Nossa plataforma conta com todas as questões do Enem desde o ano de 1998.
+      Possibilitando que você realize simulados realistas baseados nos contéudos
+      mais presentes no Enem.
+    </p>
+  </div>
+</div>
+
+<div class="feature last">
+  <img src="{% static 'home/ia.svg' %}" alt="Icone inteligencia artificial" />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Inteligência Artificial integrada</h1>
+    <p class="feature-text">
+      Nós desenvolvemos um modelo avançado de Inteligência Artificial (IA)
+      projetado para efetuar a correção de redações. Este modelo se destaca pela
+      sua alta precisão de correção de erros e pela capacidade de sugerir
+      alterações no texto que potencializam a obtenção de uma nota mais elevada.
+      Neste modelo, foram adotados os critérios de avaliação estabelecidos pelo
+      Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira
+      (INEP), assegurando assim uma correlação direta com os padrões nacionais
+      de avaliação.
+    </p>
+  </div>
+</div>
+
 {% endblock %}
