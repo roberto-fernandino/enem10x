@@ -12,14 +12,16 @@ $font-color: #4C4C4C;
 }
 
 body {
+    width: 100%;
     height: 4860px;
     background-color: $background-color;
+    background-image: linear-gradient(to right, $background-color, $main-color);
 }
 
 #navbar {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    max-width: 100%;
     height: 68px;
     align-items: center;
     justify-content: space-between;
@@ -54,14 +56,13 @@ body {
         .opt.large {
             text-decoration: none;
             font-family: 'Roboto';
-            font-size: 31px;
+            font-size: 28px;
             font-weight: 300;
-            color: $font-color;
+            color: white;
             transition: color 0.3s, font-size 0.5s;
 
             &:hover {
-                color: $main-color;
-                font-size: 34px;
+                font-size: 30px;
             }
         }
 
@@ -71,13 +72,13 @@ body {
             text-decoration: none;
             font-family: 'Roboto';
             padding: 10px;
-            font-size: 31px;
+            font-size: 28px;
             font-weight: 300;
             color: $main-color;
             transition: color 0.3s, background-color 0.8s;
 
             &:hover {
-                background-color: $main-color;
+                background-color: aqua;
                 color: white;
             }
         }
@@ -88,12 +89,32 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 80px;
+    margin: 65px;
+    margin-bottom: 0px;
+    justify-content: space-between;
+
 
     #slogan {
         width: 930px;
         display: flex;
         flex-direction: column;
+
+        #insignia {
+            background-color: white;
+            width: max-content;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        #insigina-icon {
+            width: 22px;
+            padding: 3px;
+        }
+
+
 
         #slogan-main {
             font-weight: 500;
@@ -102,12 +123,87 @@ body {
 
             #book-svg {
                 width: 180px;
+                height: 100px;
             }
         }
 
         #slogan-secondary {
-            font-size: 48px;
+            font-size: 42px;
+            font-weight: 400;
+            color: $font-color;
         }
     }
 
+    #homeimg {
+        width: 730px;
+        height: 749px;
+    }
+}
+
+
+.feature {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 15px;
+    margin-right: 15px;
+    background-color: rgb(245, 240, 240);
+    border-radius: 16px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 60px;
+
+    .feature-text-container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+        width: 700px;
+
+        .feature-title {
+            color: $main-color;
+            font-size: 58px;
+        }
+
+        .feature-text {
+            color: $font-color;
+            font-size: 37px;
+            font-weight: 300;
+        }
+
+    }
+}
+
+.feature.reversed {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    border-radius: 0px;
+    margin-left: 15px;
+    margin-right: 15px;
+
+    .feature-text-container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+        width: 700px;
+
+        .feature-title {
+            color: $main-color;
+            font-size: 58px;
+        }
+
+        .feature-text {
+            color: $font-color;
+            font-size: 37px;
+            font-weight: 300;
+        }
+
+    }
+}
+
+.feature.last {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
