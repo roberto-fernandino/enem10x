@@ -24,7 +24,7 @@ DATA_DIR = BASE_DIR.parent / "data"
 SECRET_KEY = str(
     getenv(
         "SECRET_KEY",
-        "django-insecure-+hf(14q915^5n1*%hi2t#*@9zc@+6t!tm8slxsc=$b1fud7$am",
+        "2cx(t4hbv03a2m_0i7pt*jr%n50ql9m3scs8eklovm=t)!t&-4",
     )
 )
 
