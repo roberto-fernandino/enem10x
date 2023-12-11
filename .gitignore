@@ -25,7 +25,6 @@ replication/
 ImageMagick-7.1.1-18
 *.css.map
 .sass-cache/
-*.png
 share/python-wheels/
 *.egg-info/
 .installed.cfg
