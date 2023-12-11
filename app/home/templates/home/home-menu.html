@@ -13,7 +13,7 @@
     </div>
   </div>
   <div id="rightside">
-    <a class="opt large" href="">Log in</a>
+    <a class="opt large" href="{% url 'usuarios:login' %}">Log in</a>
     <a class="opt signup" href="{% url 'usuarios:signup' %}">Cadastro</a>
   </div>
 </div>
@@ -21,7 +21,7 @@
 <div id="starter-content">
   <div id="slogan">
     <div id="insignia">
-      #1 Top Plataforma de Ensino Online
+      <span><strong>#1 Top </strong>Plataforma de Ensino Online</span>
       <img id="insigina-icon" src="{% static 'home/verified.svg' %}" alt="" />
     </div>
     <h1 id="slogan-main">Eleve seu estudo.</h1>
