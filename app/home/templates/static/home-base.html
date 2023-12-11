@@ -1,165 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enem10x</title>
-    <script
-      src="https://kit.fontawesome.com/270b063d0e.js"
-      crossorigin="anonymous"
-    ></script>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'home/style.css'%}" />
-    <link
-      rel="shortcut icon"
-      href="{% static 'home/favicon/favicon.ico' %}"
-      type="image/x-icon"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <header>
-    <nav class="navbar fixed-top navbar-dark navbar-expand-sm" id="navbar">
-      <div class="container">
-        <a href="{% url 'home:home' %}" class="navbar-brand mb-0 h1">
-          <img
-            src="{% static 'home/enem10xlogo.png' %}"
-            alt="Logo"
-            width="30"
-            height="24"
-            class="brand-img d-inline-block align-text-top align-top"
-          />
-          Enem 10x
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="#navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a href="{% url 'home:home' %}" class="nav-link active">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">Sobre-nós</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Assinaturas
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a href="" class="dropdown-item">Alunos</a>
-                </li>
-                <li>
-                  <a href="" class="dropdown-item">Professores</a>
-                </li>
-                <li>
-                  <a href="" class="dropdown-item">Escolas</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <div class="ms-auto">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enem10x</title>
+  <script src="https://kit.fontawesome.com/270b063d0e.js" crossorigin="anonymous"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'home/style.css'%}" />
+  <link rel="shortcut icon" href="{% static 'home/favicon/favicon.ico' %}" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</head>
+<header>
+  <nav class="navbar fixed-top navbar-dark navbar-expand-sm" id="navbar">
+    <div class="container">
+      <a href="{% url 'home:home' %}" class="navbar-brand mb-0 h1">
+        <img src="{% static 'home/Logo.png' %}" alt="Logo" width="79" height="65" class="brand-img" />
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link">Sobre</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Preço</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Contato</a>
+          </li>
+        </ul>
             <ul class="navbar-nav">
-              
-              <li class="nav-item" id="account"><a href="{% url 'usuarios:plataforma' %}" class="nav-link">Plataforma</a></li>
+              <li class="nav-item" id="account"><a href="{% url 'usuarios:plataforma' %}" class="nav-link">Login</a>
+              </li>
               {% if not user.is_authenticated %}
-                <li class="nav-item" id="account">
-                  <a href="{% url 'usuarios:signup' %}" class="nav-link">Sign Up
-                 </a>
-                </li>
+              <li class="nav-item" id="account">
+                <a href="{% url 'usuarios:signup' %}" class="nav-link" id="cadastro">Cadastro
+                </a>
+              </li>
               {% endif %}
               {% if request.user.is_admin %}
               <li class="nav-item">
-                <a href="{% url 'admin:index' %}" class="nav-link"> <i class="bx bxl-git"></i> admin</a>
+                <a href="{% url 'admin:index' %}" class="nav-link"> <i class="bx bxl-git"></i>admin</a>
               </li>
               {% endif %}
             </ul>
+
+      </div>
+    </div>
+  </nav>
+</header>
+
+<body>
+  <main>{% block content %} {% endblock %}</main>
+</body>
+<footer class="pedosite">
+  <!-- Conteúdo do rodapé -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Termos e Condições</a></li>
+            <li><a href="#">Política de Privacidade</a></li>
+            <li><a href="#">Devs</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="#">Fale conosco</a></li>
+
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Opções de pagamento</h4>
+          <ul>
+            <li><img src="{% static 'home/pix.jpg' %}" alt=""></li>
+            <li><a href="#">Visa</a></li>
+            <li><a href="#">MasterCard</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Siga-nos</h4>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
           </div>
         </div>
       </div>
-    </nav>
-    <script>
-              document.addEventListener("scroll", function() {
-          const navbar = document.getElementById("navbar");
-          const y = window.scrollY;
-
-          if (y > 600) {
-            navbar.classList.add("visible");
-          } else {
-            navbar.classList.remove("visible");
-          }
-        });
-    </script>
-  </header>
-  <body>
-    <main>{% block content %} {% endblock %}</main>
-  </body>
-  <footer class="pedosite">
-    <!-- Conteúdo do rodapé -->
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="footer-col">
-            <h4>Empresa</h4>
-            <ul>
-              <li><a href="#">Sobre nós</a></li>
-              <li><a href="#">Termos e Condições</a></li>
-              <li><a href="#">Política de Privacidade</a></li>
-              <li><a href="#">Devs</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Ajuda</h4>
-            <ul>
-              <li><a href="#">Fale conosco</a></li>
-
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Opções de pagamento</h4>
-            <ul>
-              <li><img src="{% static 'home/pix.jpg' %}" alt=""></li>
-              <li><a href="#">Visa</a></li>
-              <li><a href="#">MasterCard</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Siga-nos</h4>
-            <div class="social-links">
-              <a href="#"><i class="fab fa-youtube"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
   </footer>
+
 </html>

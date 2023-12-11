@@ -3,94 +3,79 @@
   margin: 0;
   padding: 0; }
 
-body {
-  background-color: #778da9; }
-
-.hidden {
-  visibility: hidden;
-  transition: ease-in; }
+body main {
+  background-color: #D9D9D9; }
 
 /* inicio da parte superior */
-header .navbar {
-  background-color: transparent;
-  -webkit-transition: all 0.6s ease-out;
-  -moz-transition: all 0.6s ease-out;
-  -o-transition: all 0.6s ease-out;
-  -ms-transition: all 0.6s ease-out;
-  transition: all 0.6s ease-out; }
-  header .navbar .container {
-    font-size: 20px;
-    font-family: 'futura'; }
-    header .navbar .container .collapse .navbar-nav .nav-item {
-      position: relative; }
-      header .navbar .container .collapse .navbar-nav .nav-item .nav-link:before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2.5px;
-        bottom: 0;
-        left: 0;
-        background-color: #ffffff;
-        visibility: hidden;
-        -webkit-transform: scaleX(0);
-        transform: scaleX(0);
-        -webkit-transition: all 0.45s ease-in-out 0s;
-        transition: all 0.45s ease-in-out 0s; }
-      header .navbar .container .collapse .navbar-nav .nav-item .nav-link:hover:before {
-        visibility: visible;
-        -webkit-transform: scaleX(1);
-        transform: scaleX(1); }
-  header .navbar .brand-img {
-    border-radius: 3px; }
-  header .navbar .navbar-brand {
-    color: white; }
-  header .navbar .navbar-toggler {
-    border: none; }
-    header .navbar .navbar-toggler .navbar-toggler-icon {
-      color: white; }
+header {
+  background-color: #D9D9D9; }
+  header .navbar {
+    margin: 0;
+    background-color: #D9D9D9; }
+    header .navbar .container {
+      width: 100%;
+      margin: 0; }
+      header .navbar .container .collapse .navbar-nav {
+        display: flex;
+        justify-content: space-between;
+        position: relative; }
+        header .navbar .container .collapse .navbar-nav .nav-item {
+          margin-left: 42px; }
+          header .navbar .container .collapse .navbar-nav .nav-item #cadastro {
+            border-style: solid;
+            border-width: 2px;
+            border-color: #ffffff;
+            background-color: #ffffff;
+            border-radius: 16px;
+            color: #0082BA;
+            padding: 3px; }
+          header .navbar .container .collapse .navbar-nav .nav-item .nav-link {
+            color: rgba(0, 0, 0, 0.61);
+            font-family: Roboto;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal; }
+    header .navbar .brand-img {
+      border-radius: 3px;
+      background-color: #D9D9D9;
+      flex-shrink: 0; }
+    header .navbar .navbar-brand {
+      margin-left: 15px;
+      background-color: #D9D9D9; }
 
-.navbar.visible {
-  background-color: #0D1B2A;
-  transform: translateY(0); }
-
-body .carousel-inner {
-  width: 100%;
-  height: auto;
-  filter: brightness(38%);
-  margin-top: 0; }
-body .subtitulos {
-  color: #1B263B;
-  text-align: center;
-  padding-top: 50px;
-  font-size: 22px;
-  margin-top: 30px; }
 body main {
   margin-bottom: 200px; }
   body main .container {
     display: flex;
-    align-items: start;
-    background-color: #0D1B2A;
-    box-shadow: 4px 2px 4px 2px #E0E1DD;
-    border-radius: 35px; }
-    body main .container .list-group-item {
-      border-radius: 10px; }
-    body main .container .card {
-      background-color: #0D1B2A;
-      margin: 20px;
-      padding-right: 15px;
-      padding-left: 15px;
-      padding-top: 60px;
-      padding-bottom: 60px; }
-      body main .container .card a {
-        text-decoration: none;
-        color: white; }
-      body main .container .card .card-title {
-        color: white; }
-      body main .container .card .card-body .container-text {
-        margin-top: 42px;
-        flex: 1;
-        color: white;
-        list-style: none; }
+    align-items: center;
+    background-color: #D9D9D9;
+    padding: 20px;
+    margin: 10px;
+    justify-content: space-between; }
+    body main .container .text-content {
+      max-width: 50%; }
+      body main .container .text-content h1 {
+        color: #0082BA;
+        font-family: 'Roboto';
+        font-size: 128px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal; }
+      body main .container .text-content p {
+        color: #000;
+        font-family: 'Roboto';
+        font-size: 38px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal; }
+        body main .container .text-content p img {
+          width: 344px;
+          height: 66px;
+          background-color: #D9D9D9; }
+    body main .container .image-content {
+      width: 50%;
+      margin-left: 50px; }
 
 /* Começo Pé do site */
 .pedosite {
@@ -98,7 +83,7 @@ body main {
   bottom: 0;
   width: 100%;
   background-color: #1B263B;
-  color: white;
+  color: rgba(0, 0, 0, 0.61);
   padding: 150px; }
   .pedosite .container {
     max-width: 1170px;
@@ -121,7 +106,7 @@ body main {
           position: absolute;
           left: 0;
           bottom: -10px;
-          background-color: #778da9;
+          background-color: #D9D9D9;
           height: 2px;
           box-sizing: border-box;
           width: 50px; }

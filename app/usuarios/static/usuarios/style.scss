@@ -13,6 +13,7 @@ $very-light-bg: #fbfdff;
 $chart-color: rgb(163, 236, 118);
 $alert-color: rgb(232, 110, 110);
 $very-very-light-bg: #fbfdff;
+$primary-color: #333;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -224,7 +225,7 @@ h1 {
 
 
 /* ==== Form ====*/
-body{
+body {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -233,6 +234,7 @@ body{
         width: 100%;
         height: 100%;
         margin: 0;
+
         .form-message {
             padding-top: 5vh;
             display: grid;
@@ -240,27 +242,29 @@ body{
         }
     }
 }
-        
+
 /* Responsividade */
 @media only screen and (max-width: 768px) {
     .account-form {
         width: 100%;
+
         .login-container {
             flex-direction: column;
-            
-            
+
+
             .form-container {
                 width: 100%;
                 height: 100%;
             }
         }
+
         img {
             display: none;
         }
-        
+
         form {
             margin-top: 20px;
-            
+
             .form-container {
                 padding: 40px;
             }
@@ -269,7 +273,7 @@ body{
 }
 
 /* ==== turmas ==== */
-.turma-create-container{
+.turma-create-container {
     max-width: 400px;
     margin-top: 15px;
     background-color: $very-light-bg;
@@ -277,7 +281,8 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    button{
+
+    button {
         border: none;
         border-radius: 6px;
         background-color: $very-light-bg;
@@ -286,7 +291,8 @@ body{
         height: 60px;
         display: flex;
         transition: 0.2s;
-        a{
+
+        a {
             font-size: 16px;
             font-family: "Poppins", "sans-serif";
             font-weight: 400;
@@ -296,18 +302,22 @@ body{
             max-height: 100%;
         }
     }
-    }
-    button:hover{
-        cursor: pointer;
-        opacity: 0.6;
-        transform: translateY(-1px);
-    }
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+    transform: translateY(-1px);
+}
+
 .turmas-container {
     max-width: 400px;
     margin-left: 400px;
-    .message{
+
+    .message {
         margin-top: 21px;
     }
+
     .turma-box {
         margin-top: 150px;
         background-color: $very-very-light-bg;
@@ -320,23 +330,26 @@ body{
         transition: 0.2s;
         justify-content: center;
         align-items: center;
+
         .turma-box-link {
-            .turma-box-header{
-                i{
+            .turma-box-header {
+                i {
                     font-size: 30px;
                     margin-right: 5px;
                 }
+
                 color: $secondarycolor;
             }
 
-            .turma-body{
+            .turma-body {
                 color: $background-color;
 
             }
         }
 
     }
-    .turma-box:hover{
+
+    .turma-box:hover {
         cursor: pointer;
         transform: translateY(-2px);
         opacity: 0.6;
@@ -345,12 +358,14 @@ body{
 
 /* ==== codigo-form ====*/
 
-.codigo-container{
+.codigo-container {
     margin-top: 200px;
 }
+
 /* ==== Create turma ==== */
-.create-turma-container{
+.create-turma-container {
     background-color: $medium-light-bg;
+
     button {
         margin-top: 15px;
         border: none;
@@ -359,28 +374,33 @@ body{
         padding: 4px;
         margin-left: 15px;
     }
-    .create-turma{
-        .form{
+
+    .create-turma {
+        .form {
             display: flex;
             flex-direction: column;
             align-content: center;
             align-items: center;
             margin-top: 15%;
+
             .header {
-                h1{
+                h1 {
                     color: $primarycolor;
                     margin-bottom: 30px;
                 }
             }
-            input{
+
+            input {
                 font-size: 19px;
                 border-radius: 4px 4px 4px 4px;
                 color: $secondarycolor;
             }
-            label{
+
+            label {
                 font-size: 19px;
                 color: $primarycolor;
             }
+
             button {
                 margin-top: 15px;
                 border: none;
@@ -394,7 +414,7 @@ body{
 
 
 /* ==== provas ==== */
-.prova-create-container{
+.prova-create-container {
     max-width: 400px;
     margin-top: 15px;
     background-color: $very-light-bg;
@@ -402,7 +422,8 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    button{
+
+    button {
         border: none;
         border-radius: 6px;
         background-color: $very-light-bg;
@@ -411,7 +432,8 @@ body{
         height: 60px;
         display: flex;
         transition: 0.2s;
-        a{
+
+        a {
             font-size: 16px;
             font-family: "Poppins", "sans-serif";
             font-weight: 400;
@@ -421,18 +443,22 @@ body{
             max-height: 100%;
         }
     }
-    }
-    button:hover{
-        cursor: pointer;
-        opacity: 0.6;
-        transform: translateY(-1px);
-    }
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+    transform: translateY(-1px);
+}
+
 .prova-container {
     max-width: 400px;
     margin-left: 400px;
-    .message{
+
+    .message {
         margin-top: 21px;
     }
+
     .prova-box {
         margin-top: 150px;
         background-color: $very-very-light-bg;
@@ -445,23 +471,26 @@ body{
         transition: 0.2s;
         justify-content: center;
         align-items: center;
+
         .prova-box-link {
-            .prova-box-header{
-                i{
+            .prova-box-header {
+                i {
                     font-size: 30px;
                     margin-right: 5px;
                 }
+
                 color: $secondarycolor;
             }
 
-            .prova-body{
+            .prova-body {
                 color: $background-color;
 
             }
         }
 
     }
-    .prova-box:hover{
+
+    .prova-box:hover {
         cursor: pointer;
         transform: translateY(-2px);
         opacity: 0.6;
@@ -470,8 +499,8 @@ body{
 
 /* Container de escolha de prova */
 
-.prova-form-container{
-    .message{
+.prova-form-container {
+    .message {
         width: 50%;
     }
 }
@@ -486,12 +515,14 @@ body{
     font-size: 28px;
     padding: 0 10px;
     width: 60%;
+
     h2 {
         color: #333;
         font-family: 'Poppins', 'sans-serif ';
         font-size: 24px;
         margin-bottom: 10px;
     }
+
     .card {
         background-color: #fff;
         border-radius: 18px;
@@ -499,15 +530,16 @@ body{
         height: auto;
         margin-bottom: 20px;
         padding: 20px 0 20px 50px;
+
         table {
             border: none;
             font-size: 16px;
             height: 270px;
             width: 80%;
+
             td {
                 margin-left: 150px;
             }
         }
     }
 }
-

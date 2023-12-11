@@ -1,11 +1,13 @@
 @charset "UTF-8";
+
 $primarycolor: #1B263B;
 $secondarycolor: #415A77;
 $shadowcolor: #E0E1DD;
-$background-color: #778da9;
+$background-color: #D9D9D9;
 $details: #0D1B2A;
-$font-color: white;
+$font-color: rgba(0, 0, 0, 0.61);
 $second-font-color: #7b7786;
+
 
 * {
     margin: 0;
@@ -13,122 +15,103 @@ $second-font-color: #7b7786;
 }
 
 body{
-    background-color: $background-color;
-}
-.hidden{
-    visibility: hidden;
-    transition: ease-in;
+    main{
+        background-color: $background-color;
+    }
 }
 /* inicio da parte superior */
 
 header{
+    background-color: $background-color;
     .navbar{
-        background-color: transparent;
-        -webkit-transition: all 0.6s ease-out;
-        -moz-transition: all 0.6s ease-out;
-        -o-transition: all 0.6s ease-out;
-        -ms-transition: all 0.6s ease-out;
-        transition: all 0.6s ease-out;
+        margin: 0;
+        background-color: $background-color;
         .container{
-            font-size: 20px;
-           font-family: 'futura';
+            width: 100%;
+            margin: 0;
+
             .collapse{
                 .navbar-nav{
+                    display: flex;
+                    justify-content: space-between;
+                    position: relative;
                     .nav-item {
-                        position: relative;
-                        .nav-link:before {
-                            content: "";
-                            position: absolute;
-                            width: 100%;
-                            height: 2.5px;
-                            bottom: 0;
-                            left: 0;
+                        margin-left: 42px;
+                        #cadastro{
+                            border-style: solid;
+                            border-width: 2px;
+                            border-color: #ffffff;
                             background-color: #ffffff;
-                            visibility: hidden;
-                            -webkit-transform: scaleX(0);
-                            transform: scaleX(0);
-                            -webkit-transition: all 0.45s ease-in-out 0s;
-                            transition: all 0.45s ease-in-out 0s;
+                            border-radius: 16px;
+                            color: #0082BA;
+                            padding: 3px;
                         }
-                        .nav-link:hover:before {
-                            visibility: visible;
-                            -webkit-transform: scaleX(1);
-                            transform: scaleX(1);
-                        }
+                        .nav-link{
+                            color: $font-color;
+                            font-family: Roboto;
+                            font-size: 18px;
+                            font-style: normal;
+                            font-weight: 300;
+                            line-height: normal;
+                        }   
                     }
                 }
             }
         }
         .brand-img{
             border-radius: 3px;
+            background-color: $background-color;
+            flex-shrink: 0;
         }
         .navbar-brand{
-            color: $font-color;
-        }
-        .navbar-toggler{
-            border: none;
-            .navbar-toggler-icon{
-                color: $font-color;
-            }
+            margin-left: 15px;
+            background-color: $background-color;
         }
     }
 }
-.navbar.visible{
-    background-color: $details;
-    transform: translateY(0);
-}
+
 
         
 
 body {
-    .carousel-inner{
-        width: 100%;
-        height: auto;
-        filter: brightness(38%);
-        margin-top: 0;
-    }
-    .subtitulos{
-            color: $primarycolor;
-            text-align: center;
-            padding-top: 50px;
-            font-size: 22px;
-            margin-top: 30px;
-        }
+
     main{
         margin-bottom: 200px;
     .container {
         display: flex;
-        align-items: start;
-        background-color: $details;
-        box-shadow: 4px 2px 4px 2px $shadowcolor;
-        border-radius: 35px;
-        .list-group-item{
-            border-radius: 10px;
+        align-items: center;
+        background-color: $background-color;
+        padding: 20px;
+        margin: 10px;
+        justify-content: space-between;
+        .text-content {
+            max-width: 50%;
+            h1{
+                color: #0082BA;
+                font-family: 'Roboto';
+                font-size: 128px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+            }
+            p{
+                color: #000;
+                font-family: 'Roboto';
+                font-size: 38px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                img {
+                    width: 344px;
+                    height: 66px;
+                    background-color: $background-color;
+                }
+            }
         }
-        .card{
-            background-color: $details;
-            margin: 20px;
-            padding-right: 15px;
-            padding-left: 15px;
-            padding-top: 60px;
-            padding-bottom: 60px;
-            a{ 
-                text-decoration: none;
-                color: $font-color;
-                
-                }
-            .card-title{
-                color: $font-color;
-            }
-            .card-body{
-                .container-text {
-                    margin-top: 42px ;
-                    flex: 1;
-                    color: $font-color;
-                    list-style: none;
-                    }
-                }
-            }
+        .image-content{
+            width: 50%;
+            margin-left: 50px;
+        }
         }
     }
 }
