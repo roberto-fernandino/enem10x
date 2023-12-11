@@ -26,21 +26,8 @@ services:
       - ./master:/var/lib/postgresql/data
       - type: tmpfs
         target: /dev/shm
-
     container_name: postgres_db_master
-  cron-container:
-    build:
-      context: .
-      dockerfile: Dockerfile.cron
-    image: cron:1.0.0
-    environment:
-      POSTGRES_DB: enem
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    depends_on:
-      - db-master
-      - redis
-    container_name: cron-service
+
   db-replication-1:
     image: postgres:15
     ports:
@@ -60,6 +47,20 @@ services:
         target: /dev/shm
 
     container_name: postgres_db_replication_1
+
+  cron-container:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    image: cron:1.0.0
+    environment:
+      POSTGRES_DB: enem
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    depends_on:
+      - db-master
+      - redis
+    container_name: cron-service
 
   app:
     build:
@@ -91,6 +92,7 @@ services:
       - db-master
       - redis
       - app
+      - db-replication-1
 
 volumes:
   questoes_data:

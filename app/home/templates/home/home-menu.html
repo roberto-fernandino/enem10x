@@ -1,18 +1,83 @@
-{% extends 'static/home-base.html' %}
+{% extends 'static/home-base.html' %} {% load static %} {% block content %}
 
-{% load static %}
-<link rel="stylesheet" href="{% static 'home/style.css'%}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-{% block content %}
-<div class="container">
-  <div class="text-content">
-      <h1>Construindo seu futuro.</h1>
-      <p>Estude com precisão de onde estiver, como quiser e acompanhe sua evolução diante de seus olhos com <img src="{% static 'home/logoinline.png'%}" alt="Menino"></p>
+<div id="navbar">
+  <div id="leftside">
+    <a href="{% url 'home:home' %}">
+      <img src="{% static 'home/Logo.png' %}" alt="Logo" />
+    </a>
+    <img id="linha" src="{% static 'home/line.svg' %}" alt="Linha" />
+    <div id="leftsideoptions">
+      <a class="opt" href="#">Sobre</a>
+      <a class="opt" href="#">Preço</a>
+      <a class="opt" href="#">Contato</a>
+    </div>
   </div>
-  <div class="image-content">
-      <img src="{% static 'home/Left_image.svg' %}" alt="Jovem estudante">
+  <div id="rightside">
+    <a class="opt large" href="{% url 'usuarios:login' %}">Log in</a>
+    <a class="opt signup" href="{% url 'usuarios:signup' %}">Cadastro</a>
   </div>
 </div>
 
+<div id="starter-content">
+  <div id="slogan">
+    <div id="insignia">
+      #1 Top Plataforma de Ensino Online
+      <img id="insigina-icon" src="{% static 'home/verified.svg' %}" alt="" />
+    </div>
+    <h1 id="slogan-main">Eleve seu estudo.</h1>
+    <p id="slogan-secondary">
+      Aprimore seus conhecimentos de qualquer lugar, do seu jeito, e observe seu
+      progresso se desdobrar diante de você com a
+      <img id="logo" src="{% static 'home/logoinline.png' %}" alt="Logo" />
+    </p>
+  </div>
+  <img
+    id="homeimg"
+    src="{% static 'home/leftimage.svg' %}"
+    alt="Garoto segurando tablet"
+  />
+</div>
+
+<div class="feature">
+  <img
+    src="{% static 'home/relatorio.svg'%}"
+    alt="Imagem de computador com graficos"
+  />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Relatórios instantâneos</h1>
+    <p class="feature-text">
+      Gráficos e Rankings para você acompanhar seu desempenho nos conteúdos
+      específicos para direcionar o seu foco no necessário.
+    </p>
+  </div>
+</div>
+
+<div class="feature reversed">
+  <img src="{% static 'home/database.svg' %}" alt="Banco de dados icone" />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Banco de dados completo</h1>
+    <p class="feature-text">
+      Nossa plataforma conta com todas as questões do Enem desde o ano de 1998.
+      Possibilitando que você realize simulados realistas baseados nos contéudos
+      mais presentes no Enem.
+    </p>
+  </div>
+</div>
+
+<div class="feature last">
+  <img src="{% static 'home/ia.svg' %}" alt="Icone inteligencia artificial" />
+  <div class="feature-text-container">
+    <h1 class="feature-title">Inteligência Artificial integrada</h1>
+    <p class="feature-text">
+      Nós desenvolvemos um modelo avançado de Inteligência Artificial (IA)
+      projetado para efetuar a correção de redações. Este modelo se destaca pela
+      sua alta precisão de correção de erros e pela capacidade de sugerir
+      alterações no texto que potencializam a obtenção de uma nota mais elevada.
+      Neste modelo, foram adotados os critérios de avaliação estabelecidos pelo
+      Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira
+      (INEP), assegurando assim uma correlação direta com os padrões nacionais
+      de avaliação.
+    </p>
+  </div>
+</div>
 {% endblock %}

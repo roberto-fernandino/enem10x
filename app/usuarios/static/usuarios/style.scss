@@ -4,7 +4,7 @@
 $primarycolor: #1B263B;
 $secondarycolor: #415A77;
 $shadowcolor: #E0E1DD;
-$background-color: #778da9;
+$background-color: #D9D9D9;
 $details: #0D1B2A;
 $font-color: white;
 $medium-light-bg: #96acc4;
@@ -227,8 +227,8 @@ h1 {
 /* ==== Form ====*/
 body {
     height: 100%;
-    width: 100%;
     margin: 0;
+    font-family: 'Roboto';
     .account-form {
         overflow: hidden;
         width: 100%;
@@ -240,8 +240,73 @@ body {
             display: grid;
             align-items: center;
         }
+        .container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 150px;
+            .login-image{
+                flex: 1;
+                max-width: 50%;
+                img{
+                    width: 100%;
+                    height: 600px;
+                }
+            }
+            .login-container{
+                height: 600px;
+                display: grid;
+                border-radius: 16px 0px 0px 16px;
+                border: 1px solid #fbfdff;
+                background-color: #fff;
+                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+                padding: 60px;
+                flex: 1;
+                max-width: 40%;
+                align-content: stretch;
+                justify-content: center;
+                align-items: stretch;
+                justify-items: center;  
+                header{
+                    display: flex;
+                    justify-content: center;
+                    img {
+                        width: 321px;
+                    }
+                }
+                .input-group{
+                        display: grid;
+                        width: 331px;
+                        height: 63px;
+                        input{
+                            border: none;
+                            background-color: $background-color;
+                            border-radius: 16px;
+                            width: 331px;
+                            height: 63px;
+                            margin-top: 15px;
+                        }
+                        input::placeholder{
+                            padding-left: 15px;
+                        }
+                    }
+                    button{
+                        border: none;
+                        border-radius: 16px;
+                        background-color: #0082BA;
+                        width: 331px;
+                        height: 44px;
+                        margin-top: 3px;
+                }
+                a{
+                    color: #0082BA;
+                    text-decoration: none;
+                }
+            }
+        }
     }
 }
+
 
 /* Responsividade */
 @media only screen and (max-width: 768px) {

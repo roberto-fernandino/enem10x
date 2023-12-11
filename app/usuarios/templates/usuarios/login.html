@@ -15,7 +15,7 @@
         <div class="login-container">
           <header>
             {% csrf_token %}
-            <img src="" alt="Intellectus Logo">
+            <img src="{% static 'usuarios/Logo.svg' %}" alt="Intellectus Logo" class="login-logo">
           </header>
           <form id="login-form">
             <div class="input-group">
@@ -25,12 +25,11 @@
               <input type="password" placeholder="Password" required>
             </div>
             <button type="submit">LOGIN</button>
-            <a href="#">Forgot Password? Click Here</a>
+            <a href="#">Esqueceu sua Senha?</a>
           </form>
         </div>
-        <div class="welcome-section">
-          <h1>Bem vindo ao Intellectus</h1>
-          <p><!--Texto Infomartivo do Site-->></p>
+        <div class="login-image">
+            <img src="{% static 'usuarios/login-image.png'%}" alt="">
         </div>
       </div>
   </form>
