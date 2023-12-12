@@ -32,7 +32,6 @@ def prova_choose(request):
             tipo_prova = choose_prova.cleaned_data["tipo_prova"]
             request.session["tipo_prova"] = tipo_prova
             aluno = request.user.aluno
-
             if tipo_prova == "materia_escolhida":
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_prova"])
                 materia_id_list = choose_prova.cleaned_data["materias"]
