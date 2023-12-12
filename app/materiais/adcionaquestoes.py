@@ -1,6 +1,5 @@
 from materiais.models import Questao, Materia, SubMateria, Conteudo, OpcaoImagem
 from materiais.funcs import (
-    process,
     extrair_enunciados,
     extrai_alternativas,
     BASE_DIR,
@@ -10,32 +9,36 @@ from materiais.funcs import (
     remove_todas_imagens_do_diretorio_local,
     lista_arquivos,
 )
-from subprocess import run
 from docx import Document
 from materiais.tratamentos import tratamento_geral_pra_extracao
 import os
 from django.core.cache import cache
 
 
-
 def adiciona_questoes(arquivo_path: str, materia: str):
     """Adciona questoes no banco de dados."""
 
     # Cria doc_obj e variaveis que serao utilizadas no script inteiro
+
     DOC_OBJ = Document(arquivo_path)
+
     tratamento = tratamento_geral_pra_extracao(doc_obj=DOC_OBJ, doc_path=arquivo_path)
     tratamento.Tratamento()
+
     img_check_questoes_list_dict = tratamento.checa_imagens_questoes()
+
     DOC_ALL_TEXT = docx_to_text(DOC_OBJ)
+
     DOC_ALL_TEXT = tratamento.Tratamento_sup_tags(DOC_ALL_TEXT)
     DOC_ALL_TEXT = tratamento.trata_conteudos(
         texto_extraido_do_docx_em_string=DOC_ALL_TEXT
     )
-    identificadores_unicos_list = extrai_identificadores_unicos(DOC_ALL_TEXT)
-    ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
-    CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
 
-   
+    identificadores_unicos_list = extrai_identificadores_unicos(DOC_ALL_TEXT)
+
+    ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
+
+    CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
 
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
@@ -63,17 +66,20 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     questoes_adcionadas_count = 0
 
     for questao in extrair_enunciados(DOC_ALL_TEXT):
-        if Questao.objects.filter(identificador_unico=identificadores_unicos_list[questoes_count]).exists():
-           print("\033[91mQuestao ja existe no banco de dados, pulando pra proxima.\033[0m")
-           questoes_count += 1
-           continue
+        if Questao.objects.filter(
+            identificador_unico=identificadores_unicos_list[questoes_count]
+        ).exists():
+            print(
+                "\033[91mQuestao ja existe no banco de dados, pulando pra proxima.\033[0m"
+            )
+            questoes_count += 1
+            continue
 
         img_path = img_dir / f"image{count}.png"
-      
 
         questao_obj = Questao()
         questao_obj.enunciado = questao
-        
+
         # Salva no objeto a opcao correta
         actual_alternativas_dict = ALTERNATIVAS_LIST_DICT[questoes_count]
         questao_obj.opcao_correta = actual_alternativas_dict["w"]
@@ -91,7 +97,7 @@ def adiciona_questoes(arquivo_path: str, materia: str):
                         image_file,
                         save=False,
                     )
-                    
+
                 count += 1
                 img_path = img_dir / f"image{count}.png"
         try:
@@ -110,12 +116,13 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         opcoes_list = [actual_alternativas_dict[letra] for letra in "abcde"]
 
         # None para nao dar erro caso nao ache imagem_no_enunciado
-        actual_images_check_dict.pop('imagem_no_enunciado', None)
+        actual_images_check_dict.pop("imagem_no_enunciado", None)
 
         any_image_in_question = False
         # Checa se existe imagem no dicionario de imagens nas alternativas
         if any(actual_images_check_dict.values()):
-            any_image_in_question = True 
+            any_image_in_question = True
+
         if any_image_in_question:
             questao_imgs_obj = OpcaoImagem.objects.create(questao=questao_obj)
             questao_imgs_obj.questao = questao_obj
@@ -157,7 +164,9 @@ def adiciona_questoes(arquivo_path: str, materia: str):
             questao_imgs_obj.save()
         questoes_count += 1
         questoes_adcionadas_count += 1
-        print(f"\033[92m{questoes_adcionadas_count} Questoes adcionadas com sucesso!\033[0m")
+        print(
+            f"\033[92m{questoes_adcionadas_count} Questoes adcionadas com sucesso!\033[0m"
+        )
 
     # Limpa img_dir
     remove_todas_imagens_do_diretorio_local()
