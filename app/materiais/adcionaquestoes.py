@@ -39,6 +39,7 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
 
     CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
+    print(f"Conteudo list list: {CONTEUDOS_LIST_LIST}")
 
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
@@ -59,7 +60,6 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     # Checa se existem imagens se existir seta tem_imagens pra True
     tem_imagens = True
 
-
     # Inicia contagens para questoes.
     questoes_count = 0
     questoes_adcionadas_count = 0
@@ -79,8 +79,10 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         questao_obj = Questao()
         questao_obj.enunciado = questao
 
-        # Salva no objeto a opcao correta
+        # Recupera o dicionario das alternativas da questão atual.
         actual_alternativas_dict = ALTERNATIVAS_LIST_DICT[questoes_count]
+
+        # Salva no objeto a opcao correta
         questao_obj.opcao_correta = actual_alternativas_dict["w"]
         actual_images_check_dict = img_check_questoes_list_dict[questoes_count]
 
@@ -106,7 +108,7 @@ def adiciona_questoes(arquivo_path: str, materia: str):
             print(actual_alternativas_dict)
             print(actual_conteudos_list)
 
-        # Salva em um dicionario as alternativas e conteudos atuais
+        # Salva em uma lista o conteudo e submateria da questão atual do loop
         actual_conteudos_list = CONTEUDOS_LIST_LIST[questoes_count]
 
         # Lista de opcoes
@@ -157,7 +159,7 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         try:
             questao_obj.save()
         except:
-            print(f"ERROR SAVING QUESTION {questoes_count}.")
+            print(f"Erro em salvar questão {questoes_count}.")
         questao_obj.conteudo.add(conteudo)
         if any_image_in_question:
             questao_imgs_obj.save()
