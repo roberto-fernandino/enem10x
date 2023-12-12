@@ -81,7 +81,6 @@ class Conteudo(models.Model):
 
 
 class Questao(models.Model):
-    enunciado = models.TextField(default=None, blank=True, null=True)
     imagem_enunciado = models.ImageField(
         upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
@@ -89,6 +88,7 @@ class Questao(models.Model):
         Conteudo, default=None, blank=True, related_name="questoes"
     )
     opcoes = models.JSONField(null=True)
+
     opcao_correta = models.CharField(
         null=False, blank=False, default=None, max_length=1
     )
