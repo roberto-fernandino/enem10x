@@ -25,7 +25,6 @@ def docx_to_text(doc_obj):
 def replace_in_runs(paragraph, pattern, replacement):
     for run in paragraph.runs:
         if pattern.search(run.text):
-            print(f"Encontrado em {run.text}")
             run.text = pattern.sub(replacement, run.text)
 
 
@@ -87,6 +86,25 @@ def possui_img_tag(text: str) -> bool:
     return "[IMG]" in text
 
 
+def insere_conteudo_em_questoes_sem_conteudo(doc_obj):
+    ultimo_conteudo = None
+    for i, paragraph in enumerate(doc_obj.paragraphs):
+        if "Questão-" in paragraph.text:
+            if i > 0 and not PATTERN_CONTEUDO.match(doc_obj.paragraphs[i - 1].text):
+                if ultimo_conteudo:
+                    paragraph.insert_paragraph_before(ultimo_conteudo)
+                else:
+                    print(
+                        "Não existe conteudos declarados no seu *.docx algo está errado, confira !"
+                    )
+        elif PATTERN_CONTEUDO.match(paragraph.text):
+            print("Deu match.")
+            ultimo_conteudo = paragraph.text
+        print(f"Ultimo conteudo: {ultimo_conteudo}")
+
+    doc_obj.save()
+
+
 class tratamento_geral_pra_extracao:
     def __init__(self, doc_obj, doc_path) -> None:
         self.doc_obj = doc_obj
@@ -95,6 +113,7 @@ class tratamento_geral_pra_extracao:
     def Tratamento(self):
         trata_gabs(self.doc_obj, self.doc_path)
         trata_alternativas(self.doc_obj, self.doc_path)
+        insere_conteudo_em_questoes_sem_conteudo(self.doc_obj)
 
     def Tratamento_sup_tags(self, texto):
         return apply_sup_tags(texto)
@@ -121,8 +140,8 @@ class tratamento_geral_pra_extracao:
             "imagem_na_d": False,
             "imagem_na_e": False,
         }
-        for para in self.doc_obj.paragraphs:
-            texto = para.text
+        for paragrafo in self.doc_obj.paragraphs:
+            texto = paragrafo.text
             if "Questão-" in texto:
                 if questao:
                     questoes.append(questao)
@@ -138,7 +157,7 @@ class tratamento_geral_pra_extracao:
 
             if re.match(r"[a-e]\$", texto):
                 estamos_no_enunciado = False
-                
+
             if not estamos_no_enunciado:
                 if "a$" in texto and possui_img_tag(texto):
                     questao["imagem_na_a"] = True
