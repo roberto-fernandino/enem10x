@@ -190,14 +190,14 @@ MEDIA_ROOT = DATA_DIR / "media"
 
 # admin panel plugin settings
 JAZZMIN_SETTINGS = {
-    "site_title": "Enem 10x admin",
+    "site_title": "Intellectus admin",
     "site_header": "Enem 10x admin",
     "site_brand": "Enem 10x",
-    "site_icon": "home/enem10xlogo.png",
-    "login_logo": "home/enem10xlogo.png",
-    "site_logo": "home/enem10xlogo.png",
-    "welcome_sign": "Enem 10x admin",
-    "copyright": "Enem 10x",
+    "site_icon": "home/Logo.png",
+    "login_logo": "home/logoinline.png",
+    "site_logo": "home/Logo.png",
+    "welcome_sign": "Bem vindo admin",
+    "copyright": "Intellectus",
     "changeform_format": "vertical_tabs",
 }
 
