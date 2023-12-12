@@ -37,7 +37,7 @@ class Command(BaseCommand):
             except IndexError:
                 self.stdout.write(
                     self.style.ERROR(
-                        "Lembre-se de criar o arquivo com os identificadores unicos presente no arquivo."
+                        "[!] Lembre-se de criar o arquivo com os identificadores unicos presente nas questões, certifique-se também que todas as questões, antes de seu número e idenficador unico, apresenta conteudo e sub-conteudo. [!]"
                     )
                 )
             except PackageNotFoundError:
