@@ -103,7 +103,7 @@ class tratamento_geral_pra_extracao:
         """'
         Checa se tem imagem em cada parte da questao.\n
         \t questao = {\n
-        \t    "imagem_no_enunciado": False/True,\n
+        \t    "imagem_no_enunciado": True,\n
         \t    "imagem_na_a": False/True,\n
         \t    "imagem_na_b": False/True,\n
         \t    "imagem_na_c": False/True,\n
@@ -114,7 +114,7 @@ class tratamento_geral_pra_extracao:
         estamos_no_enunciado = False
         questoes = []
         questao = {
-            "imagem_no_enunciado": False,
+            "imagem_no_enunciado": True,
             "imagem_na_a": False,
             "imagem_na_b": False,
             "imagem_na_c": False,
@@ -127,7 +127,7 @@ class tratamento_geral_pra_extracao:
                 if questao:
                     questoes.append(questao)
                 questao = {
-                    "imagem_no_enunciado": False,
+                    "imagem_no_enunciado": True,
                     "imagem_na_a": False,
                     "imagem_na_b": False,
                     "imagem_na_c": False,
@@ -138,11 +138,7 @@ class tratamento_geral_pra_extracao:
 
             if re.match(r"[a-e]\$", texto):
                 estamos_no_enunciado = False
-
-            if estamos_no_enunciado:
-                if possui_img_tag(texto):
-                    questao["imagem_no_enunciado"] = True
-
+                
             if not estamos_no_enunciado:
                 if "a$" in texto and possui_img_tag(texto):
                     questao["imagem_na_a"] = True
