@@ -106,15 +106,15 @@ def docx_to_text(doc_obj):
 
 def extrai_conteudos(texto_extraido_do_docx: str) -> list:
     matches = PATTERN_CONTEUDO.findall(texto_extraido_do_docx)
-    sub_subconteudo_global = []
+    lista_conteudos_submaterias = []
     for match in matches:
         conteudo, sub_conteudo = (
             match[0].replace("Conteudo:", "").strip(),
             match[1].replace(";", "").strip(),
         )
         if len(conteudo) < 80 and len(sub_conteudo) < 80:
-            sub_subconteudo_global.append([conteudo, sub_conteudo])
-    return sub_subconteudo_global
+            lista_conteudos_submaterias.append([conteudo, sub_conteudo])
+    return lista_conteudos_submaterias
 
 
 def extrai_identificadores_unicos(texto_extraido_do_docx: str) -> list:
