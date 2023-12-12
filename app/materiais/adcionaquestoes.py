@@ -54,9 +54,8 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     img_count = len(lista_arquivos(img_dir))
 
     # Checa se existem imagens se existir seta tem_imagens pra True
-    tem_imagens = False
-    if img_count > 1:
-        tem_imagens = True
+    tem_imagens = True
+
 
     # Inicia contagens para questoes.
     questoes_count = 0
