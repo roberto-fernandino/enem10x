@@ -58,10 +58,10 @@
       <header>
         <div class="image-text">
           <span class="image">
-            <img src="{% static 'home/enem10xlogo.png' %}" alt="logo" />
+            <img src="{% static 'home/Logo.png' %}" alt="logo" />
           </span>
           <div class="text header-text">
-            <span class="name">Enem 10x</span>
+            <span class="name">Intellectus</span>
             {% if user.is_admin %}
             <span class="sub-name">Admin</span>
             {% elif user.is_professor %}
@@ -83,7 +83,7 @@
           </li>
           <li class="nav-link">
             <a href="{% url 'usuarios:user-profile' %}">
-              <i class='bx bx-user-pin'></i>
+              <i class="bx bx-user-pin"></i>
               <span class="text nav-text">{{user.nome}}</span>
             </a>
           </li>
@@ -102,7 +102,7 @@
           </li>
           <li class="nav-link">
             <a href="{% url 'usuarios:aluno-turmas' %}">
-              <i class='bx bx-library'></i>
+              <i class="bx bx-library"></i>
               <span class="text nav-text">Turmas</span>
             </a>
           </li>
@@ -119,11 +119,10 @@
               <span class="text nav-text">Provas</span>
             </a>
           </li>
-          {% endif %}
-          {% if request.user.is_admin %}
+          {% endif %} {% if request.user.is_admin %}
           <li class="nav-link">
             <a href="{% url 'admin:index' %}">
-              <i class='bx bxl-git'></i>
+              <i class="bx bxl-git"></i>
               <span class="text nav-text">Admin</span>
             </a>
           </li>
@@ -137,9 +136,7 @@
         </ul>
       </div>
     </nav>
-    <div class="content">
-      {% block content %} {% endblock %}
-    </div>
-    <script src="{% static 'usuarios/js/sidebar.js' %}" defer ></script>
+    <div class="content">{% block content %} {% endblock %}</div>
+    <script src="{% static 'usuarios/js/sidebar.js' %}" defer></script>
   </body>
 </html>
