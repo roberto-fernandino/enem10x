@@ -37,10 +37,7 @@ def adiciona_questoes(arquivo_path: str, materia: str):
     identificadores_unicos_list = extrai_identificadores_unicos(DOC_ALL_TEXT)
 
     ALTERNATIVAS_LIST_DICT = extrai_alternativas(DOC_ALL_TEXT)
-
     CONTEUDOS_LIST_LIST = extrai_conteudos(DOC_ALL_TEXT)
-    print(f"Conteudo list list: {CONTEUDOS_LIST_LIST}")
-
     # Seta diretorio para salvar imagens
     img_dir = BASE_DIR / "media/questoes/"
 
