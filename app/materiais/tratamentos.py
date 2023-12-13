@@ -86,24 +86,22 @@ def possui_img_tag(text: str) -> bool:
     return "[IMG]" in text
 
 
-#Conferir if ultimo_conteudo e elif// não está percorrendo
-def insere_conteudo_em_questoes_sem_conteudo(doc_obj):
+def trata_insere_conteudo_em_questoes_sem_conteudo(doc_obj, doc_path):
+    pattern = re.compile(r"(.+?) / ?(.+?)")
     ultimo_conteudo = None
     for i, paragraph in enumerate(doc_obj.paragraphs):
         if "Questão-" in paragraph.text:
-            if i > 0 and not PATTERN_CONTEUDO.match(doc_obj.paragraphs[i - 1].text):
+            if i > 0 and not pattern.match(doc_obj.paragraphs[i - 1].text):
                 if ultimo_conteudo:
                     paragraph.insert_paragraph_before(ultimo_conteudo)
                 else:
                     print(
                         "Não existe conteudos declarados no seu *.docx algo está errado, confira !"
                     )
-        elif PATTERN_CONTEUDO.match(paragraph.text):
-            print("Deu match.")
+        elif pattern.match(paragraph.text):
             ultimo_conteudo = paragraph.text
-        print(f"Ultimo conteudo: {ultimo_conteudo}")
 
-    doc_obj.save()
+    doc_obj.save(doc_path)
 
 
 class tratamento_geral_pra_extracao:
@@ -114,7 +112,7 @@ class tratamento_geral_pra_extracao:
     def Tratamento(self):
         trata_gabs(self.doc_obj, self.doc_path)
         trata_alternativas(self.doc_obj, self.doc_path)
-        insere_conteudo_em_questoes_sem_conteudo(self.doc_obj)
+        trata_insere_conteudo_em_questoes_sem_conteudo(self.doc_obj, self.doc_path)
 
     def Tratamento_sup_tags(self, texto):
         return apply_sup_tags(texto)
