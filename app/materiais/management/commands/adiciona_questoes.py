@@ -3,6 +3,10 @@ from materiais.adcionaquestoes import adiciona_questoes
 from pathlib import Path
 import subprocess
 from docx.opc.exceptions import PackageNotFoundError
+from materiais.funcs import (
+    remove_todas_imagens_do_diretorio_local,
+)
+from materiais.models import Questao
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
@@ -33,24 +37,64 @@ class Command(BaseCommand):
                         )
                     )
                 else:
+                    remove_todas_imagens_do_diretorio_local()
                     self.stdout.write(self.style.ERROR("Nenhuma questao adcionada!"))
             except IndexError:
+                if questoes_adcionadas:
+                    questoes_adicionadas_pra_remover = Questao.objects.order_by(
+                        "-data_adicionada"
+                    )[:questoes_adcionadas]
+                    questoes_adicionadas_pra_remover.delete()
+                    self.stdout.write(
+                        self.style.ERROR("[!] Todas questões adicionadas removidas [!]")
+                    )
+                remove_todas_imagens_do_diretorio_local()
                 self.stdout.write(
                     self.style.ERROR(
                         "[!] Lembre-se de criar o arquivo com os identificadores unicos presente nas questões, certifique-se também que todas as questões, antes de seu número e idenficador unico, apresenta conteudo e sub-conteudo. [!]"
                     )
                 )
             except PackageNotFoundError:
+                if questoes_adcionadas:
+                    questoes_adicionadas_pra_remover = Questao.objects.order_by(
+                        "-data_adicionada"
+                    )[:questoes_adcionadas]
+                    questoes_adicionadas_pra_remover.delete()
+                    self.stdout.write(
+                        self.style.ERROR("[!] Todas questões adicionadas removidas [!]")
+                    )
+
+                remove_todas_imagens_do_diretorio_local()
                 self.stdout.write(
                     self.style.ERROR(
                         f'Erro: arquivo {arquivo} nao encontrado na pasta "/app/leitores", certifique-se de que os arquivos pra extração estão presentes nesta pasta.'
                     )
                 )
             except KeyboardInterrupt:
+                if questoes_adcionadas:
+                    questoes_adicionadas_pra_remover = Questao.objects.order_by(
+                        "-data_adicionada"
+                    )[:questoes_adcionadas]
+                    questoes_adicionadas_pra_remover.delete()
+                    self.stdout.write(
+                        self.style.ERROR("[!] Todas questões adicionadas removidas [!]")
+                    )
+
+                remove_todas_imagens_do_diretorio_local()
                 self.stdout.write(
                     self.style.ERROR(f"\n[!] ctrl + c pressionado cancelando operação!")
                 )
             except Exception as err:
+                if questoes_adcionadas:
+                    questoes_adicionadas_pra_remover = Questao.objects.order_by(
+                        "-data_adicionada"
+                    )[:questoes_adcionadas]
+                    questoes_adicionadas_pra_remover.delete()
+                    self.stdout.write(
+                        self.style.ERROR("[!] Todas questões adicionadas removidas [!]")
+                    )
+
+                remove_todas_imagens_do_diretorio_local()
                 self.stdout.write(
                     self.style.ERROR(
                         f'[!] Erro não previsto favor me contactar e enviar o codigo de erro ->  "{err}"'
