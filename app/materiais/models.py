@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.dispatch import receiver
 from django.db.models.signals import m2m_changed
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 # Create your models here.
 
@@ -99,6 +100,7 @@ class Questao(models.Model):
     identificador_unico = models.CharField(
         max_length=255, null=True, blank=True, unique=True
     )
+    data_adicionada = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Questoes"
