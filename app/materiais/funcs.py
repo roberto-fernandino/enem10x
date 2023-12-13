@@ -46,7 +46,7 @@ def extrai_alternativas(text_after_docx_to_str_with_conteudos_aplicados):
                 ].strip()  # Atribui a proxima letra se não for a ultima
                 if letra == "w$":
                     conteudo_index = alternativa.find("Conteudo:")
-                    if conteudo_index != 1:
+                    if conteudo_index != -1:
                         conteudo = alternativa[
                             conteudo_index + len("Conteudo:") :
                         ].strip()
