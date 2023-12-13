@@ -86,6 +86,7 @@ def possui_img_tag(text: str) -> bool:
     return "[IMG]" in text
 
 
+#Conferir if ultimo_conteudo e elif// não está percorrendo
 def insere_conteudo_em_questoes_sem_conteudo(doc_obj):
     ultimo_conteudo = None
     for i, paragraph in enumerate(doc_obj.paragraphs):
