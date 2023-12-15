@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.dispatch import receiver
 from django.db.models.signals import m2m_changed
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 # Create your models here.
 
@@ -81,7 +82,6 @@ class Conteudo(models.Model):
 
 
 class Questao(models.Model):
-    enunciado = models.TextField(default=None, blank=True, null=True)
     imagem_enunciado = models.ImageField(
         upload_to=define_image_path_questoes, null=True, blank=True, default=None
     )
@@ -89,6 +89,7 @@ class Questao(models.Model):
         Conteudo, default=None, blank=True, related_name="questoes"
     )
     opcoes = models.JSONField(null=True)
+
     opcao_correta = models.CharField(
         null=False, blank=False, default=None, max_length=1
     )
@@ -99,6 +100,7 @@ class Questao(models.Model):
     identificador_unico = models.CharField(
         max_length=255, null=True, blank=True, unique=True
     )
+    data_adicionada = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Questoes"

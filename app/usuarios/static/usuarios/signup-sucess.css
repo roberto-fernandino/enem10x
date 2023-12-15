@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  background-color: #dfe7f1; }
+  body .account-form .form-message {
+    display: flex;
+    justify-content: center; }
+    body .account-form .form-message .alert {
+      background-color: #ffffff;
+      padding: 40px;
+      width: 40%;
+      margin: 5%;
+      display: grid;
+      justify-content: center; }
+      body .account-form .form-message .alert a {
+        display: grid;
+        justify-content: center;
+        text-decoration: none; }
+        body .account-form .form-message .alert a button {
+          background-color: #1B263B;
+          color: #E0E1DD;
+          box-shadow: #415A77; }
+
+/*# sourceMappingURL=signup-sucess.css.map */

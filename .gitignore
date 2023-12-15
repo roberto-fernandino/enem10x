@@ -25,7 +25,6 @@ replication/
 ImageMagick-7.1.1-18
 *.css.map
 .sass-cache/
-*.png
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -126,8 +125,8 @@ celerybeat.pid
 
 # Environments
 
-.env-local
 .env
+.env-local
 .venv
 env/
 venv/
@@ -169,4 +168,4 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-*.docx
+*:Zone.Identifier

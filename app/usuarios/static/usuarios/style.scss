@@ -4,7 +4,7 @@
 $primarycolor: #1B263B;
 $secondarycolor: #415A77;
 $shadowcolor: #E0E1DD;
-$background-color: #778da9;
+$background-color: #D9D9D9;
 $details: #0D1B2A;
 $font-color: white;
 $medium-light-bg: #96acc4;
@@ -13,6 +13,7 @@ $very-light-bg: #fbfdff;
 $chart-color: rgb(163, 236, 118);
 $alert-color: rgb(232, 110, 110);
 $very-very-light-bg: #fbfdff;
+$primary-color: #333;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -224,143 +225,111 @@ h1 {
 
 
 /* ==== Form ====*/
-body{
+body {
     height: 100%;
-    width: 100%;
     margin: 0;
+    font-family: 'Roboto';
     .account-form {
         overflow: hidden;
         width: 100%;
         height: 100%;
         margin: 0;
+
         .form-message {
             padding-top: 5vh;
             display: grid;
             align-items: center;
         }
-        .login-container{
-            background-color: $light-bg;
-            border: 1px solid #ddd;
+        .container{
             display: flex;
-            box-shadow: 0 0 10px rgba(0, 0, 0, $alpha: 0.1);
-            width: 100%;
-            height: 100%;
-            .form-container{
-                height: 100%;
-                .login-main{
-                    display: grid;
-                    justify-content: center;
-                    align-content: center;
-                }
-            }
-        }
-        
-        .image-container{
-            width: 80%;
-            img{
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        }
-        
-        form {
-            display: grid;
+            align-items: center;
             justify-content: center;
-            align-items: start;
-            color: $primarycolor;
-            
-            .form-container {
-                opacity: 88%;
-                display: grid;
-                justify-items: center;
-                background-color: #c5bc9f;
-                justify-items: center2;
-                border-radius: 8px;
-                width: 30%;
-                height: 100%;
-                box-sizing: border-box;
-                
-                .centered-input {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
+            margin-top: 150px;
+            .login-image{
+                flex: 1;
+                max-width: 50%;
+                img{
+                    width: 100%;
+                    height: 600px;
                 }
-                
-                .form-title {
-                    font-family: 'Poppins';
-                    display: grid;
+            }
+            .login-container{
+                height: 600px;
+                display: grid;
+                border-radius: 16px 0px 0px 16px;
+                border: 1px solid #fbfdff;
+                background-color: #fff;
+                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+                padding: 60px;
+                flex: 1;
+                max-width: 40%;
+                align-content: stretch;
+                justify-content: center;
+                align-items: stretch;
+                justify-items: center;  
+                header{
+                    display: flex;
                     justify-content: center;
-                    align-items: center;
-                    color: $primarycolor;
-                }
-                
-                .check-input {
-                    display: flex;
-                    justify-content: start;
-                    align-items: flex-start;
-                    
-                    label {
-                        margin-right: 5px;
+                    img {
+                        width: 321px;
                     }
                 }
-                
-                .col-auto {
-                span {
-                    color: $details;
-                }
-            }
-            
-            .form-button {
-                display: grid;
-                align-items: center;
-                
-                .btn {
-                    color: $font-color;
-                    background-color: $primarycolor;
-                    width: 250px;
-                }
-                
-                p {
-                    .fa-solid {
-                        margin-left: 5px;
-                        color: $primarycolor;
-                        margin-top: 10px;
-                        transition: 0.4s;
+                .input-group{
+                        display: grid;
+                        width: 331px;
+                        height: 63px;
+                        input{
+                            border: none;
+                            background-color: $background-color;
+                            border-radius: 16px;
+                            width: 331px;
+                            height: 63px;
+                            margin-top: 15px;
+                        }
+                        input::placeholder{
+                            padding-left: 15px;
+                        }
                     }
-                    
+                    button{
+                        border: none;
+                        border-radius: 16px;
+                        background-color: #0082BA;
+                        width: 331px;
+                        height: 44px;
+                        margin-top: 3px;
+                }
+                a{
+                    color: #0082BA;
+                    text-decoration: none;
                 }
             }
-        }
-        
-        
-        .fa-solid:hover {
-            transform: translateY(-2px);
-            opacity: 0.6;
         }
     }
 }
-}
+
+
 /* Responsividade */
 @media only screen and (max-width: 768px) {
     .account-form {
         width: 100%;
+
         .login-container {
             flex-direction: column;
-            
-            
+
+
             .form-container {
                 width: 100%;
                 height: 100%;
             }
         }
+
         img {
             display: none;
         }
-        
+
         form {
             margin-top: 20px;
-            
+
             .form-container {
                 padding: 40px;
             }
@@ -369,7 +338,7 @@ body{
 }
 
 /* ==== turmas ==== */
-.turma-create-container{
+.turma-create-container {
     max-width: 400px;
     margin-top: 15px;
     background-color: $very-light-bg;
@@ -377,7 +346,8 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    button{
+
+    button {
         border: none;
         border-radius: 6px;
         background-color: $very-light-bg;
@@ -386,7 +356,8 @@ body{
         height: 60px;
         display: flex;
         transition: 0.2s;
-        a{
+
+        a {
             font-size: 16px;
             font-family: "Poppins", "sans-serif";
             font-weight: 400;
@@ -396,18 +367,22 @@ body{
             max-height: 100%;
         }
     }
-    }
-    button:hover{
-        cursor: pointer;
-        opacity: 0.6;
-        transform: translateY(-1px);
-    }
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+    transform: translateY(-1px);
+}
+
 .turmas-container {
     max-width: 400px;
     margin-left: 400px;
-    .message{
+
+    .message {
         margin-top: 21px;
     }
+
     .turma-box {
         margin-top: 150px;
         background-color: $very-very-light-bg;
@@ -420,23 +395,26 @@ body{
         transition: 0.2s;
         justify-content: center;
         align-items: center;
+
         .turma-box-link {
-            .turma-box-header{
-                i{
+            .turma-box-header {
+                i {
                     font-size: 30px;
                     margin-right: 5px;
                 }
+
                 color: $secondarycolor;
             }
 
-            .turma-body{
+            .turma-body {
                 color: $background-color;
 
             }
         }
 
     }
-    .turma-box:hover{
+
+    .turma-box:hover {
         cursor: pointer;
         transform: translateY(-2px);
         opacity: 0.6;
@@ -445,12 +423,14 @@ body{
 
 /* ==== codigo-form ====*/
 
-.codigo-container{
+.codigo-container {
     margin-top: 200px;
 }
+
 /* ==== Create turma ==== */
-.create-turma-container{
+.create-turma-container {
     background-color: $medium-light-bg;
+
     button {
         margin-top: 15px;
         border: none;
@@ -459,28 +439,33 @@ body{
         padding: 4px;
         margin-left: 15px;
     }
-    .create-turma{
-        .form{
+
+    .create-turma {
+        .form {
             display: flex;
             flex-direction: column;
             align-content: center;
             align-items: center;
             margin-top: 15%;
+
             .header {
-                h1{
+                h1 {
                     color: $primarycolor;
                     margin-bottom: 30px;
                 }
             }
-            input{
+
+            input {
                 font-size: 19px;
                 border-radius: 4px 4px 4px 4px;
                 color: $secondarycolor;
             }
-            label{
+
+            label {
                 font-size: 19px;
                 color: $primarycolor;
             }
+
             button {
                 margin-top: 15px;
                 border: none;
@@ -494,7 +479,7 @@ body{
 
 
 /* ==== provas ==== */
-.prova-create-container{
+.prova-create-container {
     max-width: 400px;
     margin-top: 15px;
     background-color: $very-light-bg;
@@ -502,7 +487,8 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    button{
+
+    button {
         border: none;
         border-radius: 6px;
         background-color: $very-light-bg;
@@ -511,7 +497,8 @@ body{
         height: 60px;
         display: flex;
         transition: 0.2s;
-        a{
+
+        a {
             font-size: 16px;
             font-family: "Poppins", "sans-serif";
             font-weight: 400;
@@ -521,18 +508,22 @@ body{
             max-height: 100%;
         }
     }
-    }
-    button:hover{
-        cursor: pointer;
-        opacity: 0.6;
-        transform: translateY(-1px);
-    }
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+    transform: translateY(-1px);
+}
+
 .prova-container {
     max-width: 400px;
     margin-left: 400px;
-    .message{
+
+    .message {
         margin-top: 21px;
     }
+
     .prova-box {
         margin-top: 150px;
         background-color: $very-very-light-bg;
@@ -545,23 +536,26 @@ body{
         transition: 0.2s;
         justify-content: center;
         align-items: center;
+
         .prova-box-link {
-            .prova-box-header{
-                i{
+            .prova-box-header {
+                i {
                     font-size: 30px;
                     margin-right: 5px;
                 }
+
                 color: $secondarycolor;
             }
 
-            .prova-body{
+            .prova-body {
                 color: $background-color;
 
             }
         }
 
     }
-    .prova-box:hover{
+
+    .prova-box:hover {
         cursor: pointer;
         transform: translateY(-2px);
         opacity: 0.6;
@@ -570,8 +564,8 @@ body{
 
 /* Container de escolha de prova */
 
-.prova-form-container{
-    .message{
+.prova-form-container {
+    .message {
         width: 50%;
     }
 }
@@ -586,12 +580,14 @@ body{
     font-size: 28px;
     padding: 0 10px;
     width: 60%;
+
     h2 {
         color: #333;
         font-family: 'Poppins', 'sans-serif ';
         font-size: 24px;
         margin-bottom: 10px;
     }
+
     .card {
         background-color: #fff;
         border-radius: 18px;
@@ -599,15 +595,16 @@ body{
         height: auto;
         margin-bottom: 20px;
         padding: 20px 0 20px 50px;
+
         table {
             border: none;
             font-size: 16px;
             height: 270px;
             width: 80%;
+
             td {
                 margin-left: 150px;
             }
         }
     }
 }
-

@@ -25,7 +25,6 @@ def docx_to_text(doc_obj):
 def replace_in_runs(paragraph, pattern, replacement):
     for run in paragraph.runs:
         if pattern.search(run.text):
-            print(f"Encontrado em {run.text}")
             run.text = pattern.sub(replacement, run.text)
 
 
@@ -87,6 +86,47 @@ def possui_img_tag(text: str) -> bool:
     return "[IMG]" in text
 
 
+def remove_conteudos_duplicados(doc_obj):
+    pattern = re.compile(r"(.+?) / ?(.+?)")
+
+    i = 0
+    while i < len(doc_obj.paragraphs) - 1:  # Percorre até o penúltimo parágrafo
+        # Se o parágrafo atual e o próximo corresponderem ao padrão e forem iguais
+        if (
+            pattern.match(doc_obj.paragraphs[i].text)
+            and pattern.match(doc_obj.paragraphs[i + 1].text)
+            and doc_obj.paragraphs[i].text == doc_obj.paragraphs[i + 1].text
+        ):
+            # Remove o parágrafo duplicado
+            p = doc_obj.paragraphs[i + 1]
+            p.clear()
+            p._element.getparent().remove(p._element)  # Remoção direta do elemento XML
+
+        else:
+            i += 1  # Apenas incrementa se não houver remoção
+
+
+def trata_insere_conteudo_em_questoes_sem_conteudo(doc_obj, doc_path):
+    pattern = re.compile(r"(.+?) / ?(.+?)")
+    ultimo_conteudo = None
+
+    for i, paragraph in enumerate(doc_obj.paragraphs):
+        # Verifica se o parágrafo atual é um conteúdo
+        if pattern.match(paragraph.text):
+            ultimo_conteudo = paragraph.text
+
+        # Se for uma questão
+        elif "Questão-" in paragraph.text:
+            # Se não for o primeiro parágrafo e o parágrafo anterior não for o último conteúdo
+            if i > 0 and doc_obj.paragraphs[i - 1].text != ultimo_conteudo:
+                # Insere o último conteúdo antes da questão, se ele existir
+                if ultimo_conteudo:
+                    paragraph.insert_paragraph_before(ultimo_conteudo)
+
+    remove_conteudos_duplicados(doc_obj)
+    doc_obj.save(doc_path)
+
+
 class tratamento_geral_pra_extracao:
     def __init__(self, doc_obj, doc_path) -> None:
         self.doc_obj = doc_obj
@@ -95,6 +135,7 @@ class tratamento_geral_pra_extracao:
     def Tratamento(self):
         trata_gabs(self.doc_obj, self.doc_path)
         trata_alternativas(self.doc_obj, self.doc_path)
+        trata_insere_conteudo_em_questoes_sem_conteudo(self.doc_obj, self.doc_path)
 
     def Tratamento_sup_tags(self, texto):
         return apply_sup_tags(texto)
@@ -103,7 +144,7 @@ class tratamento_geral_pra_extracao:
         """'
         Checa se tem imagem em cada parte da questao.\n
         \t questao = {\n
-        \t    "imagem_no_enunciado": False/True,\n
+        \t    "imagem_no_enunciado": True,\n
         \t    "imagem_na_a": False/True,\n
         \t    "imagem_na_b": False/True,\n
         \t    "imagem_na_c": False/True,\n
@@ -114,20 +155,20 @@ class tratamento_geral_pra_extracao:
         estamos_no_enunciado = False
         questoes = []
         questao = {
-            "imagem_no_enunciado": False,
+            "imagem_no_enunciado": True,
             "imagem_na_a": False,
             "imagem_na_b": False,
             "imagem_na_c": False,
             "imagem_na_d": False,
             "imagem_na_e": False,
         }
-        for para in self.doc_obj.paragraphs:
-            texto = para.text
+        for paragrafo in self.doc_obj.paragraphs:
+            texto = paragrafo.text
             if "Questão-" in texto:
                 if questao:
                     questoes.append(questao)
                 questao = {
-                    "imagem_no_enunciado": False,
+                    "imagem_no_enunciado": True,
                     "imagem_na_a": False,
                     "imagem_na_b": False,
                     "imagem_na_c": False,
@@ -138,10 +179,6 @@ class tratamento_geral_pra_extracao:
 
             if re.match(r"[a-e]\$", texto):
                 estamos_no_enunciado = False
-
-            if estamos_no_enunciado:
-                if possui_img_tag(texto):
-                    questao["imagem_no_enunciado"] = True
 
             if not estamos_no_enunciado:
                 if "a$" in texto and possui_img_tag(texto):

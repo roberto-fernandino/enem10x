@@ -1,20 +1,11 @@
 from pathlib import Path
-import os
-from django.utils.text import slugify
-from docx2txt import process
-import os
 import re
 from itertools import islice
 from usuarios.models import RankingConteudosErrados
+import os
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 PATTERN_CONTEUDO = re.compile(r"(.+?) / ?(.+?)\n")
-
-
-def replace_in_runs(paragraph, pattern, replacement):
-    for run in paragraph.runs:
-        if pattern.search(run.text):
-            print(f"Encontrado em {run.text}")
-            run.text = pattern.sub(replacement, run.text)
 
 
 def extrai_alternativas(text_after_docx_to_str_with_conteudos_aplicados):
@@ -55,7 +46,7 @@ def extrai_alternativas(text_after_docx_to_str_with_conteudos_aplicados):
                 ].strip()  # Atribui a proxima letra se não for a ultima
                 if letra == "w$":
                     conteudo_index = alternativa.find("Conteudo:")
-                    if conteudo_index != 1:
+                    if conteudo_index != -1:
                         conteudo = alternativa[
                             conteudo_index + len("Conteudo:") :
                         ].strip()
@@ -73,8 +64,7 @@ def extrai_alternativas(text_after_docx_to_str_with_conteudos_aplicados):
     return alternativas_global  # Retorna alternativa_global
 
 
-# print(alternativas('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
-def extrair_enunciados(texto_completo_tratado:str) -> list:
+def extrair_enunciados(texto_completo_tratado: str) -> list:
     lista_enunciados = []
     texto_completo = texto_completo_tratado
     questoes = re.split("Questão-\d+", texto_completo)[1:]
@@ -94,12 +84,6 @@ def extrair_enunciados(texto_completo_tratado:str) -> list:
         lista_enunciados.append(enunciado)
 
     return lista_enunciados
-
-
-# print([enunciado for enunciado in lista_enunciados])
-
-
-# print(extrair_enunciados('/home/roberto/projects/enem10x/src/leitores/questions3.docx'))
 
 
 def lista_arquivos(diretorio) -> list:
@@ -122,12 +106,15 @@ def docx_to_text(doc_obj):
 
 def extrai_conteudos(texto_extraido_do_docx: str) -> list:
     matches = PATTERN_CONTEUDO.findall(texto_extraido_do_docx)
-    sub_subconteudo_global = []
+    lista_conteudos_submaterias = []
     for match in matches:
-        conteudo, sub_conteudo = match[0].replace("Conteudo:", "").strip() , match[1].replace(';','').strip()
+        conteudo, sub_conteudo = (
+            match[0].replace("Conteudo:", "").strip(),
+            match[1].replace(";", "").strip(),
+        )
         if len(conteudo) < 80 and len(sub_conteudo) < 80:
-            sub_subconteudo_global.append([conteudo, sub_conteudo])
-    return sub_subconteudo_global
+            lista_conteudos_submaterias.append([conteudo, sub_conteudo])
+    return lista_conteudos_submaterias
 
 
 def extrai_identificadores_unicos(texto_extraido_do_docx: str) -> list:
@@ -141,57 +128,66 @@ def remove_todas_imagens_do_diretorio_local() -> None:
             if os.path.exists(f"{BASE_DIR}/media/questoes/{imagem}"):
                 os.remove(f"{BASE_DIR}/media/questoes/{imagem}")
 
-def retorna_ranking_de_conteudos_geral(provas:list) -> dict:
+
+def retorna_ranking_de_conteudos_geral(provas: list) -> dict:
     """
     Retorna os top 5 conteúdos com a maior diferença entre erros e acertos para um conjunto de provas.
 
-    Dada uma lista de objetos de prova, esta função calcula o ranking dos conteúdos com base na 
-    diferença entre o número de erros e acertos para cada conteúdo. O resultado é um dicionário 
+    Dada uma lista de objetos de prova, esta função calcula o ranking dos conteúdos com base na
+    diferença entre o número de erros e acertos para cada conteúdo. O resultado é um dicionário
     contendo os 5 conteúdos com a maior diferença, ordenados em ordem decrescente.
 
     Parâmetros:
     -----------
     provas : list
-        Uma lista contendo objetos de prova. Cada objeto de prova deve ter os atributos 
-        `ranking_piores_conteudos` e `ranking_melhores_conteudos`, que são dicionários mapeando 
+        Uma lista contendo objetos de prova. Cada objeto de prova deve ter os atributos
+        `ranking_piores_conteudos` e `ranking_melhores_conteudos`, que são dicionários mapeando
         conteúdos para o número de erros e acertos, respectivamente.
 
     Retorna:
     --------
-        Um dicionário contendo os top 5 conteúdos com a maior diferença entre erros e acertos. 
+        Um dicionário contendo os top 5 conteúdos com a maior diferença entre erros e acertos.
         As chaves são os nomes dos conteúdos e os valores são a diferença calculada.
 
     Exemplo:
     --------
-    >>> provas = [Prova(ranking_piores_conteudos={'Geometria plana': 5, 'Geometria Analitica': 2}, 
+    >>> provas = [Prova(ranking_piores_conteudos={'Geometria plana': 5, 'Geometria Analitica': 2},
                         ranking_melhores_conteudos={'Geometria plana': 2, 'Geometria Analitica': 1})]
     >>> retorna_ranking_de_conteudos_geral(provas)
     {'Geometria plana': 3, 'Geometria Analitica': 1}
     """
     conteudos_geral_dict = {}
-    
+
     for prova in provas:
-    
         piores_conteudos_ranking_prova = prova.ranking_piores_conteudos or {}
         melhores_conteudos_ranking_prova = prova.ranking_melhores_conteudos or {}
 
         if piores_conteudos_ranking_prova:
             for conteudo, erros in piores_conteudos_ranking_prova.items():
-                conteudos_geral_dict[conteudo] = conteudos_geral_dict.get(conteudo, 0) + erros
+                conteudos_geral_dict[conteudo] = (
+                    conteudos_geral_dict.get(conteudo, 0) + erros
+                )
 
         if melhores_conteudos_ranking_prova:
             for conteudo, acertos in melhores_conteudos_ranking_prova.items():
-                conteudos_geral_dict[conteudo] = conteudos_geral_dict.get(conteudo, 0) - acertos
+                conteudos_geral_dict[conteudo] = (
+                    conteudos_geral_dict.get(conteudo, 0) - acertos
+                )
 
-   
-
-    top_5_conteudos_errados = dict(islice(sorted(conteudos_geral_dict.items(), key=lambda item: item[1], reverse=True), 5) )
+    top_5_conteudos_errados = dict(
+        islice(
+            sorted(
+                conteudos_geral_dict.items(), key=lambda item: item[1], reverse=True
+            ),
+            5,
+        )
+    )
 
     return top_5_conteudos_errados
 
-    
+
 def organiza_provas_por_tipo(sender, aluno) -> dict:
-    '''
+    """
     ### Função pra retornar dentre as ultimas 15 provas realizadas do usuario os ultimos simulados ali dentro.
     --------
     ### Objetivo:
@@ -199,7 +195,7 @@ def organiza_provas_por_tipo(sender, aluno) -> dict:
         - Usar esses dados então pra criação de provas pro usuario estudar e focar nos conteúdos que ele mais precisa.
     --------
     ## Retorna:
-    
+
     ```python
     {
         "Matemática": 'num_provas',
@@ -210,56 +206,60 @@ def organiza_provas_por_tipo(sender, aluno) -> dict:
     }
     ```
 
-    '''
+    """
     simulados_tipo = {}
     provas_do_usuario = sender.objects.filter(aluno=aluno).order_by("-data_feita")[:15]
     for prova in provas_do_usuario:
-       tipo_simulado = prova.simulado if prova.simulado else None
-       if tipo_simulado:
+        tipo_simulado = prova.simulado if prova.simulado else None
+        if tipo_simulado:
             if tipo_simulado not in simulados_tipo:
                 simulados_tipo[tipo_simulado] = []
             simulados_tipo[tipo_simulado].append(prova)
     return simulados_tipo
 
-def atualiza_ranking_por_tipo(aluno, tipo, provas_list:list):
-    '''
-        ### Atualiza o ranking do usuario de acordo com seu top 5 conteudos errados calculados por `retorna_ranking_de_conteudos_geral`
-        --------
-        
-        --------
-        ## Retorna:
-            
-            ```python
-            None
-            ```        
-        --------
 
-        # Exemplo:
-        --------
-        ## Ranking_antigo = {
-            1:Conteudo_X,
-            2:Conteudo_Y,
-            3:Conteudo_Z,
-            4:Conteudo_W,            
-            5:Conteudo_A,
-        }\n
+def atualiza_ranking_por_tipo(aluno, tipo, provas_list: list):
+    """
+    ### Atualiza o ranking do usuario de acordo com seu top 5 conteudos errados calculados por `retorna_ranking_de_conteudos_geral`
+    --------
 
-        ## Rankgin_novo = {
-            1:Conteudo_Y,
-            2:Conteudo_X,
-            3:Conteudo_Z,
-            4:Conteudo_A,            
-            5:Conteudo_G,
-        }
-        --------
+    --------
+    ## Retorna:
+
+        ```python
+        None
+        ```
+    --------
+
+    # Exemplo:
+    --------
+    ## Ranking_antigo = {
+        1:Conteudo_X,
+        2:Conteudo_Y,
+        3:Conteudo_Z,
+        4:Conteudo_W,
+        5:Conteudo_A,
+    }\n
+
+    ## Rankgin_novo = {
+        1:Conteudo_Y,
+        2:Conteudo_X,
+        3:Conteudo_Z,
+        4:Conteudo_A,
+        5:Conteudo_G,
+    }
+    --------
 
 
 
 
-    '''
+    """
     from materiais.models import Conteudo
+
     ranking_do_tipo = retorna_ranking_de_conteudos_geral(provas_list)
-    ranking_conteudos_errados, _ = RankingConteudosErrados.objects.get_or_create(aluno=aluno, tipo_simulado=tipo)
+    ranking_conteudos_errados, _ = RankingConteudosErrados.objects.get_or_create(
+        aluno=aluno, tipo_simulado=tipo
+    )
     counter = 1
     for conteudo in Conteudo.objects.filter(pk__in=ranking_do_tipo.keys()):
         campo = f"conteudo_{counter}"

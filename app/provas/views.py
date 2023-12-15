@@ -17,13 +17,14 @@ from django.views.decorators.cache import cache_page
 from usuarios.decorators import user_has_tag
 from django.http import HttpResponse, JsonResponse
 from usuarios.models import Aluno
-from .funcs_geracao_prova import geracao_simulado, geracao_prova
+from .funcs_geracao_prova import geracao_simulado, geracao_automatica_lista
 from django.urls import reverse
 
 
 # Create your views here.
 @login_required
 def prova_choose(request):
+    '''View responsavel por permitir que o usuario escolha entre simulado e uma lista menor customizavel com escolha de mateiras que ira se adaptar aos conteudos mais errados do individuo.'''
     if request.method == "POST":
         choose_prova = ProvaChoose(request.POST)
 
@@ -31,7 +32,6 @@ def prova_choose(request):
             tipo_prova = choose_prova.cleaned_data["tipo_prova"]
             request.session["tipo_prova"] = tipo_prova
             aluno = request.user.aluno
-
             if tipo_prova == "materia_escolhida":
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_prova"])
                 materia_id_list = choose_prova.cleaned_data["materias"]
@@ -42,7 +42,7 @@ def prova_choose(request):
                         f"{request.user.nome} Por favor escolha uma materia!",
                     )
                     return redirect(reverse("provas:prova-choose"))
-                questoes, materias = geracao_prova(materia_id_list, num_questoes)
+                questoes, materias = geracao_automatica_lista(materia_id_list, num_questoes)
 
                 context = {
                     "questoes": questoes,
