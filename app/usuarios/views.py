@@ -36,7 +36,7 @@ def notas_graph(request):
             months_nat,
             months_lin,
             months_hum,
-        ) = NotaChart(request.user)
+        ) = NotaChart(request.user.aluno)
         media_mat, media_nat, media_lin, media_hum = MediaQuery(aluno)
         context = {
             "data_mat": data_mat,

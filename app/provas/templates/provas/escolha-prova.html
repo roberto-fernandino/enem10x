@@ -1,46 +1,38 @@
-{% extends 'static/platform-base.html'%}
-
-
-{% block title %}
-Escolha sua prova
-{% endblock %}
-
-
-{% block content %}
+{% extends 'static/platform-base.html'%} {% block title %} Escolha sua prova
+{%endblock %} {% block content %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let select = document.getElementById('tipoProvaSelect')
-        select.addEventListener('change', function () {
-            let selectedValue = this.value;
+  document.addEventListener("DOMContentLoaded", function () {
+    let select = document.getElementById("tipoProvaSelect");
+    select.addEventListener("change", function () {
+      let selectedValue = this.value;
 
-            let forms = document.getElementsByClassName('prova-customizavel');
-            for (let form of forms) {
-                form.style.display = 'none';
-            }
+      let forms = document.getElementsByClassName("prova-customizavel");
+      for (let form of forms) {
+        form.style.display = "none";
+      }
 
-            if (selectedValue === 'simulado') {
-                document.getElementById('simuladoForm').style.display = 'block';
-            } else if (selectedValue === 'materia_escolhida') {
-                document.getElementById('provaForm').style.display = 'block';
-                document.getElementById('simuladoForm').style.display = 'none';
-            }
-        });
+      if (selectedValue === "simulado") {
+        document.getElementById("simuladoForm").style.display = "block";
+      } else if (selectedValue === "materia_escolhida") {
+        document.getElementById("provaForm").style.display = "block";
+        document.getElementById("simuladoForm").style.display = "none";
+      }
     });
+  });
 </script>
 <div class="prova-form-container">
-
-    {% if messages %}
-    <div class="message">
-        <div class="alert alert-danger">
-            {% for message in messages %}{{ message }} <br />{% endfor %}
-        </div>
+  {% if messages %}
+  <div class="message">
+    <div class="alert alert-danger">
+      {% for message in messages %}{{ message }} <br />{% endfor %}
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    <select id="tipoProvaSelect">
-        <option value="simulado">Simulado</option>
-        <option value="materia_escolhida">Prova customizável</option>
-    </select>
+  <select id="tipoProvaSelect">
+    <option value="simulado">Simulado</option>
+    <option value="materia_escolhida">Lista Adaptavel</option>
+  </select>
 
     <div id='provaForm' class="prova-customizavel" style="display: none;">
         <form action="{% url 'provas:prova-choose' %}" method="post">

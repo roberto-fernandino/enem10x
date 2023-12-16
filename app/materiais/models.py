@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.db.models.signals import m2m_changed
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from usuarios.models import Notas, MediaGeral
 
 # Create your models here.
 
@@ -153,6 +154,7 @@ class ProvaCriadaProfessor(models.Model):
 class Simulado(models.Model):
     tipo = models.CharField(max_length=70)
     materia = models.ManyToManyField(Materia, default=None, blank=True)
+    valor = models.FloatField(default=0, null=True, blank=False)
 
     def __str__(self):
         return f"{self.tipo}"
@@ -219,11 +221,73 @@ class ProvaRespondida(models.Model):
         self.save()
 
 
+def calcular_media(aluno):
+    """Calcula medias e adciona em medias medias do usuario ao longo do tempo"""
+
+    # start counter
+    total_notas = {
+        "matematica": 0,
+        "ciencias_natureza": 0,
+        "linguagens": 0,
+        "ciencias_humanas": 0,
+    }
+
+    total_provas = {
+        "matematica": 0,
+        "ciencias_natureza": 0,
+        "linguagens": 0,
+        "ciencias_humanas": 0,
+    }
+
+    for nota in aluno.notas.all():
+        if nota.nota_matematica:
+            total_provas["matematica"] += 1
+            total_notas["matematica"] += nota.nota_matematica
+        if nota.nota_ciencias_natureza:
+            total_provas["ciencias_natureza"] += 1
+            total_notas["ciencias_natureza"] += nota.nota_ciencias_natureza
+        if nota.nota_linguagens:
+            total_provas["linguagens"] += 1
+            total_notas["linguagens"] += nota.nota_linguagens
+        if nota.nota_ciencias_humanas:
+            total_provas["ciencias_humanas"] += 1
+            total_notas["ciencias_humanas"] += nota.nota_ciencias_humanas
+
+    # Calcula Medias
+    medias = {
+        "matematica": total_notas["matematica"] / total_provas["matematica"]
+        if total_provas["matematica"] > 0
+        else 0,
+        "ciencias_natureza": total_notas["ciencias_natureza"]
+        / total_provas["ciencias_natureza"]
+        if total_provas["ciencias_natureza"] > 0
+        else 0,
+        "linguagens": total_notas["linguagens"] / total_provas["linguagens"]
+        if total_provas["linguagens"] > 0
+        else 0,
+        "ciencias_humanas": total_notas["ciencias_humanas"]
+        / total_provas["ciencias_humanas"]
+        if total_provas["ciencias_humanas"] > 0
+        else 0,
+    }
+
+    # Cria model com media geral do usuario
+
+    MediaGeral.objects.update_or_create(
+        aluno=aluno,
+        defaults={  # Estes são os campos para atualizar ou os valores padrão para um novo registro
+            "media_matematica": medias["matematica"],
+            "media_ciencias_natureza": medias["ciencias_natureza"],
+            "media_linguagens": medias["linguagens"],
+            "media_ciencias_humanas": medias["ciencias_humanas"],
+        },
+    )
+
+
 class ProvaCompleta(models.Model):
     """Modelo de prova completa onde o usuario podera ver suas provas completas"""
 
     aluno = models.ForeignKey("usuarios.Aluno", on_delete=models.CASCADE)
-    nota = models.FloatField(default=0, null=True, blank=True)
     acertos = models.IntegerField(default=0)
     erros = models.IntegerField(default=0)
     ranking_piores_conteudos = models.JSONField(default=None, blank=True, null=True)
@@ -273,7 +337,29 @@ class ProvaCompleta(models.Model):
 
         self.erros = erros
         self.acertos = acertos
-        self.porcentagem_acerto = (self.acertos / qtd_questoes) * 100
+        self.porcentagem_acerto = self.acertos / qtd_questoes
+
+        if self.simulado.tipo == "Matemática":
+            Notas.objects.create(
+                aluno=self.aluno,
+                nota_matematica=self.simulado.valor * self.porcentagem_acerto,
+            )
+        if self.simulado.tipo == "Humanas":
+            Notas.objects.create(
+                aluno=self.aluno,
+                nota_matematica=self.simulado.valor * self.porcentagem_acerto,
+            )
+        if self.simulado.tipo == "Linguagens":
+            Notas.objects.create(
+                aluno=self.aluno,
+                nota_matematica=self.simulado.valor * self.porcentagem_acerto,
+            )
+        if self.simulado.tipo == "Natureza":
+            Notas.objects.create(
+                aluno=self.aluno,
+                nota_matematica=self.simulado.valor * self.porcentagem_acerto,
+            )
+        calcular_media(self.aluno)
         self.save()
 
     def deleta_respostas(self):

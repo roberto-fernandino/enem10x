@@ -1,65 +1,12 @@
 from django.db.models.functions import TruncDate
-from materiais.models import ProvaCompleta, QuestaoRespondida
+from materiais.models import ProvaCompleta
 from usuarios.models import Notas, MediaGeral
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models.functions import ExtractMonth
 
 
-def calcular_media(aluno):
-    """Calcula medias e adciona em medias medias do usuario ao longo do tempo"""
-    provas_completas = ProvaCompleta.objects.filter(aluno=aluno)
-
-    # start counter
-    total_notas = {
-        "matematica": 0,
-        "ciencias_natureza": 0,
-        "linguagens": 0,
-        "ciencias_humanas": 0,
-    }
-
-    total_provas = {
-        "matematica": 0,
-        "ciencias_natureza": 0,
-        "linguagens": 0,
-        "ciencias_humanas": 0,
-    }
-
-    for prova in provas_completas:
-        tipo = prova.tipo
-        total_notas[tipo] += prova.nota
-        total_provas[tipo] += 1
-
-    # Calcula Medias
-    medias = {
-        "matematica": total_notas["matematica"] / total_notas["matematica"]
-        if total_provas
-        else 0,
-        "ciencias_natureza": total_notas["ciencias_natureza"]
-        / total_notas["ciencias_natureza"]
-        if total_provas
-        else 0,
-        "linguagens": total_notas["linguagens"] / total_notas["linguagens"]
-        if total_provas
-        else 0,
-        "ciencias_humanas": total_notas["ciencias_humanas"]
-        / total_notas["ciencias_humanas"]
-        if total_provas
-        else 0,
-    }
-
-    # Cria model com media geral do usuario
-
-    MediaGeral.objects.create(
-        aluno=aluno,
-        media_matematica=medias["matematica"],
-        media_ciencias_natureza=medias["ciencias_natureza"],
-        media_linguagens=medias["linguagens"],
-        media_ciencias_humanas=medias["ciencias_humanas"],
-    )
-
-
-def NotaChart(usuario):
+def NotaChart(aluno):
     month_set = {
         1: "Jan",
         2: "Fev",
@@ -84,7 +31,7 @@ def NotaChart(usuario):
     months_hum = []
     months_lin = []
 
-    queryset = Notas.objects.filter(usuario=usuario).order_by("data_calculada")
+    queryset = Notas.objects.filter(aluno=aluno).order_by("data_calculada")
     nota_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
     for nota in nota_mes:
         if nota.nota_matematica:
@@ -112,11 +59,11 @@ def NotaChart(usuario):
     )
 
 
-def NotaFilteredChart(usuario, months:int | None = None):
-    '''
-        Filtara as notas baseado no Select com AJAX no graph.js.\n
-        \t Retorna: as datas filtradas de acordo com a quantidade de tempo que o usario escolheu.
-    '''
+def NotaFilteredChart(usuario, months: int | None = None):
+    """
+    Filtara as notas baseado no Select com AJAX no graph.js.\n
+    \t Retorna: as datas filtradas de acordo com a quantidade de tempo que o usario escolheu.
+    """
     month_set = {
         1: "Jan",
         2: "Fev",
@@ -145,12 +92,13 @@ def NotaFilteredChart(usuario, months:int | None = None):
 
     if months:
         start_date = now - timedelta(days=30 * months)
-        queryset = Notas.objects.filter(usuario=usuario, data_calculada__gte=start_date).order_by("data_calculada")
+        queryset = Notas.objects.filter(
+            usuario=usuario, data_calculada__gte=start_date
+        ).order_by("data_calculada")
     else:
         start_date = None
         queryset = Notas.objects.filter(usuario=usuario).order_by("data_calculada")
-    
-    
+
     nota_mes = queryset.annotate(mes=ExtractMonth("data_calculada"))
     for nota in nota_mes:
         if nota.nota_matematica:
@@ -166,28 +114,24 @@ def NotaFilteredChart(usuario, months:int | None = None):
             data_nat.append(nota.nota_ciencias_natureza)
             months_nat.append(month_set[nota.mes])
 
-    return ({
-        'data_mat': data_mat,
-        'data_nat': data_nat,
-        'data_lin': data_lin,
-        'data_hum': data_hum,
-        "months_mat":months_mat,
-        "months_nat":months_nat,
-        "months_lin":months_lin,
-        "months_hum":months_hum,
+    return {
+        "data_mat": data_mat,
+        "data_nat": data_nat,
+        "data_lin": data_lin,
+        "data_hum": data_hum,
+        "months_mat": months_mat,
+        "months_nat": months_nat,
+        "months_lin": months_lin,
+        "months_hum": months_hum,
     }
-        
-        
-       
-    )
 
 
 def MediaQuery(aluno):
-    '''
-    Retorna media do usuario em matematica, natureza, linguagens, humanas nessa ordem'''
+    """
+    Retorna media do usuario em matematica, natureza, linguagens, humanas nessa ordem"""
     medias = MediaGeral.objects.get(aluno=aluno)
     media_mat = medias.media_matematica
     media_nat = medias.media_ciencias_natureza
     media_lin = medias.media_linguagens
     media_hum = medias.media_ciencias_humanas
-    return  media_mat, media_nat, media_lin, media_hum
+    return media_mat, media_nat, media_lin, media_hum

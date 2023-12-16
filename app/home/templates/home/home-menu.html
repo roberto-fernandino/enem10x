@@ -13,8 +13,12 @@
     </div>
   </div>
   <div id="rightside">
+    {% if request.user.is_authenticated %}
+    <a class="opt signup" href="{% url 'usuarios:plataforma' %}">Plataforma</a>
+    {% else %}
     <a class="opt large" href="{% url 'usuarios:login' %}">Log in</a>
     <a class="opt signup" href="{% url 'usuarios:signup' %}">Cadastro</a>
+    {% endif %}
   </div>
 </div>
 

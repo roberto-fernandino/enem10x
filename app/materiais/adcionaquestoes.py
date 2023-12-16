@@ -15,6 +15,13 @@ import os
 from django.core.cache import cache
 
 
+# ERRORS
+class ImageNotFoundError(Exception):
+    def __init__(self, msg) -> None:
+        self.msg = msg
+        super().__init__(msg)
+
+
 def adiciona_questoes(arquivo_path: str, materia: str):
     """Adciona questoes no banco de dados."""
 
@@ -165,7 +172,10 @@ def adiciona_questoes(arquivo_path: str, materia: str):
         print(
             f"\033[92m{questoes_adcionadas_count} Questoes adcionadas com sucesso!\033[0m"
         )
-
+        if questao_obj.imagem_enunciado == None:
+            raise ImageNotFoundError(
+                msg="Existe algum erro de formatação/Imagem no seu *.docx favor revisalo!"
+            )
     # Limpa img_dir
     remove_todas_imagens_do_diretorio_local()
 
