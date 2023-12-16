@@ -90,15 +90,16 @@ def trata_insere_conteudo_em_questoes_sem_conteudo(doc_obj, doc_path):
     pattern = re.compile(r"(.+?) / ?(.+?)")
     ultimo_conteudo = None
     for i, paragraph in enumerate(doc_obj.paragraphs):
+
         if "Questão-" in paragraph.text:
             if i > 0 and not pattern.match(doc_obj.paragraphs[i - 1].text):
-                if ultimo_conteudo:
+                if doc_obj.paragraphs[i - 1].text == None:
                     paragraph.insert_paragraph_before(ultimo_conteudo)
                 else:
                     print(
                         "Não existe conteudos declarados no seu *.docx algo está errado, confira !"
                     )
-        elif pattern.match(paragraph.text):
+        if pattern.match(paragraph.text):
             ultimo_conteudo = paragraph.text
 
     doc_obj.save(doc_path)
