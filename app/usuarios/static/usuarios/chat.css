@@ -1,0 +1,47 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  font-family: 'Poppins', 'sans-serif'; }
+
+/*==== Grafico ====*/
+.chart-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  max-width: 770px;
+  margin-bottom: 40px; }
+  .chart-container h1 {
+    padding-top: 10px;
+    color: #415A77;
+    /* Cor cinza */
+    font-weight: 600;
+    /* Negrito */
+    font-size: 32px;
+    /* Tamanho da fonte */
+    text-transform: capitalize;
+    /* Letras maiúsculas */
+    /* Espaçamento entre as letras */ }
+  .chart-container .chart-display {
+    margin-top: 50px;
+    display: flex;
+    max-width: 350px;
+    margin-left: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.914);
+    border-radius: 15px;
+    box-shadow: 3px 5px 6px 0px rgba(0, 130, 186, 0.75); }
+
+/*==== Medias ====*/
+@media (max-width: 768px) {
+  .chart-container .chart-display canvas {
+    height: 355px;
+    width: 355px;
+    margin-left: 20px;
+    display: block;
+    box-sizing: border-box; } }
+
+/*# sourceMappingURL=chat.css.map */
