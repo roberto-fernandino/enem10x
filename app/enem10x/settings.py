@@ -191,8 +191,8 @@ MEDIA_ROOT = DATA_DIR / "media"
 # admin panel plugin settings
 JAZZMIN_SETTINGS = {
     "site_title": "Intellectus admin",
-    "site_header": "Enem 10x admin",
-    "site_brand": "Enem 10x",
+    "site_header": "Intellectus admin",
+    "site_brand": "Intellectus",
     "site_icon": "home/Logo.png",
     "login_logo": "home/logoinline.png",
     "site_logo": "home/Logo.png",

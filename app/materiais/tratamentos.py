@@ -86,22 +86,44 @@ def possui_img_tag(text: str) -> bool:
     return "[IMG]" in text
 
 
+def remove_conteudos_duplicados(doc_obj):
+    pattern = re.compile(r"(.+?) / ?(.+?)")
+
+    i = 0
+    while i < len(doc_obj.paragraphs) - 1:  # Percorre até o penúltimo parágrafo
+        # Se o parágrafo atual e o próximo corresponderem ao padrão e forem iguais
+        if (
+            pattern.match(doc_obj.paragraphs[i].text)
+            and pattern.match(doc_obj.paragraphs[i + 1].text)
+            and doc_obj.paragraphs[i].text == doc_obj.paragraphs[i + 1].text
+        ):
+            # Remove o parágrafo duplicado
+            p = doc_obj.paragraphs[i + 1]
+            p.clear()
+            p._element.getparent().remove(p._element)  # Remoção direta do elemento XML
+
+        else:
+            i += 1  # Apenas incrementa se não houver remoção
+
+
 def trata_insere_conteudo_em_questoes_sem_conteudo(doc_obj, doc_path):
     pattern = re.compile(r"(.+?) / ?(.+?)")
     ultimo_conteudo = None
-    for i, paragraph in enumerate(doc_obj.paragraphs):
 
-        if "Questão-" in paragraph.text:
-            if i > 0 and not pattern.match(doc_obj.paragraphs[i - 1].text):
-                if doc_obj.paragraphs[i - 1].text == None:
-                    paragraph.insert_paragraph_before(ultimo_conteudo)
-                else:
-                    print(
-                        "Não existe conteudos declarados no seu *.docx algo está errado, confira !"
-                    )
+    for i, paragraph in enumerate(doc_obj.paragraphs):
+        # Verifica se o parágrafo atual é um conteúdo
         if pattern.match(paragraph.text):
             ultimo_conteudo = paragraph.text
 
+        # Se for uma questão
+        elif "Questão-" in paragraph.text:
+            # Se não for o primeiro parágrafo e o parágrafo anterior não for o último conteúdo
+            if i > 0 and doc_obj.paragraphs[i - 1].text != ultimo_conteudo:
+                # Insere o último conteúdo antes da questão, se ele existir
+                if ultimo_conteudo:
+                    paragraph.insert_paragraph_before(ultimo_conteudo)
+
+    remove_conteudos_duplicados(doc_obj)
     doc_obj.save(doc_path)
 
 
