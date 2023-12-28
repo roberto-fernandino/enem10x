@@ -182,6 +182,15 @@ class Aluno(models.Model):
         return f"{self.usuario}"
 
 
+class CordernadorEscola(models.Model):
+    usuario = models.OneToOneField(
+        Account, on_delete=models.CASCADE, related_name="cordenador"
+    )
+
+    def __str__(self):
+        return f"{self.usuario}"
+
+
 class ProvaTurma(models.Model):
     prova = models.ForeignKey(
         "materiais.ProvaCriadaProfessor",
@@ -196,8 +205,16 @@ class ProvaTurma(models.Model):
 
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)
+
     professores = models.ManyToManyField(
         Professor, related_name="turmas", blank=True, default=None
+    )
+    grupo_turma = models.ForeignKey(
+        "usuarios.GrupoTurma",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=False,
+        related_name="turmas",
     )
     criador = models.OneToOneField(
         Professor,
@@ -215,6 +232,24 @@ class Turma(models.Model):
 
     def get_qtd_alunos(self):
         return self.alunos.all().count()
+
+
+class GrupoTurma(models.Model):
+    """
+    Modelo responsavel por separar turmas por exemplo por anos (1o ano / 20 ano / etc)
+    """
+
+    nome = models.CharField(max_length=255, null=False, blank=False)
+    escola = models.ForeignKey(
+        "usuarios.Escola",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="grupo_turma",
+    )
+
+    def __str__(self):
+        return f"{self.nome}"
 
 
 class RankingConteudosErrados(models.Model):
@@ -260,3 +295,13 @@ class RankingConteudosErrados(models.Model):
 
     class Meta:
         verbose_name_plural = "Ranking Conteudo Errados"
+
+
+class Escola(models.Model):
+    nome = models.CharField(max_length=255)
+    cordernador = models.OneToOneField(
+        "usuarios.CordernadorEscola", on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    def __str__(self):
+        return f"{self.nome}"
