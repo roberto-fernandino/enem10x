@@ -34,48 +34,38 @@
     <option value="materia_escolhida">Lista Adaptavel</option>
   </select>
 
-  <div id="provaForm" class="prova-customizavel" style="display: none">
-    <form action="{% url 'provas:prova-choose' %}" method="post">
-      {% csrf_token %}
-      <div>
-        <label for="num_questoes">Numero de questões</label> <br />
-        {{ choose_prova.num_questoes_prova }}
-      </div>
-      <div>
-        <label for="materias">Materias</label>
-        {{ choose_prova.materias }}
-      </div>
-      <input
-        type="text"
-        name="tipo_prova"
-        value="materia_escolhida"
-        style="display: none"
-      />
-      <button type="submit">Realizar prova</button>
-    </form>
-  </div>
+    <div id='provaForm' class="prova-customizavel" style="display: none;">
+        <form action="{% url 'provas:prova-choose' %}" method="post">
+            {% csrf_token %}
+            <div class="num_questoes">
+                <label for="num_questoes">Numero de questões</label> <br>
+                {{ choose_prova.num_questoes_prova }}
+            </div>
+            <div>
+                <label for="materias">Materias</label>
+                {{ choose_prova.materias }}
+            </div>
+            <input type="text" name="tipo_prova" value="materia_escolhida" style="display: none;">
+            <button type="submit">Realizar prova</button>
+        </form>
+    </div>
 
-  <div id="simuladoForm" class="simulado-customizavel" style="display: block">
-    <form action="{% url 'provas:prova-choose' %}" method="post">
-      {% csrf_token %}
+    <div id="simuladoForm" class="simulado-customizavel" style="display: block;">
+        <form action="{% url 'provas:prova-choose' %}" method="post">
+            {% csrf_token %}
 
-      <div>
-        <label for="num_questoes_simulado">Numero de questões</label> <br />
-        {{ choose_prova.num_questoes_simulado }}
-      </div>
-      <div>
-        <label for="simulados">Simulado</label>
-        {{ choose_prova.simulados }}
-      </div>
-      <input
-        type="text"
-        name="tipo_prova"
-        value="simulado"
-        style="display: none"
-      />
-      <button type="submit">Realizar prova</button>
-    </form>
-  </div>
+            <div class="num_questoes">
+                <label for="num_questoes_simulado">Numero de questões</label> <br>
+                {{ choose_prova.num_questoes_simulado }}
+            </div>
+            <div>
+                <label for="simulados">Simulado</label>
+                {{ choose_prova.simulados }}
+            </div>
+            <input type="text" name="tipo_prova" value="simulado" style="display: none;">
+            <button type="submit">Realizar prova</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
