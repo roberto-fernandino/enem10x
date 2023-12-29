@@ -96,6 +96,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     # Tags , account type.
     is_aluno = models.BooleanField(default=False, verbose_name="Aluno")
     is_professor = models.BooleanField(default=False, verbose_name="Professor")
+    is_cordenador = models.BooleanField(default=False, verbose_name="Cordenador")
     is_verified = models.BooleanField(default=False, verbose_name="Verificado")
     is_newsletter = models.BooleanField(default=True, verbose_name="Newsletter")
 
@@ -182,7 +183,7 @@ class Aluno(models.Model):
         return f"{self.usuario}"
 
 
-class CordernadorEscola(models.Model):
+class CordenadorEscola(models.Model):
     usuario = models.OneToOneField(
         Account, on_delete=models.CASCADE, related_name="cordenador"
     )
