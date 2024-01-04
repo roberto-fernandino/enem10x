@@ -9,6 +9,7 @@ from datetime import datetime, date
 from django.utils import timezone
 import uuid
 
+
 # Create your models here.
 class AccountManager(BaseUserManager):
     def create_user(
@@ -95,6 +96,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     # Tags , account type.
     is_aluno = models.BooleanField(default=False, verbose_name="Aluno")
     is_professor = models.BooleanField(default=False, verbose_name="Professor")
+    is_cordenador = models.BooleanField(default=False, verbose_name="Cordenador")
     is_verified = models.BooleanField(default=False, verbose_name="Verificado")
     is_newsletter = models.BooleanField(default=True, verbose_name="Newsletter")
 
@@ -120,14 +122,23 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return True
 
     def esconde_cpf(self):
-        return "*" * 3 + '.' + "*" * 3 + self.cpf[-6:-2]  + self.cpf[-2] + self.cpf[-1]
+        return "*" * 3 + "." + "*" * 3 + self.cpf[-6:-2] + self.cpf[-2] + self.cpf[-1]
 
     def retorna_idade(self):
-        return date.today().year - self.data_nascimento.year - ((date.today().month, date.today().day) < (self.data_nascimento.month,  self.data_nascimento.day))
+        return (
+            date.today().year
+            - self.data_nascimento.year
+            - (
+                (date.today().month, date.today().day)
+                < (self.data_nascimento.month, self.data_nascimento.day)
+            )
+        )
 
 
 class Notas(models.Model):
-    usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(
+        "usuarios.Aluno", on_delete=models.CASCADE, null=True, related_name="notas"
+    )
     data_calculada = models.DateField(default=timezone.now, null=True, blank=False)
     nota_matematica = models.FloatField(default=None, null=True, blank=True)
     nota_ciencias_natureza = models.FloatField(default=None, null=True, blank=True)
@@ -139,7 +150,7 @@ class Notas(models.Model):
 
 
 class MediaGeral(models.Model):
-    aluno = models.OneToOneField("usuarios.Aluno", on_delete=models.CASCADE) 
+    aluno = models.OneToOneField("usuarios.Aluno", on_delete=models.CASCADE)
     data_atualizada = models.DateTimeField(auto_now=True)
     media_matematica = models.FloatField(default=0, null=True, blank=True)
     media_ciencias_natureza = models.FloatField(default=0, null=True, blank=True)
@@ -162,28 +173,57 @@ class Professor(models.Model):
         verbose_name_plural = "Professores"
 
     def get_remaining_alunos(self):
-        return (self.total_alunos - self.alunos)
+        return self.total_alunos - self.alunos
+
 
 class Aluno(models.Model):
     usuario = models.OneToOneField(Account, on_delete=models.CASCADE)
-    
+
     def __str__(self) -> str:
         return f"{self.usuario}"
-    
-   
+
+
+class CordenadorEscola(models.Model):
+    usuario = models.OneToOneField(
+        Account, on_delete=models.CASCADE, related_name="cordenador"
+    )
+
+    def __str__(self):
+        return f"{self.usuario}"
+
 
 class ProvaTurma(models.Model):
     prova = models.ForeignKey(
         "materiais.ProvaCriadaProfessor",
         on_delete=models.CASCADE,
-        related_name='prova_pra_turma')
-    alunos = models.ManyToManyField("usuarios.Aluno", related_name="prova_turma", )
+        related_name="prova_pra_turma",
+    )
+    alunos = models.ManyToManyField(
+        "usuarios.Aluno",
+        related_name="prova_turma",
+    )
 
 
 class Turma(models.Model):
     nome = models.CharField(max_length=180, unique=True)
-    professores = models.ManyToManyField(Professor, related_name='turmas', blank=True, default=None)
-    criador = models.OneToOneField(Professor, default=None, null=True, related_name='criador_turma', on_delete=models.CASCADE)
+
+    professores = models.ManyToManyField(
+        Professor, related_name="turmas", blank=True, default=None
+    )
+    grupo_turma = models.ForeignKey(
+        "usuarios.GrupoTurma",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=False,
+        related_name="turmas",
+    )
+    criador = models.OneToOneField(
+        Professor,
+        default=None,
+        null=True,
+        related_name="criador_turma",
+        on_delete=models.CASCADE,
+    )
     alunos = models.ManyToManyField(Aluno, blank=True, default=None)
     data_criada = models.DateTimeField(auto_now_add=True)
     codigo = models.UUIDField(default=uuid.uuid4, unique=True)
@@ -193,16 +233,76 @@ class Turma(models.Model):
 
     def get_qtd_alunos(self):
         return self.alunos.all().count()
-    
+
+
+class GrupoTurma(models.Model):
+    """
+    Modelo responsavel por separar turmas por exemplo por anos (1o ano / 20 ano / etc)
+    """
+
+    nome = models.CharField(max_length=255, null=False, blank=False)
+    escola = models.ForeignKey(
+        "usuarios.Escola",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="grupo_turma",
+    )
+
+    def __str__(self):
+        return f"{self.nome}"
+
+
 class RankingConteudosErrados(models.Model):
     aluno = models.OneToOneField("usuarios.Aluno", on_delete=models.CASCADE)
-    tipo_simulado = models.OneToOneField("materiais.Simulado", on_delete=models.DO_NOTHING, default=None, null=True)
-    conteudo_1 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_1")
-    conteudo_2 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_2")
-    conteudo_3 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_3")
-    conteudo_4 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_4")
-    conteudo_5 = models.ForeignKey("materiais.Conteudo", on_delete=models.DO_NOTHING, default=None, null=True, related_name="rce_conteudo_5")
-
+    tipo_simulado = models.OneToOneField(
+        "materiais.Simulado", on_delete=models.DO_NOTHING, default=None, null=True
+    )
+    conteudo_1 = models.ForeignKey(
+        "materiais.Conteudo",
+        on_delete=models.DO_NOTHING,
+        default=None,
+        null=True,
+        related_name="rce_conteudo_1",
+    )
+    conteudo_2 = models.ForeignKey(
+        "materiais.Conteudo",
+        on_delete=models.DO_NOTHING,
+        default=None,
+        null=True,
+        related_name="rce_conteudo_2",
+    )
+    conteudo_3 = models.ForeignKey(
+        "materiais.Conteudo",
+        on_delete=models.DO_NOTHING,
+        default=None,
+        null=True,
+        related_name="rce_conteudo_3",
+    )
+    conteudo_4 = models.ForeignKey(
+        "materiais.Conteudo",
+        on_delete=models.DO_NOTHING,
+        default=None,
+        null=True,
+        related_name="rce_conteudo_4",
+    )
+    conteudo_5 = models.ForeignKey(
+        "materiais.Conteudo",
+        on_delete=models.DO_NOTHING,
+        default=None,
+        null=True,
+        related_name="rce_conteudo_5",
+    )
 
     class Meta:
         verbose_name_plural = "Ranking Conteudo Errados"
+
+
+class Escola(models.Model):
+    nome = models.CharField(max_length=255)
+    cordernador = models.OneToOneField(
+        "usuarios.CordernadorEscola", on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    def __str__(self):
+        return f"{self.nome}"

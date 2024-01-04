@@ -1,79 +1,71 @@
-{% extends 'static/platform-base.html'%}
-
-
-{% block title %}
-    Escolha sua prova
-{% endblock %}
-
-
-{% block content %}
+{% extends 'static/platform-base.html'%} {% block title %} Escolha sua prova
+{%endblock %} {% block content %}
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
-        let select = document.getElementById('tipoProvaSelect')
-        select.addEventListener('change', function(){
-            let selectedValue = this.value;
+  document.addEventListener("DOMContentLoaded", function () {
+    let select = document.getElementById("tipoProvaSelect");
+    select.addEventListener("change", function () {
+      let selectedValue = this.value;
 
-            let forms = document.getElementsByClassName('prova-customizavel');
-            for (let form of forms){
-                form.style.display = 'none';
-            }
+      let forms = document.getElementsByClassName("prova-customizavel");
+      for (let form of forms) {
+        form.style.display = "none";
+      }
 
-            if (selectedValue === 'simulado'){
-                document.getElementById('simuladoForm').style.display = 'block';
-            } else if  (selectedValue === 'materia_escolhida') {
-                document.getElementById('provaForm').style.display = 'block';
-                document.getElementById('simuladoForm').style.display = 'none';
-            }
-        });
+      if (selectedValue === "simulado") {
+        document.getElementById("simuladoForm").style.display = "block";
+      } else if (selectedValue === "materia_escolhida") {
+        document.getElementById("provaForm").style.display = "block";
+        document.getElementById("simuladoForm").style.display = "none";
+      }
     });
+  });
 </script>
 <div class="prova-form-container">
-
-{% if messages %}
-<div class="message">
-  <div class="alert alert-danger">
-    {% for message in messages %}{{ message }} <br />{% endfor %}
+  {% if messages %}
+  <div class="message">
+    <div class="alert alert-danger">
+      {% for message in messages %}{{ message }} <br />{% endfor %}
+    </div>
   </div>
-</div>
-{% endif %} 
+  {% endif %}
 
-<select id="tipoProvaSelect">
+  <select id="tipoProvaSelect">
     <option value="simulado">Simulado</option>
-    <option value="materia_escolhida">Prova customizável</option>
-</select>
+    <option value="materia_escolhida">Lista Adaptavel</option>
+  </select>
 
-<div id='provaForm' class="prova-customizavel" style="display: none;">
-    <form action="{% url 'provas:prova-choose' %}" method="post">
-        {% csrf_token %}
-        <div>
-            <label for="num_questoes">Numero de questões</label> <br>
-            {{ choose_prova.num_questoes_prova }}
-        </div>
-        <div>
-            <label for="materias">Materias</label>
-            {{ choose_prova.materias }}
-        </div>
-        <input type="text" name="tipo_prova" value="materia_escolhida" style="display: none;">
-        <button type="submit">Realizar prova</button>
-    </form>
-</div>
+    <div id='provaForm' class="prova-customizavel" style="display: none;">
+        <form action="{% url 'provas:prova-choose' %}" method="post">
+            {% csrf_token %}
+            <div class="num_questoes">
+                <label for="num_questoes">Numero de questões</label> <br>
+                {{ choose_prova.num_questoes_prova }}
+            </div>
+            <div>
+                <label for="materias">Materias</label>
+                {{ choose_prova.materias }}
+            </div>
+            <input type="text" name="tipo_prova" value="materia_escolhida" style="display: none;">
+            <button type="submit">Realizar prova</button>
+        </form>
+    </div>
 
-<div id="simuladoForm" class="simulado-customizavel" style="display: block;">
-    <form action="{% url 'provas:prova-choose' %}" method="post">
-        {% csrf_token %}
- 
-        <div>
-            <label for="num_questoes_simulado">Numero de questões</label> <br>
-            {{ choose_prova.num_questoes_simulado }}
-        </div>
-        <div>
-            <label for="simulados">Simulado</label>
-            {{ choose_prova.simulados }}
-        </div>
-        <input type="text" name="tipo_prova" value="simulado" style="display: none;">
-        <button type="submit">Realizar prova</button>
-    </form>
-</div>
+    <div id="simuladoForm" class="simulado-customizavel" style="display: block;">
+        <form action="{% url 'provas:prova-choose' %}" method="post">
+            {% csrf_token %}
+
+            <div class="num_questoes">
+                <label for="num_questoes_simulado">Numero de questões</label> <br>
+                {{ choose_prova.num_questoes_simulado }}
+            </div>
+            <div>
+                <label for="simulados">Simulado</label>
+                {{ choose_prova.simulados }}
+            </div>
+            <input type="text" name="tipo_prova" value="simulado" style="display: none;">
+            <button type="submit">Realizar prova</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

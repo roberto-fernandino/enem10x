@@ -24,7 +24,7 @@ from django.urls import reverse
 # Create your views here.
 @login_required
 def prova_choose(request):
-    '''View responsavel por permitir que o usuario escolha entre simulado e uma lista menor customizavel com escolha de mateiras que ira se adaptar aos conteudos mais errados do individuo.'''
+    """View responsavel por permitir que o usuario escolha entre simulado e uma lista menor customizavel com escolha de mateiras que ira se adaptar aos conteudos mais errados do individuo."""
     if request.method == "POST":
         choose_prova = ProvaChoose(request.POST)
 
@@ -42,7 +42,9 @@ def prova_choose(request):
                         f"{request.user.nome} Por favor escolha uma materia!",
                     )
                     return redirect(reverse("provas:prova-choose"))
-                questoes, materias = geracao_automatica_lista(materia_id_list, num_questoes)
+                questoes, materias = geracao_automatica_lista(
+                    materia_id_list, num_questoes
+                )
 
                 context = {
                     "questoes": questoes,
@@ -54,7 +56,7 @@ def prova_choose(request):
                 simulado_id_list = choose_prova.cleaned_data["simulados"]
                 num_questoes = int(choose_prova.cleaned_data["num_questoes_simulado"])
                 request.session["simulado_id_list"] = simulado_id_list
-                print(f"simulado_id_list: {simulado_id_list}")
+
                 if len(simulado_id_list) == 0:
                     messages.add_message(
                         request,

@@ -6,7 +6,7 @@ from usuarios.forms import AccountCreationForm, CriarTurmaForm
 from django.contrib import messages
 from materiais.models import ProvaCompleta
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
-from usuarios.models import Turma, Professor, Aluno
+from usuarios.models import Turma, Professor, Aluno, Escola, CordenadorEscola
 from usuarios.decorators import user_has_tag
 from uuid import uuid4
 from django.shortcuts import get_object_or_404
@@ -36,7 +36,7 @@ def notas_graph(request):
             months_nat,
             months_lin,
             months_hum,
-        ) = NotaChart(request.user)
+        ) = NotaChart(request.user.aluno)
         media_mat, media_nat, media_lin, media_hum = MediaQuery(aluno)
         context = {
             "data_mat": data_mat,
@@ -377,3 +377,17 @@ def user_profile(request):
     response = render(request, "usuarios/user-profile.html", context)
     cache.set(cache_key, response.content, 60 * 5)
     return response
+
+
+@login_required
+def cordenador_escola_grupo_turmas(request):
+    if request.user.is_cordenador:
+        cordenador = request.user.cordenador
+        escola = Escola.objects.get(cordenador=cordenador)
+        grupos_turmas = escola.grupo_turma.all()
+        context = {"grupos_turmas": grupos_turmas}
+        response = render(request, "html/aqui", context)
+        # criar cache desse response
+        return response
+    else:
+        return HttpResponseForbidden("403 Forbidden")

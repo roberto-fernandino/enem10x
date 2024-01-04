@@ -3,9 +3,9 @@ from materiais.models import (
     Conteudo,
     Questao,
     SubMateria,
-    Materia,
     QuestaoRespondida,
     GrupoConteudo,
+    Materia,
 )
 from usuarios.models import Aluno
 from random import sample, randint, choice, shuffle
@@ -66,85 +66,7 @@ def define_proporcao_conteudos_provas(materia_in_simulado: list, num_questoes: i
     ### Onde:
     {`id_conteudo`:num_questoes_por_conteudo}
     """
-    conteudo_questoes_dict = {}
-    soma_total_questoes_grupo = 0
-    total_proporcao = sum(
-        grupo.proporcao
-        for materia in materia_in_simulado
-        for grupo in GrupoConteudo.objects.filter(materia=materia)
-    )
-    grupo_menor_qtd_questoes_id_qtd = [None, 45]
-
-    for materia in materia_in_simulado:
-        grupos_de_conteudos = GrupoConteudo.objects.filter(
-            materia=materia
-        ).prefetch_related("conteudos")
-
-        for grupo in grupos_de_conteudos:
-            conteudos = list(
-                grupo.conteudos.all()
-            )  # Recupera conteudos do grupo de conteudos
-
-            total_questoes_grupo = round(
-                num_questoes * (grupo.proporcao / total_proporcao)
-            )  # Total questoes que o grupo tera
-            print(
-                f"Grupo {grupo.id}: Total de questões do grupo: {total_questoes_grupo}"
-            )
-            if total_questoes_grupo < grupo_menor_qtd_questoes_id_qtd[1]:
-                grupo_menor_qtd_questoes_id_qtd = [grupo.id, total_questoes_grupo]
-
-            soma_total_questoes_grupo += total_questoes_grupo
-            if total_questoes_grupo >= 1:
-                if total_questoes_grupo == 1:
-                    conteudo = choice(conteudos)
-                    conteudo_questoes_dict[conteudo.id] = 1
-
-                else:
-                    num_conteudos_por_grupo = randint(1, len(conteudos))
-                    conteudos_escolhidos = sample(
-                        list(conteudos), num_conteudos_por_grupo
-                    )
-                    questoes_por_contuedo = (
-                        total_questoes_grupo // num_conteudos_por_grupo
-                    )
-                    discrepancia = total_questoes_grupo - (
-                        len(conteudos_escolhidos) * questoes_por_contuedo
-                    )
-                    for conteudo in conteudos_escolhidos:
-                        conteudo_questoes_dict[f"{conteudo.id}"] = questoes_por_contuedo
-                        for _ in range(discrepancia):
-                            if discrepancia:
-                                conteudo = choice(list(conteudos_escolhidos))
-                                if f"{conteudo.id}" not in conteudo_questoes_dict:
-                                    conteudo_questoes_dict[f"{conteudo.id}"] = 0
-                                conteudo_questoes_dict[f"{conteudo.id}"] += 1
-                                discrepancia -= 1
-            else:
-                print(
-                    f"o grupo {grupo.id}: {grupo} resultou em 0 questoes. Total_questoes_grupo {total_questoes_grupo} "
-                )
-
-    soma_real_questoes = sum(conteudo_questoes_dict.values())
-    discrepancia = num_questoes - soma_real_questoes
-
-    if discrepancia:
-        grupo = (
-            GrupoConteudo.objects.filter(id=grupo_menor_qtd_questoes_id_qtd[0])
-            .prefetch_related("conteudos")
-            .first()
-        )
-        conteudos = list(grupo.conteudos.all())
-        num_conteudos_por_grupo = randint(1, len(conteudos))
-        conteudos_escolhidos = sample(list(conteudos), num_conteudos_por_grupo)
-        while discrepancia:
-            discrepancia -= 1
-            conteudo = choice(conteudos_escolhidos)
-            if f"{conteudo.id}" not in conteudo_questoes_dict:
-                conteudo_questoes_dict[f"{conteudo.id}"] = 0
-            conteudo_questoes_dict[f"{conteudo.id}"] += 1
-
-    return conteudo_questoes_dict
+    pass
 
 
 def filtra_questoes_simulado_linguagens(
@@ -260,16 +182,16 @@ def filtra_questoes_simulado_natureza(
 
 
 def filtra_questoes_simulado_matematica(
-    num_questoes: int, materia_in_simulado, questoes_unicas: set, aluno: Aluno
+    num_questoes: int, questoes_unicas: set, aluno: Aluno
 ) -> list:
     """
-    Filtra e adiciona questões de Matemática ao conjunto de questões fornecido.
+    ## Filtra e adiciona questões de Matemática ao conjunto de questões fornecido.
 
     Esta função seleciona questões de matemática para um simulado, baseando-se nas questões
     ainda não respondidas pelo aluno. As questões selecionadas são então adicionadas ao conjunto
     de questões fornecido (argumento `questoes`) e também são atualizadas no conjunto de questões únicas.
 
-    Parameters:\n
+    ## Parameters:\n
     ```bash
     num_questoes `(int)`: Total de questões desejadas a serem adicionadas de Matemática.\n
     materia_in_simulado `(QuerySet)`: Matéria(s) que faz(em) parte do simulado.\n
@@ -277,12 +199,12 @@ def filtra_questoes_simulado_matematica(
     aluno `(Aluno)`: Instância do aluno para o qual o simulado está sendo gerado.\n
     ```
 
-    Returns:
+    ## Returns:
     ```bash
     list: Lista questões para o simulado, incluindo as questões de Matemática selecionadas.
     ```
 
-    Example:
+    ## Example:
     >>> questoes = []
     >>> filtra_questoes_simulado_matematica(questoes, 10, [<Materia: Matemática>], set(), aluno_obj)
     >>> [<Questao: Questao1>, <Questao: Questao2>, ... ,<Questao: Questao10>]
@@ -290,15 +212,12 @@ def filtra_questoes_simulado_matematica(
 
     # Atualiza QUESTOES unicas
     questoes_unicas.update(retorna_questoes_unicas(aluno))
-    conteudo_questoes_dict = define_proporcao_conteudos_provas(
-        materia_in_simulado, num_questoes
-    )
-    lista_conteudo_questao = cria_lista_de_conteudos_apos_proporcao_definida(
-        conteudo_questoes_dict
-    )
-    questoes_list = retorna_questoes_com_proporcoes_niveis(
-        lista_conteudo_questao, num_questoes
-    )
+    materia = Materia.objects.get(id=1)
+    conteudos_de_mat = Conteudo.objects.filter(sub_materia__materia=materia)
+    questoes_list = Questao.objects.filter(conteudo__in=conteudos_de_mat).order_by("?")[
+        :num_questoes
+    ]
+
     """# Recupera questoes excluindo questoes Unicas.
     questoes_ids = (
         Questao.objects.filter(conteudo__sub_materia__materia=materia_in_simulado[0])
@@ -308,6 +227,7 @@ def filtra_questoes_simulado_matematica(
     )
     todos_questoes_objs = list(Questao.objects.filter(id__in=questoes_ids))
     """
+
     questoes_unicas.update(questao.id for questao in questoes_list)
 
     return questoes_list

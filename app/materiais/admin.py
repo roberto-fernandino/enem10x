@@ -172,7 +172,6 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
         "id",
         "aluno",
         "data_feita",
-        "nota",
         "simulado",
     ]
     fieldsets = (
@@ -182,7 +181,6 @@ class ProvaCompletaAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "simulado",
-                    "nota",
                     "ranking_piores_conteudos",
                     "ranking_melhores_conteudos",
                 ]
@@ -212,7 +210,7 @@ class QuestoesRespondidasAdmin(admin.ModelAdmin):
 class SimuladoAdmin(admin.ModelAdmin):
     list_display = ["tipo"]
     fieldsets = [
-        (None, {"fields": ["tipo", "materia"]}),
+        (None, {"fields": ["tipo", "materia", "valor"]}),
     ]
 
 

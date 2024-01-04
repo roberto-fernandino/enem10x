@@ -1,5 +1,13 @@
 from django.contrib import admin
-from usuarios.models import Account, Notas, MediaGeral, Turma, Professor, Aluno, RankingConteudosErrados
+from usuarios.models import (
+    Account,
+    Notas,
+    MediaGeral,
+    Turma,
+    Professor,
+    Aluno,
+    RankingConteudosErrados,
+)
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from usuarios.forms import AccountCreationForm, AccountChangeForm
@@ -76,7 +84,7 @@ class AccountAdmin(BaseUserAdmin):
 
 class NotasAdmin(admin.ModelAdmin):
     list_display = [
-        "usuario",
+        "aluno",
         "data_calculada",
         "nota_matematica",
         "nota_ciencias_natureza",
@@ -89,7 +97,7 @@ class NotasAdmin(admin.ModelAdmin):
             None,
             {
                 "fields": [
-                    "usuario",
+                    "aluno",
                     "nota_matematica",
                     "nota_ciencias_natureza",
                     "nota_ciencias_humanas",
@@ -105,7 +113,7 @@ class NotasAdmin(admin.ModelAdmin):
             {
                 "classes": ["wide"],
                 "fields": [
-                    "usuario",
+                    "aluno",
                     "data_calculada",
                     "nota_matematica",
                     "nota_ciencias_natureza",
@@ -115,7 +123,7 @@ class NotasAdmin(admin.ModelAdmin):
             },
         )
     ]
-    search_fields = ["usuario"]
+    search_fields = ["aluno"]
     list_per_page = 50
     list_filter = ["data_calculada"]
     date_hierarchy = "data_calculada"
@@ -184,24 +192,23 @@ class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = (("Professor", {"fields": ["usuario", "alunos", "total_alunos"]}),)
 
 
-
 class RankingGeralConteudoAdmin(admin.ModelAdmin):
-    list_display = [
-        'aluno',
-        'tipo_simulado'
-        ]
+    list_display = ["aluno", "tipo_simulado"]
     fieldsets = (
         ("Informação", {"fields": ["aluno", "tipo_simulado"]}),
-        ("Conteudos", {"fields": [
-            "conteudo_1",
-            "conteudo_2",
-            "conteudo_3",
-            "conteudo_4",
-            "conteudo_5",
-            ]})
+        (
+            "Conteudos",
+            {
+                "fields": [
+                    "conteudo_1",
+                    "conteudo_2",
+                    "conteudo_3",
+                    "conteudo_4",
+                    "conteudo_5",
+                ]
+            },
+        ),
     )
-
-
 
 
 admin.site.register(RankingConteudosErrados, RankingGeralConteudoAdmin)

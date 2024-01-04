@@ -79,6 +79,16 @@ services:
     env_file:
       - .env
 
+  #  ngrok:
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile.ngrok
+  #    ports:
+  #      - "4040:4040"
+  #    container_name: ngrok
+  #    depends_on:
+  #      - app
+
   celery:
     container_name: celery1
     build:

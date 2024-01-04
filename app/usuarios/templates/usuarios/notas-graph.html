@@ -3,7 +3,7 @@
 <div class="filters">
   <select id="timeFilter">
     <option value="">Todas</option>
-  <option value="1">Últimos mes</option>
+    <option value="1">Últimos mes</option>
     <option value="6">Últimos 6 meses</option>
     <option value="12">Último ano</option>
   </select>
@@ -11,10 +11,7 @@
 <div class="chart-container">
   <div class="chart-display">
     <h1>Nota matematica</h1>
-    <canvas
-      id="nota-matematica-tempo"
-      style="height: 300px; width: 300px; margin-left: 20px"
-    ></canvas>
+    <canvas id="nota-matematica-tempo" style="height: 300px; width: 300px; margin-left: 20px"></canvas>
     <script>
       const ctx1 = document.getElementById("nota-matematica-tempo");
       const meses_mat_str = "{{months_mat|safe}}".replace(/'/g, '"');
@@ -24,7 +21,7 @@
 
       const myChart1 = new Chart(ctx1, {
         type: "line",
-        data: {  
+        data: {
           labels: meses_mat,
           datasets: [
             {
@@ -52,10 +49,7 @@
   </div>
   <div class="chart-display">
     <h1>Nota Natureza</h1>
-    <canvas
-      id="nota-nat-tempo"
-      style="height: 300px; width: 300px; margin-left: 20px"
-    ></canvas>
+    <canvas id="nota-nat-tempo" style="height: 300px; width: 300px; margin-left: 20px"></canvas>
     <script>
       const ctx2 = document.getElementById("nota-nat-tempo");
       const meses_nat_str = "{{months_nat|safe}}".replace(/'/g, '"');
@@ -89,18 +83,15 @@
 
         options: {
           responsive: true,
-         // for developing only, set true to production for better performance
-         animation: true,
+          // for developing only, set true to production for better performance
+          animation: true,
         },
       });
     </script>
   </div>
   <div class="chart-display">
     <h1>Nota Linguagens</h1>
-    <canvas
-      id="nota-lin-tempo"
-      style="height: 300px; width: 300px; margin-left: 20px"
-    ></canvas>
+    <canvas id="nota-lin-tempo" style="height: 300px; width: 300px; margin-left: 20px"></canvas>
     <script>
       const ctx3 = document.getElementById("nota-lin-tempo");
       const meses_lin_str = "{{months_lin|safe}}".replace(/'/g, '"');
@@ -142,10 +133,7 @@
   </div>
   <div class="chart-display">
     <h1>Nota Humanas</h1>
-    <canvas
-      id="nota-humanas-tempo"
-      style="height: 300px; width: 300px; margin-left: 20px"
-    ></canvas>
+    <canvas id="nota-humanas-tempo" style="height: 300px; width: 300px; margin-left: 20px"></canvas>
     <script>
       const ctx4 = document.getElementById("nota-humanas-tempo");
       const meses_hum_str = "{{months_hum|safe}}".replace(/'/g, '"');
@@ -191,9 +179,7 @@
 <div>
   {% for prova in provas_completas %}
   <p>
-    <a href="{% url 'provas:prova-completa' prova.id %}"
-      >Prova: {{ forloop.counter }} {{prova.data_feita}}</a
-    >
+    <a href="{% url 'provas:prova-completa' prova.id %}">Prova: {{ forloop.counter }} {{prova.data_feita}}</a>
   </p>
   <br />
   {% endfor %}
